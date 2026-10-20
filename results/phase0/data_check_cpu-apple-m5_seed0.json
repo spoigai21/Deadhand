@@ -1,0 +1,121 @@
+{
+  "source": {
+    "dataset": "NYC Open Data uacg-pexx, 2016 Yellow Taxi Trip Data",
+    "files": [
+      "yellow_2016-06-13.parquet",
+      "yellow_2016-06-14.parquet",
+      "yellow_2016-06-15.parquet",
+      "yellow_2016-06-16.parquet",
+      "yellow_2016-06-17.parquet",
+      "yellow_2016-06-18.parquet",
+      "yellow_2016-06-19.parquet"
+    ],
+    "pulled": "2026-10-19"
+  },
+  "hardware": {
+    "cpu": "Apple M5",
+    "os": "macOS-26.6.2-arm64-arm-64bit",
+    "python": "3.12.14"
+  },
+  "columns": {
+    "tpep_pickup_datetime": "timestamp[us]",
+    "tpep_dropoff_datetime": "timestamp[us]",
+    "passenger_count": "int32",
+    "trip_distance": "double",
+    "pickup_longitude": "double",
+    "pickup_latitude": "double",
+    "dropoff_longitude": "double",
+    "dropoff_latitude": "double",
+    "ratecodeid": "int32",
+    "pulocationid": "int32",
+    "dolocationid": "int32"
+  },
+  "has_coordinates": true,
+  "rows": 2575502,
+  "load_seconds": {
+    "polars": 0.067,
+    "pandas": 0.098,
+    "polars_version": "2.0.0",
+    "pandas_version": "3.0.6"
+  },
+  "junk": {
+    "null_coord": 0,
+    "pickup_zero_coord": 32320,
+    "dropoff_zero_coord": 29820,
+    "pickup_outside_bbox": 32822,
+    "dropoff_outside_bbox": 32002,
+    "bad_duration": 6589,
+    "bad_distance": 16520,
+    "newark_ratecode_3": 5142
+  },
+  "rows_clean": 2522854,
+  "clean_share": 0.9796,
+  "bbox": {
+    "lon_min": -74.27,
+    "lat_min": 40.49,
+    "lon_max": -73.68,
+    "lat_max": 40.93
+  },
+  "clean_rows_per_day": {
+    "2016-06-13": {
+      "rows": 333902,
+      "weekday": 1
+    },
+    "2016-06-14": {
+      "rows": 356084,
+      "weekday": 2
+    },
+    "2016-06-15": {
+      "rows": 375408,
+      "weekday": 3
+    },
+    "2016-06-16": {
+      "rows": 391042,
+      "weekday": 4
+    },
+    "2016-06-17": {
+      "rows": 380119,
+      "weekday": 5
+    },
+    "2016-06-18": {
+      "rows": 362824,
+      "weekday": 6
+    },
+    "2016-06-19": {
+      "rows": 323475,
+      "weekday": 7
+    }
+  },
+  "peak_hour": {
+    "hour": "2016-06-16 21:00:00",
+    "requests": 24860,
+    "per_second": 6.91
+  },
+  "mean_requests_per_second": 4.17,
+  "median_speed_mps_by_hour": {
+    "0": 5.72,
+    "1": 6.21,
+    "2": 6.72,
+    "3": 7.16,
+    "4": 7.78,
+    "5": 8.21,
+    "6": 6.59,
+    "7": 5.11,
+    "8": 4.06,
+    "9": 3.89,
+    "10": 3.89,
+    "11": 3.78,
+    "12": 3.78,
+    "13": 3.88,
+    "14": 3.86,
+    "15": 3.83,
+    "16": 4.07,
+    "17": 4.04,
+    "18": 4.07,
+    "19": 4.42,
+    "20": 5.22,
+    "21": 5.25,
+    "22": 5.28,
+    "23": 5.49
+  }
+}

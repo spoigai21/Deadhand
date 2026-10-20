@@ -1,0 +1,87 @@
+{
+  "osrm_base": "http://localhost:5001",
+  "route": {
+    "n": 500,
+    "median_ms": 1.08,
+    "p90_ms": 1.55,
+    "max_ms": 6.54
+  },
+  "table": [
+    {
+      "k": 10,
+      "cells": 100,
+      "reps": 5,
+      "median_ms": 10.1,
+      "max_ms": 11.3,
+      "us_per_cell": 101.39,
+      "unroutable_cells_last_rep": 0
+    },
+    {
+      "k": 50,
+      "cells": 2500,
+      "reps": 5,
+      "median_ms": 46.8,
+      "max_ms": 51.7,
+      "us_per_cell": 18.71,
+      "unroutable_cells_last_rep": 0
+    },
+    {
+      "k": 200,
+      "cells": 40000,
+      "reps": 5,
+      "median_ms": 243.2,
+      "max_ms": 256.4,
+      "us_per_cell": 6.08,
+      "unroutable_cells_last_rep": 0
+    },
+    {
+      "k": 1000,
+      "cells": 1000000,
+      "reps": 5,
+      "median_ms": 2453.5,
+      "max_ms": 2467.4,
+      "us_per_cell": 2.45,
+      "unroutable_cells_last_rep": 0
+    }
+  ],
+  "snap_m": {
+    "n": 1000,
+    "unsnappable": 0,
+    "median": 5.3,
+    "p90": 19.9,
+    "over_100m": 6
+  },
+  "table_one_to_many": [
+    {
+      "k": 10,
+      "shape": "1x10",
+      "reps": 10,
+      "median_ms": 3.68,
+      "max_ms": 27.54
+    },
+    {
+      "k": 50,
+      "shape": "1x50",
+      "reps": 10,
+      "median_ms": 6.26,
+      "max_ms": 9.43
+    },
+    {
+      "k": 200,
+      "shape": "1x200",
+      "reps": 10,
+      "median_ms": 14.32,
+      "max_ms": 16.0
+    },
+    {
+      "k": 1000,
+      "shape": "1x1000",
+      "reps": 10,
+      "median_ms": 86.17,
+      "max_ms": 87.83
+    }
+  ],
+  "osrm_version": "v6.0.0 (ghcr.io/project-osrm/osrm-backend, linux/arm64)",
+  "algorithm": "MLD",
+  "note": "latencies include HTTP round trip from Python requests to the Docker container"
+}

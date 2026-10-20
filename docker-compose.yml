@@ -1,0 +1,10 @@
+# Phase 0: the routing engine. Kafka is added in Phase 2, the Java workers in Phase 3.
+# Build the routing data once (scripts/osrm_build.sh), then `docker compose up osrm`.
+services:
+  osrm:
+    image: ghcr.io/project-osrm/osrm-backend:v6.0.0
+    command: osrm-routed --algorithm mld --max-table-size 1000 /data/nyc.osrm
+    volumes:
+      - ./data/osrm:/data
+    ports:
+      - "5001:5000"   # 5000 on the host is taken by macOS AirPlay

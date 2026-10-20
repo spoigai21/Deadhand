@@ -1,0 +1,1022 @@
+{
+  "drivable_bridge_or_tunnel_ways": 2844,
+  "water_crossing_ways": 390,
+  "named_water_crossings": 144,
+  "crossings": [
+    {
+      "name": "Verrazzano-Narrows Bridge",
+      "kind": "bridge",
+      "ways": 5,
+      "length_m": 11254.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "(unnamed)",
+      "kind": "bridge",
+      "ways": 50,
+      "length_m": 10255.0,
+      "highway": "motorway,motorway_link,primary_link,residential,secondary,secondary_link,tertiary"
+    },
+    {
+      "name": "Queens-Midtown Tunnel",
+      "kind": "tunnel",
+      "ways": 4,
+      "length_m": 6808.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Lincoln Tunnel",
+      "kind": "tunnel",
+      "ways": 6,
+      "length_m": 6345.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Brooklyn-Battery Tunnel",
+      "kind": "tunnel",
+      "ways": 2,
+      "length_m": 5557.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Holland Tunnel",
+      "kind": "tunnel",
+      "ways": 4,
+      "length_m": 5162.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Williamsburg Bridge",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 5114.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Throgs Neck Bridge",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 4433.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Bronx-Whitestone Bridge",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 4218.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Goethals Bridge",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 4038.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Gowanus Expressway (HOV)",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 3746.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Van Wyck Expressway",
+      "kind": "bridge",
+      "ways": 7,
+      "length_m": 3474.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Belt Parkway",
+      "kind": "bridge",
+      "ways": 12,
+      "length_m": 3200.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "George Washington Bridge Lower Level",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 2984.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "George Washington Bridge Upper Level",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 2819.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Robert F. Kennedy Bridge",
+      "kind": "bridge",
+      "ways": 10,
+      "length_m": 2787.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Long Island Expressway",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 2642.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Ed Koch Queensboro Bridge Upper Level",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 2268.0,
+      "highway": "trunk"
+    },
+    {
+      "name": "Outerbridge Crossing",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 2119.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Brooklyn Bridge",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 2106.0,
+      "highway": "trunk"
+    },
+    {
+      "name": "Cross Bronx Expressway",
+      "kind": "bridge",
+      "ways": 6,
+      "length_m": 1878.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Marine Parkway\u2013Gil Hodges Memorial Bridge",
+      "kind": "bridge",
+      "ways": 6,
+      "length_m": 1748.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Cross Bay Bridge",
+      "kind": "bridge",
+      "ways": 5,
+      "length_m": 1746.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Cross Bay Boulevard",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 1731.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Bruckner Expressway",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 1702.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Gowanus Expressway",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 1496.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Brooklyn-Queens Expressway",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 1489.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Flatbush Avenue Extension",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 1331.0,
+      "highway": "primary,secondary"
+    },
+    {
+      "name": "Rikers Island Bridge",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 1291.0,
+      "highway": "unclassified"
+    },
+    {
+      "name": "Pulaski Bridge",
+      "kind": "bridge",
+      "ways": 6,
+      "length_m": 1261.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Henry Hudson Parkway",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 1182.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Chrystie Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 1170.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Canal Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 1165.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Ed Koch Queensboro Bridge Lower Level",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 1135.0,
+      "highway": "trunk"
+    },
+    {
+      "name": "Ed Koch Queensboro Bridge Lower Roadway",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 1134.0,
+      "highway": "trunk"
+    },
+    {
+      "name": "Canal Street (lower level)",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 1119.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Whitestone Expressway",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 1017.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Washington Bridge",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 953.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Bayonne Bridge",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 895.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Boston Road",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 876.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Northern Boulevard",
+      "kind": "bridge",
+      "ways": 5,
+      "length_m": 712.0,
+      "highway": "primary"
+    },
+    {
+      "name": "JFK Expressway",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 698.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Hutchinson River Parkway",
+      "kind": "bridge",
+      "ways": 14,
+      "length_m": 666.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Flatbush Avenue Extension (lower level)",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 644.0,
+      "highway": "primary"
+    },
+    {
+      "name": "West Shore Expressway",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 507.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Madison Avenue Bridge",
+      "kind": "bridge",
+      "ways": 6,
+      "length_m": 447.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "New England Thruway",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 386.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Willis Avenue Bridge",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 365.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Nassau Expressway",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 343.0,
+      "highway": "trunk"
+    },
+    {
+      "name": "Third Avenue Bridge",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 343.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Cross County Parkway (express lanes)",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 314.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Greenpoint Avenue",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 281.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Roosevelt Island Bridge",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 273.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Broadway",
+      "kind": "bridge",
+      "ways": 6,
+      "length_m": 271.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Macombs Dam Bridge",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 264.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Shore Road",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 260.0,
+      "highway": "primary"
+    },
+    {
+      "name": "145th Street Bridge",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 249.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "East 241st Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 247.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Richmond Avenue",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 234.0,
+      "highway": "primary"
+    },
+    {
+      "name": "East 174th Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 231.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Horace Harding Expressway",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 228.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Nereid Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 227.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "City Island Bridge",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 191.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Page Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 185.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Trans-Manhattan Expressway Lower Level",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 178.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Trans-Manhattan Expressway Upper Level",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 177.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Bruckner Boulevard",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 171.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "University Heights Bridge",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 169.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Bronx River Parkway",
+      "kind": "bridge",
+      "ways": 6,
+      "length_m": 165.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "Cropsey Avenue",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 158.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Roosevelt Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 154.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "West Broad Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 153.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Bronx Boulevard",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 139.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Meridian Road",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 138.0,
+      "highway": "unclassified"
+    },
+    {
+      "name": "Sunrise Highway",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 137.0,
+      "highway": "trunk"
+    },
+    {
+      "name": "Cross County Parkway",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 130.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "West Shore Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 122.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Grand Street",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 119.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Cross County Parkway (local lanes)",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 117.0,
+      "highway": "motorway"
+    },
+    {
+      "name": "McLean Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 115.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Hylan Boulevard",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 114.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Rockaway Turnpike",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 110.0,
+      "highway": "trunk"
+    },
+    {
+      "name": "South Fulton Avenue",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 108.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Stillwell Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 105.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Sheridan Boulevard",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 102.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Jewel Avenue",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 99.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "East 3rd Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 96.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "East 233rd Street",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 84.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Hunters Point Bridge",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 83.0,
+      "highway": "unclassified"
+    },
+    {
+      "name": "Rockaway Boulevard",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 81.0,
+      "highway": "trunk"
+    },
+    {
+      "name": "Glen Island Approach",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 80.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Southern Boulevard",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 80.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Premium Point Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 75.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Richmond Valley Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 74.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Arthur Kill Road",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 64.0,
+      "highway": "tertiary,unclassified"
+    },
+    {
+      "name": "102nd Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 60.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Wakefield Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 59.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Meadow Lake Drive",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 59.0,
+      "highway": "unclassified"
+    },
+    {
+      "name": "Rosedale Road",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 56.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "East Tremont Avenue",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 54.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "6th Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 53.0,
+      "highway": "residential"
+    },
+    {
+      "name": "East Fordham Road",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 52.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Hamilton Avenue",
+      "kind": "bridge",
+      "ways": 4,
+      "length_m": 48.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Sandford Boulevard East",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 47.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Incinerator Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 42.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Freeborn Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 42.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Boathouse Bridge",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 39.0,
+      "highway": "unclassified"
+    },
+    {
+      "name": "Mill Road",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 37.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "9th Street",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 36.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Pryer Manor Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 35.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Beach 2nd Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 34.0,
+      "highway": "unclassified"
+    },
+    {
+      "name": "3rd Street",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 33.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Union Street",
+      "kind": "bridge",
+      "ways": 3,
+      "length_m": 32.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Wildwood Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 32.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Martling Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 29.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "East 180th Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 28.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Branch Boulevard",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 28.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Stonytown Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 25.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Chelsea Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 25.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Rockaway Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 25.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Bayview Avenue",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 25.0,
+      "highway": "residential,tertiary"
+    },
+    {
+      "name": "East Gun Hill Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 24.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Westchester Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 23.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "Borden Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 23.0,
+      "highway": "secondary"
+    },
+    {
+      "name": "East Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 22.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Gibson Boulevard",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 22.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Lincoln Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 19.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Beach Road",
+      "kind": "bridge",
+      "ways": 2,
+      "length_m": 18.0,
+      "highway": "unclassified"
+    },
+    {
+      "name": "Travis Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 18.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Willow Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 17.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Brookfield Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 17.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Sherwood Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 17.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Slater Boulevard",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 16.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Eleanor Street",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 16.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Mount Vernon Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 16.0,
+      "highway": "primary"
+    },
+    {
+      "name": "Community Drive East",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 12.0,
+      "highway": "unclassified"
+    },
+    {
+      "name": "Cochran Place",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 11.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Western Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 11.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Hunter Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 10.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Independence Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 10.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Idlease Place",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 9.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Sandhill Road",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 8.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Palisade Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 8.0,
+      "highway": "residential"
+    },
+    {
+      "name": "Weyman Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 8.0,
+      "highway": "tertiary"
+    },
+    {
+      "name": "Seguine Avenue",
+      "kind": "bridge",
+      "ways": 1,
+      "length_m": 5.0,
+      "highway": "residential"
+    }
+  ]
+}
