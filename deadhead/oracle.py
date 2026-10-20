@@ -1,0 +1,230 @@
+"""Phase 2: the single-process matcher that consumes the demand stream. It sees every partition, so it
+has no boundary: it is the correctness oracle the sharded service (Phase 3) is checked against.
+
+The driver-ranking rule is swappable behind one interface and both rules rank the SAME candidate set
+(the idle drivers in the H3 ring, nearest K by straight line). Every decision also computes what the
+other rule would have picked from those candidates (Mode A, paired one-step), in whichever replay is
+running, so the wrong-driver rate is measured in both worlds.
+
+Usage: python -m deadhead.oracle configs/phase2.yaml --day 2016-06-16 --rule road|straight [--fleet N] [--seed S] [--abandon T] [--limit M]
+Writes assignments to Kafka topic assignments-<run_id> (keyed by request_id), a parquet cache under
+data/phase2/, and a run summary under results/phase2/.
+"""
+import argparse, json, time, collections
+from pathlib import Path
+import numpy as np, polars as pl, yaml
+from confluent_kafka import Consumer, Producer, TopicPartition
+from .data import load_week, day_requests, PU_DT
+from .fleet import Fleet
+from .geo import cells, disk
+from .routing import OSRM
+from .stream import requests_topic, ensure_topic
+from .phase1_disagreement import Crossings
+from .phase0_data import hardware
+
+RULES = ("straight", "road")
+
+def rank(rule, hav, road_s):
+    """Index of the chosen candidate. Candidates arrive sorted by (straight-line distance, id); np.argmin keeps the first on ties."""
+    if rule == "straight":
+        return 0
+    return int(np.argmin(road_s))
+
+class Oracle:
+    def __init__(self, cfg, day, rule, fleet_size, seed, abandon_s, run_id):
+        assert rule in RULES
+        self.cfg, self.day, self.rule, self.n, self.seed, self.T, self.run_id = cfg, day, rule, fleet_size, seed, abandon_s, run_id
+        self.osrm = OSRM(cfg["osrm"], threads=1)
+        self.crossings = Crossings(cfg["crossings_geojson"])
+        self.v_sl = cfg["straight_line_speed_mps"]
+        week = load_week(cfg["trips_dir"])
+        self.repositioning = cfg.get("repositioning", "cruise")
+        cruise_after = cfg["cruise_after_s"] if self.repositioning == "cruise" else None
+        day_start = float(pl.Series([day]).str.to_datetime().dt.epoch("s")[0])
+        self.fleet, self.pool_rows = Fleet.from_dropoffs(week, day, fleet_size, cfg["initial_positions_window_s"], seed, cfg["h3_resolution"], cfg["ring_k"], cruise_after, day_start)
+        # the demand map a cruising driver uses: real pickups of the previous clock hour, by resolution-8 cell (ASSUMPTIONS.md).
+        # Hour 0 reads the previous day's hour 23, which the window includes. No lookahead: at time t only hour(t)-1 is read.
+        start = pl.lit(day).str.to_datetime() - pl.duration(hours=1); end = pl.lit(day).str.to_datetime() + pl.duration(days=1)
+        pk = week.filter((pl.col(PU_DT) >= start) & (pl.col(PU_DT) < end))
+        pk_cell = cells(pk["pickup_longitude"].to_numpy(), pk["pickup_latitude"].to_numpy(), cfg["h3_resolution"])
+        pk = pk.with_columns(pl.Series("cell", pk_cell), pl.col(PU_DT).dt.hour().alias("hour"))
+        self.demand = {}      # (hour, cell) -> (lons, lats)
+        for (h, c), g in pk.group_by("hour", "cell"):
+            self.demand[(int(h), int(c))] = (g["pickup_longitude"].to_numpy(), g["pickup_latitude"].to_numpy())
+        self.rng = np.random.default_rng(seed + 1000)
+        self.cruise_k = cfg["cruise_ring_k"]
+        self._cruise_disk = {}
+        self.records = []
+        self.topic = ensure_topic(cfg["kafka"], f"assignments-{run_id}", cfg["partitions"], recreate=True)
+        self.producer = Producer({"bootstrap.servers": cfg["kafka"], "enable.idempotence": True, "linger.ms": 50, "compression.type": "lz4", "queue.buffering.max.messages": 500000})
+        self.counts = collections.Counter()
+        self.table_ms = []
+
+    def sample_target(self, t, cell):
+        """The busiest cell of the previous hour within cruise_ring_k of the driver; a real pickup from it. None = stay."""
+        h = ((t // 3600) % 24 - 1) % 24
+        if cell not in self._cruise_disk:
+            self._cruise_disk[cell] = sorted(disk(cell, self.cruise_k))
+        best, best_n = None, 0
+        for c in self._cruise_disk[cell]:
+            g = self.demand.get((h, c))
+            if g is not None and len(g[0]) > best_n:
+                best, best_n = c, len(g[0])
+        if best is None or best == cell:
+            return None
+        lons, lats = self.demand[(h, best)]
+        j = int(self.rng.integers(len(lons)))
+        return float(lons[j]), float(lats[j])
+
+    def _route_mt(self, a, b):
+        r = self.osrm.route(a, b)
+        return (r["road_m"], r["road_s"]) if r else None
+
+    def decide(self, rec):
+        t = rec["t"]; t_wall = time.perf_counter()
+        self.fleet.release(t)
+        if self.fleet.cruise_after_s is not None:
+            self.fleet.cruise(t, self.sample_target, self._route_mt)
+        pu_cell = cells([rec["pu_lon"]], [rec["pu_lat"]], self.cfg["h3_resolution"])[0]
+        ids, hav = self.fleet.candidates(rec["pu_lon"], rec["pu_lat"], pu_cell, self.cfg["candidates_k"])
+        out = {"request_id": rec["request_id"], "t": t, "hour": rec["hour"], "rule": self.rule, "pu_lon": rec["pu_lon"], "pu_lat": rec["pu_lat"],
+               "pu_cell": f"{int(pu_cell):x}", "key_cell": rec["key_cell"], "n_candidates": int(len(ids)), "trip_s": rec["trip_s"]}
+        if len(ids) == 0:
+            out.update(status="no_candidates", driver=-1)
+            self.counts["no_candidates"] += 1
+            return self._finish(out, t_wall)
+        t_tab = time.perf_counter()
+        tb = self.osrm.table_many_to_one([(self.fleet.lon[d], self.fleet.lat[d]) for d in ids], (rec["pu_lon"], rec["pu_lat"]))
+        self.table_ms.append((time.perf_counter() - t_tab) * 1000)
+        # OSRM returns a tiny negative distance when both ends snap to one road point (BUGS.md #1): clamp at zero
+        road_s = np.array([np.inf if v is None else max(v, 0.0) for v in tb["road_s"]]); road_m = np.array([np.inf if v is None else max(v, 0.0) for v in tb["road_m"]])
+        ok = np.isfinite(road_s)
+        if not ok.all():  # an unroutable candidate is dropped from the set before either rule sees it; counted
+            self.counts["unroutable_candidates"] += int((~ok).sum())
+            ids, hav, road_s, road_m = ids[ok], hav[ok], road_s[ok], road_m[ok]
+            if len(ids) == 0:
+                out.update(status="no_candidates", driver=-1); self.counts["no_candidates"] += 1
+                return self._finish(out, t_wall)
+        i_sl, i_rd = rank("straight", hav, road_s), rank("road", hav, road_s)
+        i = i_sl if self.rule == "straight" else i_rd
+        promised = hav[i] / self.v_sl if self.rule == "straight" else road_s[i]
+        # Mode A, paired one-step: what the other rule would have taken from the same candidates
+        differs = bool(ids[i_sl] != ids[i_rd] and road_s[i_sl] > road_s[i_rd])
+        tie = bool(ids[i_sl] != ids[i_rd] and road_s[i_sl] == road_s[i_rd])
+        out.update(sl_driver=int(ids[i_sl]), road_driver=int(ids[i_rd]), differs=differs, tie=tie,
+                   extra_s=float(road_s[i_sl] - road_s[i_rd]), extra_m=float(road_m[i_sl] - road_m[i_rd]),
+                   sl_hav_m=float(hav[i_sl]), road_hav_m=float(hav[i_rd]), sl_road_s=float(road_s[i_sl]), road_road_s=float(road_s[i_rd]),
+                   sl_crosses_water=None, road_crosses_water=None)
+        if differs:
+            for key, d in (("sl_crosses_water", ids[i_sl]), ("road_crosses_water", ids[i_rd])):
+                rt = self.osrm.route((self.fleet.lon[d], self.fleet.lat[d]), (rec["pu_lon"], rec["pu_lat"]), geometry=True)
+                out[key] = bool(self.crossings.on_route(rt["geometry"])) if rt else None
+        out.update(promised_eta_s=float(promised), actual_eta_s=float(road_s[i]), leg_m=float(road_m[i]), driver=int(ids[i]),
+                   driver_lon=float(self.fleet.lon[ids[i]]), driver_lat=float(self.fleet.lat[ids[i]]))
+        if promised > self.T:
+            out.update(status="abandoned"); self.counts["abandoned"] += 1
+            return self._finish(out, t_wall)
+        busy_until = t + road_s[i] + rec["trip_s"]
+        self.fleet.claim(ids[i], busy_until, rec["do_lon"], rec["do_lat"])
+        out.update(status="matched", busy_until=float(busy_until)); self.counts["matched"] += 1
+        return self._finish(out, t_wall)
+
+    def _finish(self, out, t_wall):
+        out["decision_ms"] = round((time.perf_counter() - t_wall) * 1000, 3)
+        self.records.append(out)
+        while True:
+            try:
+                self.producer.produce(self.topic, key=str(out["request_id"]), value=json.dumps(out).encode()); break
+            except BufferError:
+                self.producer.poll(0.1)
+        if len(self.records) % 5000 == 0:
+            self.producer.poll(0)
+        return out
+
+    def run(self, limit=None):
+        """Consume requests-<day> from the beginning over all partitions, merged into event-time order by a watermark:
+        a record is processed only when every unfinished partition has a record at or beyond its time."""
+        cfg = self.cfg; topic = requests_topic(self.day)
+        c = Consumer({"bootstrap.servers": cfg["kafka"], "group.id": f"oracle-{self.run_id}", "auto.offset.reset": "earliest", "enable.auto.commit": False, "fetch.max.bytes": 50 * 1024 * 1024})
+        parts = list(c.list_topics(topic, timeout=10).topics[topic].partitions)
+        c.assign([TopicPartition(topic, p, 0) for p in parts])
+        queues = {p: collections.deque() for p in parts}; ended = set()
+        n = 0; t0 = time.perf_counter(); last_t = -1
+        while len(ended) < len(parts):
+            msgs = c.consume(num_messages=4000, timeout=2.0)
+            if not msgs and len(ended) < len(parts):
+                continue
+            for m in msgs:
+                if m.error():
+                    raise RuntimeError(m.error())
+                rec = json.loads(m.value())
+                if rec["type"] == "eod":
+                    ended.add(m.partition())
+                else:
+                    queues[m.partition()].append(rec)
+            while True:
+                heads = [(q[0]["t"], q[0]["request_id"], p) for p, q in queues.items() if q]
+                if not heads or any(not queues[p] and p not in ended for p in parts):
+                    break
+                t, rid, p = min(heads)
+                rec = queues[p].popleft()
+                assert t >= last_t, "event time went backwards"
+                last_t = t
+                self.decide(rec); n += 1
+                if n % 50000 == 0:
+                    print(f"{self.run_id}: {n} decisions, {n / (time.perf_counter() - t0):.0f}/s, {dict(self.counts)}", flush=True)
+                if limit and n >= limit:
+                    ended = set(parts); queues = {p: collections.deque() for p in parts}; break
+        c.close(); self.producer.flush()
+        return self.summary(n, time.perf_counter() - t0)
+
+    def summary(self, n, seconds):
+        df = pl.DataFrame(self.records, infer_schema_length=None).with_columns(pl.col("sl_crosses_water", "road_crosses_water").cast(pl.Boolean))
+        m = df.filter(pl.col("status") == "matched")
+        dec = df.filter(pl.col("n_candidates") > 0)
+        s = {"run_id": self.run_id, "day": self.day, "rule": self.rule, "fleet_size": self.n, "seed": self.seed, "abandon_after_s": self.T, "repositioning": self.repositioning,
+             "cruising": {"cruises": self.fleet.cruises, "stays": self.fleet.stays, "km_total": round(self.fleet.cruise_m / 1000, 1), "hours_total": round(self.fleet.cruise_s / 3600, 1), "cruise_after_s": self.fleet.cruise_after_s, "cruise_ring_k": self.cruise_k},
+             "config": {k: self.cfg[k] for k in ("partitions", "key_resolution", "h3_resolution", "ring_k", "candidates_k", "straight_line_speed_mps", "initial_positions_window_s")},
+             "hardware": hardware(), "initial_position_pool_rows": self.pool_rows,
+             "decisions": n, "seconds": round(seconds, 1), "decisions_per_s": round(n / seconds, 1),
+             "table_ms_median": round(float(np.median(self.table_ms)), 2) if self.table_ms else None,
+             "decision_ms_median": round(float(df["decision_ms"].median()), 2), "decision_ms_p99": round(float(df["decision_ms"].quantile(0.99)), 2),
+             "counts": dict(self.counts), "match_rate": round(m.height / n, 4),
+             "wait_s": {"median": round(float(m["actual_eta_s"].median()), 1), "p90": round(float(m["actual_eta_s"].quantile(0.9)), 1), "mean": round(float(m["actual_eta_s"].mean()), 1)},
+             "deadhead_m_per_ride": {"median": round(float(m["leg_m"].median()), 1), "mean": round(float(m["leg_m"].mean()), 1)},
+             "deadhead_km_total": round(float(m["leg_m"].sum()) / 1000, 1),
+             "promised_eta_error_s": {"median": round(float((m["actual_eta_s"] - m["promised_eta_s"]).median()), 1), "p90": round(float((m["actual_eta_s"] - m["promised_eta_s"]).quantile(0.9)), 1)},
+             "utilisation": round(float((m["actual_eta_s"] + m["trip_s"]).sum()) / (self.n * 86400), 4),
+             "utilisation_including_cruising": round((float((m["actual_eta_s"] + m["trip_s"]).sum()) + self.fleet.cruise_s) / (self.n * 86400), 4),
+             "mode_a": {"decisions_with_candidates": dec.height, "wrong_driver_rate": round(float(dec["differs"].mean()), 4), "tie_rate": round(float(dec["tie"].mean()), 4)}}
+        w = dec.filter(pl.col("differs"))
+        if w.height:
+            s["mode_a"].update({"conditional_extra_wait_s": {"median": round(float(w["extra_s"].median()), 1), "p90": round(float(w["extra_s"].quantile(0.9)), 1), "mean": round(float(w["extra_s"].mean()), 1)},
+                                "conditional_extra_deadhead_m": {"median": round(float(w["extra_m"].median()), 1), "p90": round(float(w["extra_m"].quantile(0.9)), 1)},
+                                "share_sl_pick_crosses_water": round(float(w["sl_crosses_water"].fill_null(False).mean()), 4),
+                                "extra_wait_share_from_water_crossing_picks": round(float(w.filter(pl.col("sl_crosses_water") == True)["extra_s"].sum() / w["extra_s"].sum()), 4),
+                                "total_extra_wait_s_if_straight_line_everywhere": round(float(dec["extra_s"].sum()), 0)})
+        Path("data/phase2").mkdir(parents=True, exist_ok=True); Path("results/phase2").mkdir(parents=True, exist_ok=True)
+        df.write_parquet(f"data/phase2/assignments_{self.run_id}.parquet")
+        Path(f"results/phase2/run_{self.run_id}_{self.cfg['hardware_lane']}.json").write_text(json.dumps(s, indent=1))
+        return s
+
+def run_id_for(day, rule, fleet, abandon, seed, repositioning):
+    return f"{day}_{rule}_N{fleet}_T{abandon}_seed{seed}_{repositioning}"
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("config"); ap.add_argument("--day", required=True); ap.add_argument("--rule", required=True, choices=RULES)
+    ap.add_argument("--fleet", type=int); ap.add_argument("--seed", type=int); ap.add_argument("--abandon", type=int); ap.add_argument("--limit", type=int); ap.add_argument("--run-id")
+    ap.add_argument("--repositioning", choices=("cruise", "none"))
+    a = ap.parse_args()
+    cfg = yaml.safe_load(open(a.config))
+    if a.repositioning:
+        cfg["repositioning"] = a.repositioning
+    fleet = a.fleet or cfg["fleet_size"]; seed = cfg["seed"] if a.seed is None else a.seed; T = a.abandon or cfg["abandon_after_s"]
+    rid = a.run_id or run_id_for(a.day, a.rule, fleet, T, seed, cfg.get("repositioning", "cruise"))
+    s = Oracle(cfg, a.day, a.rule, fleet, seed, T, rid).run(limit=a.limit)
+    print(json.dumps({k: s[k] for k in ("run_id", "decisions", "seconds", "decisions_per_s", "table_ms_median", "counts", "match_rate", "wait_s", "deadhead_m_per_ride", "promised_eta_error_s", "utilisation", "utilisation_including_cruising", "cruising", "mode_a")}, indent=1))
+
+if __name__ == "__main__":
+    main()

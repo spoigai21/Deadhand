@@ -149,3 +149,23 @@ are therefore stated at **maximum replay speed**, not ×1, and the ×1 figure is
 **What this changes for P2.** The wrong-driver rate was predicted at 15% on the assumption that legs
 disagree by 1.35× at the median. At 2× with a p90 near 5, the straight-line ranking of a 50-candidate
 set will be reshuffled far more often than that. P2 stays as written; it is probably too low.
+
+---
+
+## Phase 2 result, 2026-10-20 — against P2
+
+*Appended after the run. P2 above is unchanged.* Numbers in `NUMBERS.md`, Phase 2 section. Weekday,
+7,500 simulated drivers cruising toward demand, abandonment at a promised 600 s, five seeds.
+
+| P2 said | Phase 2 found | Verdict |
+|---|---|---|
+| Wrong-driver rate 15% at a 50-candidate ring | **44.4%** in the road-aware replay, 40.0% in the straight-line mirror; 50.3% on the weekend | **Wrong by 3×.** Phase 1 had already shown why: the leg a matcher compares is 130–300 m most of the day, and the straight line is 2.7× off at that length. The rate follows supply density (15% at 3,000 drivers, 53% at 9,750) and drops to 19–24% in the evening peak when the nearest candidate is a kilometre away. |
+| Conditional cost: median 60 s, p90 3 min, 0.5 km extra empty driving | **median 40 s, p90 130 s, mean 64 s; 237 m** | Right order, both too high. Many wrong picks are cheap: a driver one block further by road. The p99 is 8 minutes. |
+| Water crossings: under 3% of decisions, over a quarter of the total extra wait | **3.3% of decisions, 25.4% of the extra wait**; 157 s median when the straight-line pick crosses water against 38 s when it does not | **Right.** The one prediction that landed, and the one that matters for the map. |
+| Mode B median wait differs by 5–10% | **125 s against 103 s, 18%**; p90 325 against 306 s; 912 against 763 empty metres per ride | Underestimated. End to end the shortcut costs 22 s of wait and 150 m of empty driving per ride, and 50,000 empty kilometres a day across the fleet. |
+| Promised-ETA error for the straight-line rule: median 40% optimistic | **The promise is missed on 93.7% of rides; actual is 1.82× promised at the median and 7× at p90**; 63 s late at the median | Far worse than predicted, because the promise is a straight line at one constant speed and the leg is short. |
+| (not predicted) | The supply model as written (idle at the dropoff, no repositioning) serves 52% of the day at 7,500 drivers and 65% at 9,750. The baseline had to become "cruise toward demand", which is the sensitivity row the plan listed. The failed model's numbers stay in `NUMBERS.md`. | A modelling result, recorded before the finding it conditions. |
+
+**What this changes for P3.** The boundary cost prediction (8% of decisions at 4 workers) was made
+with the 15% figure in mind. The candidate sets are denser than assumed, so a region edge will cut
+through more of them; P3 is probably also too low. It stays as written.

@@ -120,3 +120,99 @@ regenerated into `data/phase1/` by `deadhead/phase1_disagreement.py`. Supply is 
 | Routing benchmark, 2,000 routes: 1 / 4 / 8 threads | 1,019 / 3,129 / 3,553 routes/s |
 | Routing benchmark, 300 one-to-50 tables: 1 / 4 / 8 threads | 332 / 1,737 / 2,132 tables/s |
 | Snap distance over all pairs (driver end): median / p90 / max kept | 5.9 m / 20.4 m / 229 m |
+
+## Phase 2 — the stream and the oracle
+
+All from `results/phase2/finding1_cpu-apple-m5.json`, aggregated from the per-run files in
+results/phase2/ named run_(day)_(rule)_N(fleet)_T(abandon)_seed(s)_(repositioning)_cpu-apple-m5.json; config
+`configs/phase2.yaml`. **Supply is simulated** (`ASSUMPTIONS.md`): 7,500 drivers, cruising toward
+demand, abandonment at a promised 600 s, free-flow routing. Five seeds; every figure below is the mean
+over seeds with the min and max in brackets. A weekday and a weekend day.
+
+### The stream
+
+| Figure | Value | File |
+|---|---|---|
+| `requests-2016-06-16` | 391,042 records, 8 partitions, keyed by H3 resolution-6 cell, produced in 1.39 s (282k records/s) | `deadhead/stream.py` output |
+| `requests-2016-06-18` | 362,824 records, 1.32 s | same |
+| Oracle throughput, road-aware rule, weekday | **235 decisions/s** [234.7–235.6]; a day in 28 min; one decision 3.95 ms median, 11.6 ms p99, of which the one-to-50 table call is 2.7 ms | run files |
+| Candidates OSRM could not route, weekday road replay, seed 0 | 812 of about 18 million (dropped from the set before either rule sees them) | run file |
+| Cruising (repositioning), weekday road replay, seed 0 | 83,451 cruises, **329,790 km**, 9,909 driver-hours; utilisation 0.594 without and 0.649 with cruising | run file |
+| Cruising, weekend road replay, seed 0 | 98,407 cruises, 446,864 km | run file |
+| Oracle throughput, straight-line rule, weekday | 246 decisions/s (it still routes, for the mirror measurement) | run files |
+
+### Fleet calibration (road-aware rule, Thursday, seed 0, T = 600 s, cruising)
+
+| Fleet | Matched inside T | Wait median / p90 | Utilisation | Wrong-driver rate |
+|---|---|---|---|---|
+| 3,000 | 43.0% | 242 s / 432 s | 0.742 | 15.2% |
+| 4,000 | 55.9% | 227 s / 424 s | 0.719 | 18.5% |
+| 5,000 | 68.2% | 210 s / 410 s | 0.701 | 21.6% |
+| 6,000 | 80.7% | 173 s / 381 s | 0.678 | 28.8% |
+| 7,000 | 90.1% | 123 s / 334 s | 0.626 | 39.8% |
+| **7,500 (baseline)** | **93.2%** | **103 s / 305 s** | 0.594 | 44.3% |
+| 8,000 | 95.4% | 95 s / 284 s | 0.564 | 46.9% |
+| 9,750 | 97.2% | 75 s / 221 s | 0.459 | 53.3% |
+
+**The supply model without repositioning failed** (`repositioning: none`, same day and seed): 7,500
+drivers idle at their dropoffs match **52.3%** (35.6% of requests find no idle driver in the ring),
+8,000 match 55.3%, 9,750 match 65.1%, with utilisation under 0.38. It is kept as a recorded result.
+
+### Mode B — each rule replayed end to end (N = 7,500, T = 600 s, 5 seeds)
+
+| Figure | Thu, straight-line | Thu, road-aware | Sat, straight-line | Sat, road-aware |
+|---|---|---|---|---|
+| Matched | 92.8% [92.8–92.9] | **93.2%** [93.2–93.3] | 97.6% | 97.7% |
+| Abandoned (promised ETA over T) | 0 (it never promises over T inside the ring) | 1.0% | 0 | 0.3% |
+| No idle driver in the ring | 7.2% | 5.7% | 2.5% | 2.0% |
+| Rider wait, median | 125.3 s [125.0–125.5] | **103.2 s** [103.0–103.5] | 107.9 s | 85.3 s |
+| Rider wait, p90 | 324.9 s | 305.7 s | 252.5 s | 226.8 s |
+| Empty metres per ride, median | 912 m | **763 m** | 764 m | 616 m |
+| Empty km, whole day | 440,765 | 391,046 | 343,556 | 290,627 |
+| Utilisation (leg + trip) | 0.603 | 0.594 | 0.507 | 0.496 |
+| Promised-ETA error, actual − promised: median / p90 | **63.4 s / 140.1 s** | 0 by construction (free-flow promise = free-flow leg; Phase 5 changes this) | 59.8 s / 132.1 s | 0 |
+| Actual ÷ promised, median / p90 (seed 0) | **1.82× / 6.98×**; 93.7% of promises missed, 43% by more than 2× | — | 1.98× / 8.58× | — |
+
+### Mode A — paired one-step, the headline (N = 7,500, T = 600 s, 5 seeds)
+
+| Figure | Thu, measured in the road-aware replay | Thu, mirror in the straight-line replay | Sat, road-aware replay | Sat, mirror |
+|---|---|---|---|---|
+| **Wrong-driver rate** (the straight line picks a driver with a longer road time) | **44.4%** [44.3–44.5] | 40.0% [40.0–40.1] | 50.3% [50.3–50.4] | 45.7% |
+| Ties (different driver, equal road time) | 0 | 0 | 0 | 0 |
+| **Conditional extra wait on those decisions: median / p90 / mean** | **40.4 s / 130.1 s / 63.8 s** | 34.0 s / 97.3 s / 46.6 s | 40.0 s / 122.0 s / 58.6 s | 34.2 s / 99.1 s / 47.1 s |
+| Conditional extra empty distance, median | 237 m | 184 m | 236 m | 191 m |
+| Extra wait summed over the day if the straight line decided everywhere | 2,898 h [2,880–2,922] | 1,879 h | 2,912 h | 2,114 h |
+| Straight-line pick's route crosses water: share of all decisions / of wrong decisions | **3.3% / 7.5%** | 4.3% of wrong | 2.6% / 5.2% | 3.5% of wrong |
+| Share of the total extra wait carried by those water-crossing picks | **25.4%** [24.7–25.9] | 8.6% | 16.7% | 8.2% |
+| Conditional extra wait when the straight-line pick crosses water / when it does not | **157 s / 38 s** | — | 133 s / 38 s | — |
+| Extra wait on wrong decisions: p50 / p75 / p90 / p99 / max (pooled) | 40 / 75 / 130 / 471 / 927 s | — | 40 / 75 / 122 / 383 / 950 s | — |
+
+**By the straight-line pick's distance** (Thursday, pooled over seeds): under 100 m 55.2% wrong, 100–250 m
+54.6%, 250–500 m 45.9%, 500–1000 m 36.0%, 1–2 km 34.4%, over 2 km 28.8%. Conditional median cost
+33–57 s across bands.
+
+**By hour** (Thursday): the rate is 50–58% through the night and the working day, when the nearest
+candidate is 130–300 m away, and falls to **18.6% at 18:00, 22.1% at 19:00 and 23.5% at 22:00**, when
+supply is tight and the nearest candidate is about 1 km away. The conditional cost barely moves:
+29–47 s in every hour.
+
+**By cell** (Thursday, resolution 8, 244 cells with at least 30 decisions): the rate runs from 0–3% at
+the Bronx and Queens edges to **74% at East 125th Street by the Robert F. Kennedy Bridge approach** and
+71% on the Upper East Side by the East River; the conditional cost tops out at 150 s in those cells.
+Map: `figures/phase2_wrong_driver_map.png`.
+
+### Sensitivity (Thursday, seed 0, road-aware rule unless stated)
+
+| Change | Matched | Wait median / p90 | Wrong-driver rate | Conditional median |
+|---|---|---|---|---|
+| Fleet × 0.7 (5,250) | 71.3% | 205 s / 405 s | 22.5% | 37.1 s |
+| Fleet × 1.3 (9,750) | 97.2% | 75 s / 221 s | 53.3% | 41.4 s |
+| Abandon at 300 s | 91.1% | 91 s / 218 s | 48.0% | 41.2 s |
+| Abandon at 900 s | 93.2% | 104 s / 310 s | 43.9% | 38.8 s |
+| No repositioning, road-aware | 52.3% | 242 s / 433 s | 30.3% | 73.1 s |
+| No repositioning, straight-line | 52.6% | 245 s / 441 s | 16.9% (mirror) | 36.0 s |
+
+**What the rate depends on:** supply density. Denser supply means a shorter nearest leg, and Phase 1
+showed the straight line is worst on short legs. The conditional cost does not move with density: it
+sits at 35–45 s at the median everywhere, and at over two minutes when the straight-line pick's route
+crosses water.

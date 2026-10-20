@@ -2,6 +2,7 @@
 one-to-many tables for a request against its candidate set. Every call returns snap distances so the
 spatial-sanity test can hold the layer to a stated bound."""
 from concurrent.futures import ThreadPoolExecutor
+import time
 import requests
 
 class OSRM:
@@ -15,11 +16,21 @@ class OSRM:
     def _coords(pts):
         return ";".join(f"{lon:.6f},{lat:.6f}" for lon, lat in pts)
 
+    def _get(self, url, params, tries=5):
+        """One OSRM call, retried on a dropped connection or a non-JSON reply (seen under eight concurrent replays, BUGS.md #2)."""
+        for i in range(tries):
+            try:
+                return self.session.get(url, params=params, timeout=30).json()
+            except (requests.RequestException, ValueError) as e:
+                if i == tries - 1:
+                    raise
+                time.sleep(0.2 * (i + 1))
+
     def route(self, a, b, geometry=False):
         """Road distance (m) and duration (s) from a to b, plus how far each endpoint was snapped (m).
         Returns None when OSRM finds no route."""
         params = {"overview": "simplified" if geometry else "false", "geometries": "geojson"}
-        r = self.session.get(f"{self.base}/route/v1/driving/{self._coords([a, b])}", params=params).json()
+        r = self._get(f"{self.base}/route/v1/driving/{self._coords([a, b])}", params)
         if r.get("code") != "Ok":
             return None
         rt = r["routes"][0]
@@ -39,7 +50,7 @@ class OSRM:
         pts = list(sources) + [dest]
         n = len(sources)
         params = {"annotations": "duration,distance", "sources": ";".join(map(str, range(n))), "destinations": str(n)}
-        r = self.session.get(f"{self.base}/table/v1/driving/{self._coords(pts)}", params=params).json()
+        r = self._get(f"{self.base}/table/v1/driving/{self._coords(pts)}", params)
         if r.get("code") != "Ok":
             return None
         return {"road_s": [row[0] for row in r["durations"]], "road_m": [row[0] for row in r["distances"]],

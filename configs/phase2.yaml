@@ -1,0 +1,25 @@
+# Phase 2 — the stream and the oracle. Nothing tunable lives in code.
+seed: 0
+seeds: [0, 1, 2, 3, 4]                  # one seed is an anecdote; the headline reports the spread over these
+osrm: http://localhost:5001
+kafka: localhost:9092
+hardware_lane: cpu-apple-m5
+trips_dir: data/tlc/opendata
+crossings_geojson: results/phase0/water_crossings.geojson
+days: ["2016-06-16", "2016-06-18"]      # Thursday (weekday), Saturday (weekend)
+partitions: 8                           # fixed and recorded; the requests topic is keyed by the coarse cell
+key_resolution: 6                       # H3 resolution of the stream key: workers own contiguous regions (Phase 3)
+h3_resolution: 8                        # candidate-search cell
+ring_k: 3                               # matching radius in cells around the pickup
+candidates_k: 50                        # both rules rank the same nearest-K-by-straight-line set
+fleet_size: 7500                        # ASSUMPTIONS.md: calibrated so the road-aware rule serves 90–95% inside T (7,000 → 90.1%, 8,000 → 95.4%)
+fleet_calibration: [3000, 4000, 5000, 6000, 7000, 7500, 8000]
+fleet_sensitivity: [0.7, 1.3]           # N × 0.7 and N × 1.3, weekday, seed 0
+abandon_after_s: 600                    # a rider abandons if the PROMISED pickup time exceeds this; T = 300 and 900 in sensitivity
+abandon_sensitivity: [300, 900]
+initial_positions_window_s: 3600        # drivers start at real dropoffs from the hour before midnight
+repositioning: cruise                   # ASSUMPTIONS.md: "cruise" = an idle driver heads for demand; "none" = idle at the dropoff forever (the recorded failure)
+cruise_after_s: 300                     # a driver idle this long drives to the busiest nearby cell of the previous hour (a real pickup point in it)
+cruise_ring_k: 5                        # "nearby": resolution-8 cells within 5 rings (about 4 km); a driver already in the busiest cell stays
+straight_line_speed_mps: 8.243          # Phase 1: median OSRM road speed over sampled trips; what the straight-line rule promises with
+replay_speed: max                       # "max" for throughput; a number (1.0) replays in event time for latency figures

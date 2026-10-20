@@ -26,15 +26,20 @@ The ground rule is G2 in `SPEC.md`: supply is simulated and is labelled as such 
 | Minimum pair length | pairs shorter than **100 m** in a straight line are excluded and counted (`min_straight_line_m`) | The ratio is undefined at zero and meaningless under the snap distance. | counts reported per run |
 | Airports | pairs touching the JFK or LGA bounding box are flagged and reported separately | Terminal loops produce honest but extreme ratios that are not about the city's streets. They are kept in the distributions and shown apart. | `distance_ratio_excluding_airports` |
 
-## What the replay will add (Phase 2, not yet run)
+## The replay (Phase 2)
 
-These rows are the plan from `SPEC.md` and are not yet exercised by any result.
+Phase 2 runs the whole day as a stream: the oracle consumes every request in event-time order and
+keeps the fleet in memory. The pickup-leg rows above apply unchanged. These rows are added.
 
-| Parameter | Baseline | Sensitivity |
-|---|---|---|
-| Fleet size | N, fixed for the day, chosen so the road-aware matcher serves 90–95% of requests inside the abandonment threshold | N × 0.7, N × 1.3 |
-| Initial positions | real dropoffs in the hour before the replay starts | uniform over the demand footprint |
-| After a dropoff | idle at the dropoff point | drift toward the nearest high-demand cell |
-| Trip leg | the recorded real duration, ending at the recorded dropoff | none |
-| Abandonment | the rider abandons if the **promised** pickup time exceeds 600 s | 300 s, 900 s |
-| Randomness | one seed drives positions, fleet draw and tie-breaks | 5 seeds minimum |
+| Parameter | Baseline | Why | Sensitivity |
+|---|---|---|---|
+| **Fleet size** | **N = 7,500** (`fleet_size` in `configs/phase2.yaml`), fixed for the day | Chosen from the calibration curve (`results/phase2/finding1_*.json`, `fleet_calibration`) as the smallest fleet at which the road-aware rule matches 90–95% of requests inside the abandonment threshold. A calibration, not a claim about any real fleet. | N × 0.7 and N × 1.3 |
+| **Initial positions** | N real dropoffs from the hour before midnight, drawn with the seed | The only location signal for where an empty vehicle plausibly is at the start. | none |
+| **Trip leg** | the matched driver takes the **recorded real duration** and ends at the **recorded dropoff** | The real trip is replayed, not re-routed. Only the pickup leg is simulated. | none |
+| **After a dropoff** | the driver goes idle at the dropoff point | Repositioning is a dispatcher's decision and this is not a dispatcher (G7). | see the next row |
+| **Repositioning** | **cruise toward demand**: a driver idle for `cruise_after_s` (300 s) drives to the busiest resolution-8 cell of the previous clock hour within `cruise_ring_k` (5 rings, about 4 km), to a real pickup point drawn from that cell and hour; a driver already in the busiest nearby cell stays. The driver is unavailable while driving and goes idle at the target. | **The idle-at-dropoff model failed its own calibration and the failure is recorded** (`repositioning: none` runs in `NUMBERS.md`): drivers stranded at outer-borough and airport dropoffs never return, and even 8,000 drivers serve barely half the weekday with 60% of the fleet idle. A fleet that cruises for fares is what the recorded fleet did; the previous hour's real pickups are the map it cruises on, with no lookahead. Cruising kilometres are counted and reported apart from the matcher's deadhead. | `repositioning: none` |
+| **Abandonment** | the rider abandons if the **promised** pickup time exceeds **T = 600 s**; an abandoned request claims no driver | Real riders never cancel (limit 3). Promised, not actual: the straight-line rule promises straight-line distance ÷ `straight_line_speed_mps` and is held to it, so it never abandons inside the ring; the road rule promises the road time. | T = 300, 900 |
+| **No candidates** | a request with no idle driver in the ring is unserved and counted separately from abandonment | Both are unmatched; they have different causes. | none |
+| **Wait** | the road time of the chosen driver's pickup leg at free-flow speed, for both rules | The straight-line rule's rider still waits for the road. | Phase 5 |
+| **Randomness** | one seed drives the initial positions, the cruise targets and tie-breaks | The determinism test runs the oracle twice. | **5 seeds**, spread reported |
+| **Stream** | `requests-<day>`, 8 partitions, keyed by the pickup's resolution-6 parent cell; the oracle merges partitions into event-time order by watermark | The key is Phase 3's sharding key; the oracle sees every partition so it has no boundary. | Phase 3 |

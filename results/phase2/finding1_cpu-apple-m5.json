@@ -1,0 +1,5627 @@
+{
+ "config": {
+  "seed": 0,
+  "seeds": [
+   0,
+   1,
+   2,
+   3,
+   4
+  ],
+  "osrm": "http://localhost:5001",
+  "kafka": "localhost:9092",
+  "hardware_lane": "cpu-apple-m5",
+  "trips_dir": "data/tlc/opendata",
+  "crossings_geojson": "results/phase0/water_crossings.geojson",
+  "days": [
+   "2016-06-16",
+   "2016-06-18"
+  ],
+  "partitions": 8,
+  "key_resolution": 6,
+  "h3_resolution": 8,
+  "ring_k": 3,
+  "candidates_k": 50,
+  "fleet_size": 7500,
+  "fleet_calibration": [
+   3000,
+   4000,
+   5000,
+   6000,
+   7000,
+   7500,
+   8000
+  ],
+  "fleet_sensitivity": [
+   0.7,
+   1.3
+  ],
+  "abandon_after_s": 600,
+  "abandon_sensitivity": [
+   300,
+   900
+  ],
+  "initial_positions_window_s": 3600,
+  "repositioning": "cruise",
+  "cruise_after_s": 300,
+  "cruise_ring_k": 5,
+  "straight_line_speed_mps": 8.243,
+  "replay_speed": "max"
+ },
+ "runs": [
+  "2016-06-16_road_N3000_T600_seed0_cruise",
+  "2016-06-16_road_N4000_T600_seed0_cruise",
+  "2016-06-16_road_N5000_T600_seed0_cruise",
+  "2016-06-16_road_N5250_T600_seed0_cruise",
+  "2016-06-16_road_N6000_T600_seed0_cruise",
+  "2016-06-16_road_N7000_T600_seed0_cruise",
+  "2016-06-16_road_N7500_T300_seed0_cruise",
+  "2016-06-16_road_N7500_T600_seed0_cruise",
+  "2016-06-16_road_N7500_T600_seed0_none",
+  "2016-06-16_road_N7500_T600_seed1_cruise",
+  "2016-06-16_road_N7500_T600_seed2_cruise",
+  "2016-06-16_road_N7500_T600_seed3_cruise",
+  "2016-06-16_road_N7500_T600_seed4_cruise",
+  "2016-06-16_road_N7500_T900_seed0_cruise",
+  "2016-06-16_road_N8000_T600_seed0_cruise",
+  "2016-06-16_road_N8000_T600_seed0_none",
+  "2016-06-16_road_N9750_T600_seed0_cruise",
+  "2016-06-16_road_N9750_T600_seed0_none",
+  "2016-06-16_straight_N7500_T600_seed0_cruise",
+  "2016-06-16_straight_N7500_T600_seed0_none",
+  "2016-06-16_straight_N7500_T600_seed1_cruise",
+  "2016-06-16_straight_N7500_T600_seed2_cruise",
+  "2016-06-16_straight_N7500_T600_seed3_cruise",
+  "2016-06-16_straight_N7500_T600_seed4_cruise",
+  "2016-06-18_road_N7500_T600_seed0_cruise",
+  "2016-06-18_road_N7500_T600_seed1_cruise",
+  "2016-06-18_road_N7500_T600_seed2_cruise",
+  "2016-06-18_road_N7500_T600_seed3_cruise",
+  "2016-06-18_road_N7500_T600_seed4_cruise",
+  "2016-06-18_straight_N7500_T600_seed0_cruise",
+  "2016-06-18_straight_N7500_T600_seed1_cruise",
+  "2016-06-18_straight_N7500_T600_seed2_cruise",
+  "2016-06-18_straight_N7500_T600_seed3_cruise",
+  "2016-06-18_straight_N7500_T600_seed4_cruise"
+ ],
+ "fleet_calibration": [
+  {
+   "fleet_size": 3000,
+   "match_rate": 0.4304,
+   "abandoned": 7415,
+   "no_candidates": 215324,
+   "wait_s_median": 241.6,
+   "wait_s_p90": 432.4,
+   "utilisation": 0.7417,
+   "wrong_driver_rate": 0.1521
+  },
+  {
+   "fleet_size": 4000,
+   "match_rate": 0.5587,
+   "abandoned": 9349,
+   "no_candidates": 163234,
+   "wait_s_median": 227.1,
+   "wait_s_p90": 423.6,
+   "utilisation": 0.7192,
+   "wrong_driver_rate": 0.1846
+  },
+  {
+   "fleet_size": 5000,
+   "match_rate": 0.6822,
+   "abandoned": 9769,
+   "no_candidates": 114517,
+   "wait_s_median": 210.4,
+   "wait_s_p90": 410.2,
+   "utilisation": 0.7007,
+   "wrong_driver_rate": 0.2163
+  },
+  {
+   "fleet_size": 5250,
+   "match_rate": 0.7133,
+   "abandoned": 8662,
+   "no_candidates": 103444,
+   "wait_s_median": 205.0,
+   "wait_s_p90": 405.1,
+   "utilisation": 0.6961,
+   "wrong_driver_rate": 0.2248
+  },
+  {
+   "fleet_size": 6000,
+   "match_rate": 0.8074,
+   "abandoned": 7998,
+   "no_candidates": 67323,
+   "wait_s_median": 172.5,
+   "wait_s_p90": 380.9,
+   "utilisation": 0.6775,
+   "wrong_driver_rate": 0.288
+  },
+  {
+   "fleet_size": 7000,
+   "match_rate": 0.9014,
+   "abandoned": 5171,
+   "no_candidates": 33367,
+   "wait_s_median": 123.4,
+   "wait_s_p90": 334.1,
+   "utilisation": 0.6259,
+   "wrong_driver_rate": 0.3976
+  },
+  {
+   "fleet_size": 7500,
+   "match_rate": 0.9321,
+   "abandoned": 4090,
+   "no_candidates": 22447,
+   "wait_s_median": 103.0,
+   "wait_s_p90": 305.3,
+   "utilisation": 0.5938,
+   "wrong_driver_rate": 0.4426
+  },
+  {
+   "fleet_size": 8000,
+   "match_rate": 0.9536,
+   "abandoned": 2899,
+   "no_candidates": 15263,
+   "wait_s_median": 95.4,
+   "wait_s_p90": 283.6,
+   "utilisation": 0.5635,
+   "wrong_driver_rate": 0.4688
+  },
+  {
+   "fleet_size": 9750,
+   "match_rate": 0.9718,
+   "abandoned": 1447,
+   "no_candidates": 9588,
+   "wait_s_median": 75.1,
+   "wait_s_p90": 220.8,
+   "utilisation": 0.4594,
+   "wrong_driver_rate": 0.5331
+  }
+ ],
+ "mode_b": {
+  "2016-06-16": {
+   "straight": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "match_rate": {
+     "mean": 0.9282,
+     "min": 0.9276,
+     "max": 0.9287,
+     "n_seeds": 5
+    },
+    "abandoned_share": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "no_candidates_share": {
+     "mean": 0.0718,
+     "min": 0.0713,
+     "max": 0.0724,
+     "n_seeds": 5
+    },
+    "wait_s_median": {
+     "mean": 125.3,
+     "min": 125.0,
+     "max": 125.5,
+     "n_seeds": 5
+    },
+    "wait_s_p90": {
+     "mean": 324.9,
+     "min": 324.7,
+     "max": 325.1,
+     "n_seeds": 5
+    },
+    "deadhead_m_per_ride_median": {
+     "mean": 912.4,
+     "min": 909.5,
+     "max": 914.0,
+     "n_seeds": 5
+    },
+    "deadhead_km_total": {
+     "mean": 440764.5,
+     "min": 440024.3,
+     "max": 441162.6,
+     "n_seeds": 5
+    },
+    "utilisation": {
+     "mean": 0.6027,
+     "min": 0.6025,
+     "max": 0.603,
+     "n_seeds": 5
+    },
+    "promised_eta_error_s_median": {
+     "mean": 63.4,
+     "min": 63.3,
+     "max": 63.4,
+     "n_seeds": 5
+    },
+    "promised_eta_error_s_p90": {
+     "mean": 140.1,
+     "min": 139.9,
+     "max": 140.2,
+     "n_seeds": 5
+    },
+    "decisions_per_s": {
+     "mean": 246.5,
+     "min": 246.0,
+     "max": 247.2,
+     "n_seeds": 5
+    },
+    "decision_ms_median": {
+     "mean": 3.66,
+     "min": 3.65,
+     "max": 3.66,
+     "n_seeds": 5
+    },
+    "decision_ms_p99": {
+     "mean": 11.27,
+     "min": 11.23,
+     "max": 11.31,
+     "n_seeds": 5
+    }
+   },
+   "road": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "match_rate": {
+     "mean": 0.9324,
+     "min": 0.9321,
+     "max": 0.9327,
+     "n_seeds": 5
+    },
+    "abandoned_share": {
+     "mean": 0.0104,
+     "min": 0.0102,
+     "max": 0.0105,
+     "n_seeds": 5
+    },
+    "no_candidates_share": {
+     "mean": 0.0573,
+     "min": 0.0568,
+     "max": 0.0576,
+     "n_seeds": 5
+    },
+    "wait_s_median": {
+     "mean": 103.2,
+     "min": 103.0,
+     "max": 103.5,
+     "n_seeds": 5
+    },
+    "wait_s_p90": {
+     "mean": 305.7,
+     "min": 305.1,
+     "max": 306.7,
+     "n_seeds": 5
+    },
+    "deadhead_m_per_ride_median": {
+     "mean": 763.1,
+     "min": 761.1,
+     "max": 765.7,
+     "n_seeds": 5
+    },
+    "deadhead_km_total": {
+     "mean": 391045.5,
+     "min": 390494.8,
+     "max": 391793.9,
+     "n_seeds": 5
+    },
+    "utilisation": {
+     "mean": 0.594,
+     "min": 0.5938,
+     "max": 0.5942,
+     "n_seeds": 5
+    },
+    "promised_eta_error_s_median": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "promised_eta_error_s_p90": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "decisions_per_s": {
+     "mean": 235.2,
+     "min": 234.7,
+     "max": 235.6,
+     "n_seeds": 5
+    },
+    "decision_ms_median": {
+     "mean": 3.95,
+     "min": 3.94,
+     "max": 3.96,
+     "n_seeds": 5
+    },
+    "decision_ms_p99": {
+     "mean": 11.55,
+     "min": 11.5,
+     "max": 11.57,
+     "n_seeds": 5
+    }
+   }
+  },
+  "2016-06-18": {
+   "straight": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "match_rate": {
+     "mean": 0.9755,
+     "min": 0.9752,
+     "max": 0.9758,
+     "n_seeds": 5
+    },
+    "abandoned_share": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "no_candidates_share": {
+     "mean": 0.0245,
+     "min": 0.0242,
+     "max": 0.0248,
+     "n_seeds": 5
+    },
+    "wait_s_median": {
+     "mean": 107.9,
+     "min": 107.6,
+     "max": 108.0,
+     "n_seeds": 5
+    },
+    "wait_s_p90": {
+     "mean": 252.5,
+     "min": 252.0,
+     "max": 252.9,
+     "n_seeds": 5
+    },
+    "deadhead_m_per_ride_median": {
+     "mean": 764.0,
+     "min": 761.8,
+     "max": 764.9,
+     "n_seeds": 5
+    },
+    "deadhead_km_total": {
+     "mean": 343555.5,
+     "min": 342582.5,
+     "max": 343954.1,
+     "n_seeds": 5
+    },
+    "utilisation": {
+     "mean": 0.507,
+     "min": 0.5069,
+     "max": 0.5072,
+     "n_seeds": 5
+    },
+    "promised_eta_error_s_median": {
+     "mean": 59.8,
+     "min": 59.6,
+     "max": 60.0,
+     "n_seeds": 5
+    },
+    "promised_eta_error_s_p90": {
+     "mean": 132.1,
+     "min": 131.9,
+     "max": 132.4,
+     "n_seeds": 5
+    },
+    "decisions_per_s": {
+     "mean": 214.2,
+     "min": 208.8,
+     "max": 216.2,
+     "n_seeds": 5
+    },
+    "decision_ms_median": {
+     "mean": 4.45,
+     "min": 4.41,
+     "max": 4.55,
+     "n_seeds": 5
+    },
+    "decision_ms_p99": {
+     "mean": 12.94,
+     "min": 12.79,
+     "max": 13.16,
+     "n_seeds": 5
+    }
+   },
+   "road": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "match_rate": {
+     "mean": 0.9772,
+     "min": 0.977,
+     "max": 0.9774,
+     "n_seeds": 5
+    },
+    "abandoned_share": {
+     "mean": 0.0032,
+     "min": 0.0032,
+     "max": 0.0033,
+     "n_seeds": 5
+    },
+    "no_candidates_share": {
+     "mean": 0.0196,
+     "min": 0.0193,
+     "max": 0.0198,
+     "n_seeds": 5
+    },
+    "wait_s_median": {
+     "mean": 85.3,
+     "min": 84.9,
+     "max": 85.5,
+     "n_seeds": 5
+    },
+    "wait_s_p90": {
+     "mean": 226.8,
+     "min": 225.9,
+     "max": 228.4,
+     "n_seeds": 5
+    },
+    "deadhead_m_per_ride_median": {
+     "mean": 616.4,
+     "min": 613.4,
+     "max": 618.3,
+     "n_seeds": 5
+    },
+    "deadhead_km_total": {
+     "mean": 290626.6,
+     "min": 289736.0,
+     "max": 292204.3,
+     "n_seeds": 5
+    },
+    "utilisation": {
+     "mean": 0.496,
+     "min": 0.4958,
+     "max": 0.4963,
+     "n_seeds": 5
+    },
+    "promised_eta_error_s_median": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "promised_eta_error_s_p90": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "decisions_per_s": {
+     "mean": 201.6,
+     "min": 200.9,
+     "max": 202.2,
+     "n_seeds": 5
+    },
+    "decision_ms_median": {
+     "mean": 4.82,
+     "min": 4.8,
+     "max": 4.84,
+     "n_seeds": 5
+    },
+    "decision_ms_p99": {
+     "mean": 13.33,
+     "min": 13.29,
+     "max": 13.39,
+     "n_seeds": 5
+    }
+   }
+  }
+ },
+ "mode_a": {
+  "2016-06-16": {
+   "measured_in_straight_replay": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "wrong_driver_rate": {
+     "mean": 0.3999,
+     "min": 0.3995,
+     "max": 0.4005,
+     "n_seeds": 5
+    },
+    "tie_rate": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_median": {
+     "mean": 34.0,
+     "min": 33.9,
+     "max": 34.1,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_p90": {
+     "mean": 97.3,
+     "min": 97.0,
+     "max": 97.7,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_mean": {
+     "mean": 46.6,
+     "min": 46.5,
+     "max": 46.8,
+     "n_seeds": 5
+    },
+    "conditional_extra_deadhead_m_median": {
+     "mean": 184.2,
+     "min": 183.5,
+     "max": 186.3,
+     "n_seeds": 5
+    },
+    "share_sl_pick_crosses_water": {
+     "mean": 0.0434,
+     "min": 0.0426,
+     "max": 0.0445,
+     "n_seeds": 5
+    },
+    "extra_wait_share_from_water_crossing_picks": {
+     "mean": 0.0857,
+     "min": 0.0842,
+     "max": 0.0875,
+     "n_seeds": 5
+    },
+    "total_extra_wait_hours_if_straight_line_everywhere": {
+     "mean": 1878.7,
+     "min": 1874.9,
+     "max": 1883.2,
+     "n_seeds": 5
+    }
+   },
+   "measured_in_road_replay": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "wrong_driver_rate": {
+     "mean": 0.4437,
+     "min": 0.4426,
+     "max": 0.445,
+     "n_seeds": 5
+    },
+    "tie_rate": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_median": {
+     "mean": 40.4,
+     "min": 40.3,
+     "max": 40.5,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_p90": {
+     "mean": 130.1,
+     "min": 128.7,
+     "max": 131.5,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_mean": {
+     "mean": 63.8,
+     "min": 63.4,
+     "max": 64.3,
+     "n_seeds": 5
+    },
+    "conditional_extra_deadhead_m_median": {
+     "mean": 237.0,
+     "min": 235.9,
+     "max": 237.9,
+     "n_seeds": 5
+    },
+    "share_sl_pick_crosses_water": {
+     "mean": 0.0751,
+     "min": 0.0735,
+     "max": 0.0766,
+     "n_seeds": 5
+    },
+    "extra_wait_share_from_water_crossing_picks": {
+     "mean": 0.254,
+     "min": 0.2468,
+     "max": 0.2593,
+     "n_seeds": 5
+    },
+    "total_extra_wait_hours_if_straight_line_everywhere": {
+     "mean": 2898.0,
+     "min": 2879.8,
+     "max": 2922.4,
+     "n_seeds": 5
+    }
+   },
+   "breakdowns_road_replay": {
+    "pooled_decisions": 1843293,
+    "seeds": 5,
+    "by_hour": {
+     "0": {
+      "decisions": 59026,
+      "wrong_driver_rate": 0.5277,
+      "conditional_extra_wait_s_median": 38.8,
+      "extra_wait_s_total": 1506568.6,
+      "sl_pick_straight_line_m_median": 300.2321
+     },
+     "1": {
+      "decisions": 36075,
+      "wrong_driver_rate": 0.5168,
+      "conditional_extra_wait_s_median": 34.8,
+      "extra_wait_s_total": 804157.0,
+      "sl_pick_straight_line_m_median": 253.1813
+     },
+     "2": {
+      "decisions": 22650,
+      "wrong_driver_rate": 0.5428,
+      "conditional_extra_wait_s_median": 36.7,
+      "extra_wait_s_total": 542403.9,
+      "sl_pick_straight_line_m_median": 201.513
+     },
+     "3": {
+      "decisions": 14967,
+      "wrong_driver_rate": 0.5291,
+      "conditional_extra_wait_s_median": 31.8,
+      "extra_wait_s_total": 334239.3,
+      "sl_pick_straight_line_m_median": 219.2445
+     },
+     "4": {
+      "decisions": 13885,
+      "wrong_driver_rate": 0.4981,
+      "conditional_extra_wait_s_median": 30.9,
+      "extra_wait_s_total": 315070.7,
+      "sl_pick_straight_line_m_median": 326.4177
+     },
+     "5": {
+      "decisions": 19608,
+      "wrong_driver_rate": 0.4428,
+      "conditional_extra_wait_s_median": 28.9,
+      "extra_wait_s_total": 543795.5,
+      "sl_pick_straight_line_m_median": 640.2645
+     },
+     "6": {
+      "decisions": 59552,
+      "wrong_driver_rate": 0.4745,
+      "conditional_extra_wait_s_median": 38.4,
+      "extra_wait_s_total": 2511675.2,
+      "sl_pick_straight_line_m_median": 633.587
+     },
+     "7": {
+      "decisions": 94114,
+      "wrong_driver_rate": 0.4946,
+      "conditional_extra_wait_s_median": 47.0,
+      "extra_wait_s_total": 4044004.0,
+      "sl_pick_straight_line_m_median": 520.8977
+     },
+     "8": {
+      "decisions": 104449,
+      "wrong_driver_rate": 0.4494,
+      "conditional_extra_wait_s_median": 43.6,
+      "extra_wait_s_total": 3317945.7,
+      "sl_pick_straight_line_m_median": 509.5853
+     },
+     "9": {
+      "decisions": 100414,
+      "wrong_driver_rate": 0.5198,
+      "conditional_extra_wait_s_median": 42.5,
+      "extra_wait_s_total": 3458098.7,
+      "sl_pick_straight_line_m_median": 291.3933
+     },
+     "10": {
+      "decisions": 90238,
+      "wrong_driver_rate": 0.5334,
+      "conditional_extra_wait_s_median": 41.0,
+      "extra_wait_s_total": 2781711.1,
+      "sl_pick_straight_line_m_median": 227.8018
+     },
+     "11": {
+      "decisions": 89643,
+      "wrong_driver_rate": 0.5175,
+      "conditional_extra_wait_s_median": 39.0,
+      "extra_wait_s_total": 2469448.1,
+      "sl_pick_straight_line_m_median": 230.8581
+     },
+     "12": {
+      "decisions": 93718,
+      "wrong_driver_rate": 0.5802,
+      "conditional_extra_wait_s_median": 41.7,
+      "extra_wait_s_total": 2928221.7,
+      "sl_pick_straight_line_m_median": 171.6133
+     },
+     "13": {
+      "decisions": 95120,
+      "wrong_driver_rate": 0.5425,
+      "conditional_extra_wait_s_median": 41.8,
+      "extra_wait_s_total": 2980278.0,
+      "sl_pick_straight_line_m_median": 214.6478
+     },
+     "14": {
+      "decisions": 95975,
+      "wrong_driver_rate": 0.5261,
+      "conditional_extra_wait_s_median": 38.7,
+      "extra_wait_s_total": 2688691.6,
+      "sl_pick_straight_line_m_median": 208.916
+     },
+     "15": {
+      "decisions": 84081,
+      "wrong_driver_rate": 0.5737,
+      "conditional_extra_wait_s_median": 43.9,
+      "extra_wait_s_total": 2600067.7,
+      "sl_pick_straight_line_m_median": 136.2654
+     },
+     "16": {
+      "decisions": 68279,
+      "wrong_driver_rate": 0.5792,
+      "conditional_extra_wait_s_median": 44.1,
+      "extra_wait_s_total": 2211899.1,
+      "sl_pick_straight_line_m_median": 130.3989
+     },
+     "17": {
+      "decisions": 86448,
+      "wrong_driver_rate": 0.4612,
+      "conditional_extra_wait_s_median": 36.6,
+      "extra_wait_s_total": 2292762.1,
+      "sl_pick_straight_line_m_median": 374.5414
+     },
+     "18": {
+      "decisions": 92364,
+      "wrong_driver_rate": 0.186,
+      "conditional_extra_wait_s_median": 38.3,
+      "extra_wait_s_total": 1526546.1,
+      "sl_pick_straight_line_m_median": 1096.8309
+     },
+     "19": {
+      "decisions": 105292,
+      "wrong_driver_rate": 0.2212,
+      "conditional_extra_wait_s_median": 35.5,
+      "extra_wait_s_total": 1803208.3,
+      "sl_pick_straight_line_m_median": 995.1605
+     },
+     "20": {
+      "decisions": 107725,
+      "wrong_driver_rate": 0.4676,
+      "conditional_extra_wait_s_median": 38.7,
+      "extra_wait_s_total": 2728062.5,
+      "sl_pick_straight_line_m_median": 287.7028
+     },
+     "21": {
+      "decisions": 113040,
+      "wrong_driver_rate": 0.34,
+      "conditional_extra_wait_s_median": 39.3,
+      "extra_wait_s_total": 2800517.5,
+      "sl_pick_straight_line_m_median": 761.7725
+     },
+     "22": {
+      "decisions": 100458,
+      "wrong_driver_rate": 0.2353,
+      "conditional_extra_wait_s_median": 43.4,
+      "extra_wait_s_total": 2374895.4,
+      "sl_pick_straight_line_m_median": 1157.0506
+     },
+     "23": {
+      "decisions": 96172,
+      "wrong_driver_rate": 0.2779,
+      "conditional_extra_wait_s_median": 42.6,
+      "extra_wait_s_total": 2599622.8,
+      "sl_pick_straight_line_m_median": 1043.0353
+     }
+    },
+    "by_cell": [
+     {
+      "cell": "882a100f65fffff",
+      "decisions": 38,
+      "wrong_driver_rate": 0.7368,
+      "conditional_extra_wait_s_median": 111.5,
+      "lon": -73.9272,
+      "lat": 40.8006
+     },
+     {
+      "cell": "882a100f2dfffff",
+      "decisions": 34,
+      "wrong_driver_rate": 0.7059,
+      "conditional_extra_wait_s_median": 151.0,
+      "lon": -73.9304,
+      "lat": 40.7886
+     },
+     {
+      "cell": "882a100d1dfffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.6667,
+      "conditional_extra_wait_s_median": 23.6,
+      "lon": -73.9456,
+      "lat": 40.7321
+     },
+     {
+      "cell": "882a100eb9fffff",
+      "decisions": 50,
+      "wrong_driver_rate": 0.66,
+      "conditional_extra_wait_s_median": 86.1,
+      "lon": -73.8123,
+      "lat": 40.6959
+     },
+     {
+      "cell": "882a100f67fffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.6286,
+      "conditional_extra_wait_s_median": 117.5,
+      "lon": -73.9218,
+      "lat": 40.7971
+     },
+     {
+      "cell": "882a100d0bfffff",
+      "decisions": 192,
+      "wrong_driver_rate": 0.6094,
+      "conditional_extra_wait_s_median": 98.2,
+      "lon": -73.9495,
+      "lat": 40.7419
+     },
+     {
+      "cell": "882a100a87fffff",
+      "decisions": 75,
+      "wrong_driver_rate": 0.5867,
+      "conditional_extra_wait_s_median": 43.6,
+      "lon": -73.9238,
+      "lat": 40.8304
+     },
+     {
+      "cell": "882a100d67fffff",
+      "decisions": 72861,
+      "wrong_driver_rate": 0.5731,
+      "conditional_extra_wait_s_median": 48.1,
+      "lon": -73.981,
+      "lat": 40.7551
+     },
+     {
+      "cell": "882a100d47fffff",
+      "decisions": 130,
+      "wrong_driver_rate": 0.5692,
+      "conditional_extra_wait_s_median": 234.4,
+      "lon": -73.9512,
+      "lat": 40.7554
+     },
+     {
+      "cell": "882a10725bfffff",
+      "decisions": 54947,
+      "wrong_driver_rate": 0.5681,
+      "conditional_extra_wait_s_median": 41.8,
+      "lon": -73.9913,
+      "lat": 40.7574
+     },
+     {
+      "cell": "882a103b07fffff",
+      "decisions": 123,
+      "wrong_driver_rate": 0.5447,
+      "conditional_extra_wait_s_median": 45.5,
+      "lon": -73.8014,
+      "lat": 40.647
+     },
+     {
+      "cell": "882a100d2dfffff",
+      "decisions": 95554,
+      "wrong_driver_rate": 0.5398,
+      "conditional_extra_wait_s_median": 55.85,
+      "lon": -73.9909,
+      "lat": 40.75
+     },
+     {
+      "cell": "882a100d63fffff",
+      "decisions": 74600,
+      "wrong_driver_rate": 0.5333,
+      "conditional_extra_wait_s_median": 39.8,
+      "lon": -73.9723,
+      "lat": 40.7535
+     },
+     {
+      "cell": "882a100d6bfffff",
+      "decisions": 37876,
+      "wrong_driver_rate": 0.5246,
+      "conditional_extra_wait_s_median": 39.1,
+      "lon": -73.9641,
+      "lat": 40.759
+     },
+     {
+      "cell": "882a100d65fffff",
+      "decisions": 83137,
+      "wrong_driver_rate": 0.5225,
+      "conditional_extra_wait_s_median": 42.6,
+      "lon": -73.9834,
+      "lat": 40.763
+     },
+     {
+      "cell": "882a100d29fffff",
+      "decisions": 67361,
+      "wrong_driver_rate": 0.5199,
+      "conditional_extra_wait_s_median": 53.8,
+      "lon": -73.9796,
+      "lat": 40.7478
+     },
+     {
+      "cell": "882a100d05fffff",
+      "decisions": 7262,
+      "wrong_driver_rate": 0.518,
+      "conditional_extra_wait_s_median": 75.4,
+      "lon": -73.9724,
+      "lat": 40.7455
+     },
+     {
+      "cell": "882a100d61fffff",
+      "decisions": 98146,
+      "wrong_driver_rate": 0.5149,
+      "conditional_extra_wait_s_median": 39.9,
+      "lon": -73.9729,
+      "lat": 40.7608
+     },
+     {
+      "cell": "882a100c2dfffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.5,
+      "conditional_extra_wait_s_median": 72.0,
+      "lon": -73.9163,
+      "lat": 40.7335
+     },
+     {
+      "cell": "882a1072d5fffff",
+      "decisions": 539,
+      "wrong_driver_rate": 0.4972,
+      "conditional_extra_wait_s_median": 76.55,
+      "lon": -74.0001,
+      "lat": 40.7085
+     },
+     {
+      "cell": "882a103b01fffff",
+      "decisions": 204,
+      "wrong_driver_rate": 0.4951,
+      "conditional_extra_wait_s_median": 130.4,
+      "lon": -73.7917,
+      "lat": 40.6554
+     },
+     {
+      "cell": "882a107251fffff",
+      "decisions": 11019,
+      "wrong_driver_rate": 0.4841,
+      "conditional_extra_wait_s_median": 55.6,
+      "lon": -74.0008,
+      "lat": 40.7598
+     },
+     {
+      "cell": "882a100da5fffff",
+      "decisions": 1494,
+      "wrong_driver_rate": 0.4839,
+      "conditional_extra_wait_s_median": 56.1,
+      "lon": -73.9814,
+      "lat": 40.6892
+     },
+     {
+      "cell": "882a100f3bfffff",
+      "decisions": 52,
+      "wrong_driver_rate": 0.4808,
+      "conditional_extra_wait_s_median": 58.1,
+      "lon": -73.9032,
+      "lat": 40.7597
+     },
+     {
+      "cell": "882a1072d3fffff",
+      "decisions": 1538,
+      "wrong_driver_rate": 0.4779,
+      "conditional_extra_wait_s_median": 45.4,
+      "lon": -73.9848,
+      "lat": 40.6959
+     },
+     {
+      "cell": "882a100d25fffff",
+      "decisions": 39172,
+      "wrong_driver_rate": 0.4754,
+      "conditional_extra_wait_s_median": 38.9,
+      "lon": -73.9977,
+      "lat": 40.7441
+     },
+     {
+      "cell": "882a100c65fffff",
+      "decisions": 373,
+      "wrong_driver_rate": 0.4718,
+      "conditional_extra_wait_s_median": 32.7,
+      "lon": -73.9091,
+      "lat": 40.7457
+     },
+     {
+      "cell": "882a100d6dfffff",
+      "decisions": 23800,
+      "wrong_driver_rate": 0.4717,
+      "conditional_extra_wait_s_median": 36.7,
+      "lon": -73.9777,
+      "lat": 40.767
+     },
+     {
+      "cell": "882a100da7fffff",
+      "decisions": 1734,
+      "wrong_driver_rate": 0.4712,
+      "conditional_extra_wait_s_median": 57.0,
+      "lon": -73.978,
+      "lat": 40.6823
+     },
+     {
+      "cell": "882a100d3dfffff",
+      "decisions": 4223,
+      "wrong_driver_rate": 0.4682,
+      "conditional_extra_wait_s_median": 71.2,
+      "lon": -73.977,
+      "lat": 40.7317
+     },
+     {
+      "cell": "882a100d69fffff",
+      "decisions": 59820,
+      "wrong_driver_rate": 0.4673,
+      "conditional_extra_wait_s_median": 31.8,
+      "lon": -73.9654,
+      "lat": 40.766
+     },
+     {
+      "cell": "882a100d41fffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.4667,
+      "conditional_extra_wait_s_median": 200.3,
+      "lon": -73.9445,
+      "lat": 40.7626
+     },
+     {
+      "cell": "882a100d21fffff",
+      "decisions": 73996,
+      "wrong_driver_rate": 0.4649,
+      "conditional_extra_wait_s_median": 46.7,
+      "lon": -73.9876,
+      "lat": 40.7421
+     },
+     {
+      "cell": "882a100d0dfffff",
+      "decisions": 193,
+      "wrong_driver_rate": 0.4611,
+      "conditional_extra_wait_s_median": 101.5,
+      "lon": -73.9576,
+      "lat": 40.7484
+     },
+     {
+      "cell": "882a100ab3fffff",
+      "decisions": 252,
+      "wrong_driver_rate": 0.4563,
+      "conditional_extra_wait_s_median": 49.8,
+      "lon": -73.9286,
+      "lat": 40.8092
+     },
+     {
+      "cell": "882a107253fffff",
+      "decisions": 19384,
+      "wrong_driver_rate": 0.4549,
+      "conditional_extra_wait_s_median": 40.8,
+      "lon": -74.0016,
+      "lat": 40.7515
+     },
+     {
+      "cell": "882a107219fffff",
+      "decisions": 14141,
+      "wrong_driver_rate": 0.4546,
+      "conditional_extra_wait_s_median": 42.0,
+      "lon": -74.006,
+      "lat": 40.7461
+     },
+     {
+      "cell": "882a107259fffff",
+      "decisions": 14054,
+      "wrong_driver_rate": 0.4528,
+      "conditional_extra_wait_s_median": 35.0,
+      "lon": -73.9938,
+      "lat": 40.7649
+     },
+     {
+      "cell": "882a100f17fffff",
+      "decisions": 134,
+      "wrong_driver_rate": 0.4478,
+      "conditional_extra_wait_s_median": 6.0,
+      "lon": -73.8911,
+      "lat": 40.7554
+     },
+     {
+      "cell": "882a103b39fffff",
+      "decisions": 224,
+      "wrong_driver_rate": 0.4464,
+      "conditional_extra_wait_s_median": 70.4,
+      "lon": -73.794,
+      "lat": 40.6444
+     },
+     {
+      "cell": "882a103b0dfffff",
+      "decisions": 65,
+      "wrong_driver_rate": 0.4462,
+      "conditional_extra_wait_s_median": 121.9,
+      "lon": -73.7896,
+      "lat": 40.6631
+     },
+     {
+      "cell": "882a103b03fffff",
+      "decisions": 9528,
+      "wrong_driver_rate": 0.4431,
+      "conditional_extra_wait_s_median": 180.1,
+      "lon": -73.7879,
+      "lat": 40.6462
+     },
+     {
+      "cell": "882a10729dfffff",
+      "decisions": 64,
+      "wrong_driver_rate": 0.4375,
+      "conditional_extra_wait_s_median": 66.3,
+      "lon": -73.9993,
+      "lat": 40.6929
+     },
+     {
+      "cell": "882a103b2bfffff",
+      "decisions": 119,
+      "wrong_driver_rate": 0.437,
+      "conditional_extra_wait_s_median": 83.3,
+      "lon": -73.8061,
+      "lat": 40.6524
+     },
+     {
+      "cell": "882a1008b3fffff",
+      "decisions": 41223,
+      "wrong_driver_rate": 0.4362,
+      "conditional_extra_wait_s_median": 36.6,
+      "lon": -73.9848,
+      "lat": 40.7704
+     },
+     {
+      "cell": "882a103b63fffff",
+      "decisions": 182,
+      "wrong_driver_rate": 0.4341,
+      "conditional_extra_wait_s_median": 73.3,
+      "lon": -73.8024,
+      "lat": 40.6654
+     },
+     {
+      "cell": "882a100aabfffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.4333,
+      "conditional_extra_wait_s_median": 19.2,
+      "lon": -73.9398,
+      "lat": 40.8335
+     },
+     {
+      "cell": "882a100d2bfffff",
+      "decisions": 26635,
+      "wrong_driver_rate": 0.4316,
+      "conditional_extra_wait_s_median": 50.2,
+      "lon": -73.9786,
+      "lat": 40.7404
+     },
+     {
+      "cell": "882a1072d7fffff",
+      "decisions": 1449,
+      "wrong_driver_rate": 0.4293,
+      "conditional_extra_wait_s_median": 56.3,
+      "lon": -73.9926,
+      "lat": 40.6986
+     },
+     {
+      "cell": "882a107299fffff",
+      "decisions": 3904,
+      "wrong_driver_rate": 0.429,
+      "conditional_extra_wait_s_median": 48.9,
+      "lon": -73.9917,
+      "lat": 40.6919
+     },
+     {
+      "cell": "882a107281fffff",
+      "decisions": 11730,
+      "wrong_driver_rate": 0.4286,
+      "conditional_extra_wait_s_median": 68.3,
+      "lon": -74.0138,
+      "lat": 40.7045
+     },
+     {
+      "cell": "882a100da1fffff",
+      "decisions": 622,
+      "wrong_driver_rate": 0.4277,
+      "conditional_extra_wait_s_median": 40.4,
+      "lon": -73.9712,
+      "lat": 40.6881
+     },
+     {
+      "cell": "882a10728bfffff",
+      "decisions": 7747,
+      "wrong_driver_rate": 0.4244,
+      "conditional_extra_wait_s_median": 62.3,
+      "lon": -74.008,
+      "lat": 40.7046
+     },
+     {
+      "cell": "882a100d09fffff",
+      "decisions": 632,
+      "wrong_driver_rate": 0.4241,
+      "conditional_extra_wait_s_median": 73.25,
+      "lon": -73.9478,
+      "lat": 40.7476
+     },
+     {
+      "cell": "882a100893fffff",
+      "decisions": 52980,
+      "wrong_driver_rate": 0.4234,
+      "conditional_extra_wait_s_median": 37.4,
+      "lon": -73.957,
+      "lat": 40.7719
+     },
+     {
+      "cell": "882a100d43fffff",
+      "decisions": 1856,
+      "wrong_driver_rate": 0.4224,
+      "conditional_extra_wait_s_median": 45.6,
+      "lon": -73.9412,
+      "lat": 40.7527
+     },
+     {
+      "cell": "882a100db5fffff",
+      "decisions": 180,
+      "wrong_driver_rate": 0.4222,
+      "conditional_extra_wait_s_median": 73.9,
+      "lon": -73.9648,
+      "lat": 40.6722
+     },
+     {
+      "cell": "882a1008b5fffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.4222,
+      "conditional_extra_wait_s_median": 94.6,
+      "lon": -74.0021,
+      "lat": 40.7837
+     },
+     {
+      "cell": "882a103b15fffff",
+      "decisions": 1672,
+      "wrong_driver_rate": 0.4217,
+      "conditional_extra_wait_s_median": 47.0,
+      "lon": -73.7882,
+      "lat": 40.6417
+     },
+     {
+      "cell": "882a107213fffff",
+      "decisions": 185,
+      "wrong_driver_rate": 0.4216,
+      "conditional_extra_wait_s_median": 27.55,
+      "lon": -74.0099,
+      "lat": 40.7333
+     },
+     {
+      "cell": "882a107289fffff",
+      "decisions": 23771,
+      "wrong_driver_rate": 0.4211,
+      "conditional_extra_wait_s_median": 53.1,
+      "lon": -74.0079,
+      "lat": 40.7091
+     },
+     {
+      "cell": "882a100897fffff",
+      "decisions": 22446,
+      "wrong_driver_rate": 0.4203,
+      "conditional_extra_wait_s_median": 29.9,
+      "lon": -73.9643,
+      "lat": 40.7734
+     },
+     {
+      "cell": "882a100d37fffff",
+      "decisions": 3579,
+      "wrong_driver_rate": 0.4172,
+      "conditional_extra_wait_s_median": 55.0,
+      "lon": -73.9821,
+      "lat": 40.7202
+     },
+     {
+      "cell": "882a100d55fffff",
+      "decisions": 670,
+      "wrong_driver_rate": 0.4164,
+      "conditional_extra_wait_s_median": 43.6,
+      "lon": -73.9383,
+      "lat": 40.748
+     },
+     {
+      "cell": "882a10089bfffff",
+      "decisions": 31101,
+      "wrong_driver_rate": 0.4137,
+      "conditional_extra_wait_s_median": 47.6,
+      "lon": -73.949,
+      "lat": 40.7774
+     },
+     {
+      "cell": "882a100d45fffff",
+      "decisions": 27583,
+      "wrong_driver_rate": 0.4132,
+      "conditional_extra_wait_s_median": 38.6,
+      "lon": -73.9557,
+      "lat": 40.7654
+     },
+     {
+      "cell": "882a1008c9fffff",
+      "decisions": 1591,
+      "wrong_driver_rate": 0.4123,
+      "conditional_extra_wait_s_median": 29.5,
+      "lon": -73.9527,
+      "lat": 40.8227
+     },
+     {
+      "cell": "882a100d33fffff",
+      "decisions": 279,
+      "wrong_driver_rate": 0.4122,
+      "conditional_extra_wait_s_median": 26.1,
+      "lon": -73.9656,
+      "lat": 40.7142
+     },
+     {
+      "cell": "882a100d5bfffff",
+      "decisions": 852,
+      "wrong_driver_rate": 0.4108,
+      "conditional_extra_wait_s_median": 25.0,
+      "lon": -73.9185,
+      "lat": 40.7433
+     },
+     {
+      "cell": "882a100c61fffff",
+      "decisions": 263,
+      "wrong_driver_rate": 0.4106,
+      "conditional_extra_wait_s_median": 31.1,
+      "lon": -73.8983,
+      "lat": 40.7445
+     },
+     {
+      "cell": "882a1072c3fffff",
+      "decisions": 9767,
+      "wrong_driver_rate": 0.4092,
+      "conditional_extra_wait_s_median": 43.5,
+      "lon": -74.0001,
+      "lat": 40.7164
+     },
+     {
+      "cell": "882a10088bfffff",
+      "decisions": 11537,
+      "wrong_driver_rate": 0.4076,
+      "conditional_extra_wait_s_median": 38.3,
+      "lon": -73.9653,
+      "lat": 40.7947
+     },
+     {
+      "cell": "882a100c09fffff",
+      "decisions": 177,
+      "wrong_driver_rate": 0.4068,
+      "conditional_extra_wait_s_median": 69.6,
+      "lon": -73.8719,
+      "lat": 40.7334
+     },
+     {
+      "cell": "882a100d27fffff",
+      "decisions": 46538,
+      "wrong_driver_rate": 0.4065,
+      "conditional_extra_wait_s_median": 39.5,
+      "lon": -73.9958,
+      "lat": 40.7367
+     },
+     {
+      "cell": "882a100f15fffff",
+      "decisions": 212,
+      "wrong_driver_rate": 0.4057,
+      "conditional_extra_wait_s_median": 66.7,
+      "lon": -73.8935,
+      "lat": 40.7676
+     },
+     {
+      "cell": "882a100c67fffff",
+      "decisions": 318,
+      "wrong_driver_rate": 0.4057,
+      "conditional_extra_wait_s_median": 40.3,
+      "lon": -73.9054,
+      "lat": 40.7414
+     },
+     {
+      "cell": "882a103b1dfffff",
+      "decisions": 9967,
+      "wrong_driver_rate": 0.4008,
+      "conditional_extra_wait_s_median": 258.3,
+      "lon": -73.7811,
+      "lat": 40.6455
+     },
+     {
+      "cell": "882a10729bfffff",
+      "decisions": 927,
+      "wrong_driver_rate": 0.4002,
+      "conditional_extra_wait_s_median": 37.5,
+      "lon": -73.991,
+      "lat": 40.6849
+     },
+     {
+      "cell": "882a100de7fffff",
+      "decisions": 50,
+      "wrong_driver_rate": 0.4,
+      "conditional_extra_wait_s_median": 34.9,
+      "lon": -73.9656,
+      "lat": 40.6994
+     },
+     {
+      "cell": "882a100891fffff",
+      "decisions": 54537,
+      "wrong_driver_rate": 0.3994,
+      "conditional_extra_wait_s_median": 33.6,
+      "lon": -73.9579,
+      "lat": 40.7793
+     },
+     {
+      "cell": "882a100de5fffff",
+      "decisions": 420,
+      "wrong_driver_rate": 0.3976,
+      "conditional_extra_wait_s_median": 32.9,
+      "lon": -73.9647,
+      "lat": 40.7103
+     },
+     {
+      "cell": "882a103b29fffff",
+      "decisions": 68,
+      "wrong_driver_rate": 0.3971,
+      "conditional_extra_wait_s_median": 63.5,
+      "lon": -73.8076,
+      "lat": 40.6587
+     },
+     {
+      "cell": "882a100d59fffff",
+      "decisions": 335,
+      "wrong_driver_rate": 0.397,
+      "conditional_extra_wait_s_median": 37.9,
+      "lon": -73.9185,
+      "lat": 40.7469
+     },
+     {
+      "cell": "882a1008bbfffff",
+      "decisions": 33794,
+      "wrong_driver_rate": 0.3952,
+      "conditional_extra_wait_s_median": 33.0,
+      "lon": -73.98,
+      "lat": 40.7767
+     },
+     {
+      "cell": "882a1008ddfffff",
+      "decisions": 1758,
+      "wrong_driver_rate": 0.3942,
+      "conditional_extra_wait_s_median": 26.7,
+      "lon": -73.9471,
+      "lat": 40.807
+     },
+     {
+      "cell": "882a100889fffff",
+      "decisions": 10135,
+      "wrong_driver_rate": 0.3928,
+      "conditional_extra_wait_s_median": 27.9,
+      "lon": -73.9665,
+      "lat": 40.8026
+     },
+     {
+      "cell": "882a100d49fffff",
+      "decisions": 468,
+      "wrong_driver_rate": 0.3868,
+      "conditional_extra_wait_s_median": 31.7,
+      "lon": -73.9317,
+      "lat": 40.7662
+     },
+     {
+      "cell": "882a1008d7fffff",
+      "decisions": 3910,
+      "wrong_driver_rate": 0.3867,
+      "conditional_extra_wait_s_median": 40.8,
+      "lon": -73.953,
+      "lat": 40.7908
+     },
+     {
+      "cell": "882a100883fffff",
+      "decisions": 27055,
+      "wrong_driver_rate": 0.3855,
+      "conditional_extra_wait_s_median": 35.5,
+      "lon": -73.9732,
+      "lat": 40.7898
+     },
+     {
+      "cell": "882a100d85fffff",
+      "decisions": 250,
+      "wrong_driver_rate": 0.384,
+      "conditional_extra_wait_s_median": 31.75,
+      "lon": -73.954,
+      "lat": 40.6897
+     },
+     {
+      "cell": "882a107291fffff",
+      "decisions": 1160,
+      "wrong_driver_rate": 0.3836,
+      "conditional_extra_wait_s_median": 40.6,
+      "lon": -73.9979,
+      "lat": 40.6852
+     },
+     {
+      "cell": "882a1072c5fffff",
+      "decisions": 5957,
+      "wrong_driver_rate": 0.3833,
+      "conditional_extra_wait_s_median": 43.3,
+      "lon": -74.0084,
+      "lat": 40.7248
+     },
+     {
+      "cell": "882a1072d9fffff",
+      "decisions": 165,
+      "wrong_driver_rate": 0.3818,
+      "conditional_extra_wait_s_median": 176.2,
+      "lon": -73.9795,
+      "lat": 40.7135
+     },
+     {
+      "cell": "882a1072cbfffff",
+      "decisions": 31667,
+      "wrong_driver_rate": 0.3808,
+      "conditional_extra_wait_s_median": 39.9,
+      "lon": -73.9903,
+      "lat": 40.7211
+     },
+     {
+      "cell": "882a1008c1fffff",
+      "decisions": 1756,
+      "wrong_driver_rate": 0.3804,
+      "conditional_extra_wait_s_median": 23.25,
+      "lon": -73.9586,
+      "lat": 40.8157
+     },
+     {
+      "cell": "882a1072d1fffff",
+      "decisions": 631,
+      "wrong_driver_rate": 0.3803,
+      "conditional_extra_wait_s_median": 55.2,
+      "lon": -73.9883,
+      "lat": 40.7022
+     },
+     {
+      "cell": "882a1008b9fffff",
+      "decisions": 27714,
+      "wrong_driver_rate": 0.3785,
+      "conditional_extra_wait_s_median": 29.7,
+      "lon": -73.9796,
+      "lat": 40.7837
+     },
+     {
+      "cell": "882a100f19fffff",
+      "decisions": 185,
+      "wrong_driver_rate": 0.3784,
+      "conditional_extra_wait_s_median": 61.85,
+      "lon": -73.8762,
+      "lat": 40.7702
+     },
+     {
+      "cell": "882a100d4dfffff",
+      "decisions": 9154,
+      "wrong_driver_rate": 0.3781,
+      "conditional_extra_wait_s_median": 44.7,
+      "lon": -73.949,
+      "lat": 40.7717
+     },
+     {
+      "cell": "882a100dcbfffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.3778,
+      "conditional_extra_wait_s_median": 12.6,
+      "lon": -73.9166,
+      "lat": 40.7047
+     },
+     {
+      "cell": "882a100d23fffff",
+      "decisions": 47162,
+      "wrong_driver_rate": 0.3775,
+      "conditional_extra_wait_s_median": 40.5,
+      "lon": -73.9861,
+      "lat": 40.7342
+     },
+     {
+      "cell": "882a100d87fffff",
+      "decisions": 170,
+      "wrong_driver_rate": 0.3765,
+      "conditional_extra_wait_s_median": 40.4,
+      "lon": -73.9499,
+      "lat": 40.6813
+     },
+     {
+      "cell": "882a1072ddfffff",
+      "decisions": 3037,
+      "wrong_driver_rate": 0.3734,
+      "conditional_extra_wait_s_median": 38.7,
+      "lon": -73.9909,
+      "lat": 40.7146
+     },
+     {
+      "cell": "882a100d01fffff",
+      "decisions": 793,
+      "wrong_driver_rate": 0.3733,
+      "conditional_extra_wait_s_median": 60.85,
+      "lon": -73.9546,
+      "lat": 40.7437
+     },
+     {
+      "cell": "882a100e25fffff",
+      "decisions": 14402,
+      "wrong_driver_rate": 0.3699,
+      "conditional_extra_wait_s_median": 38.3,
+      "lon": -73.8633,
+      "lat": 40.7695
+     },
+     {
+      "cell": "882a100d17fffff",
+      "decisions": 672,
+      "wrong_driver_rate": 0.369,
+      "conditional_extra_wait_s_median": 34.25,
+      "lon": -73.9519,
+      "lat": 40.719
+     },
+     {
+      "cell": "882a100d57fffff",
+      "decisions": 84,
+      "wrong_driver_rate": 0.369,
+      "conditional_extra_wait_s_median": 54.8,
+      "lon": -73.936,
+      "lat": 40.7385
+     },
+     {
+      "cell": "882a100899fffff",
+      "decisions": 27413,
+      "wrong_driver_rate": 0.3687,
+      "conditional_extra_wait_s_median": 33.4,
+      "lon": -73.9521,
+      "lat": 40.7844
+     },
+     {
+      "cell": "882a107745fffff",
+      "decisions": 125,
+      "wrong_driver_rate": 0.368,
+      "conditional_extra_wait_s_median": 22.15,
+      "lon": -73.9926,
+      "lat": 40.6697
+     },
+     {
+      "cell": "882a10721bfffff",
+      "decisions": 37220,
+      "wrong_driver_rate": 0.3647,
+      "conditional_extra_wait_s_median": 36.6,
+      "lon": -74.0053,
+      "lat": 40.7397
+     },
+     {
+      "cell": "882a100c45fffff",
+      "decisions": 105,
+      "wrong_driver_rate": 0.3619,
+      "conditional_extra_wait_s_median": 27.9,
+      "lon": -73.8811,
+      "lat": 40.7481
+     },
+     {
+      "cell": "882a10089dfffff",
+      "decisions": 5580,
+      "wrong_driver_rate": 0.3613,
+      "conditional_extra_wait_s_median": 38.5,
+      "lon": -73.9605,
+      "lat": 40.7878
+     },
+     {
+      "cell": "882a100aa1fffff",
+      "decisions": 758,
+      "wrong_driver_rate": 0.3588,
+      "conditional_extra_wait_s_median": 27.45,
+      "lon": -73.9444,
+      "lat": 40.835
+     },
+     {
+      "cell": "882a1072c7fffff",
+      "decisions": 29929,
+      "wrong_driver_rate": 0.3571,
+      "conditional_extra_wait_s_median": 37.5,
+      "lon": -74.0095,
+      "lat": 40.7174
+     },
+     {
+      "cell": "882a1008d1fffff",
+      "decisions": 2418,
+      "wrong_driver_rate": 0.3553,
+      "conditional_extra_wait_s_median": 31.8,
+      "lon": -73.9448,
+      "lat": 40.7984
+     },
+     {
+      "cell": "882a100dedfffff",
+      "decisions": 2472,
+      "wrong_driver_rate": 0.3544,
+      "conditional_extra_wait_s_median": 31.5,
+      "lon": -73.9585,
+      "lat": 40.714
+     },
+     {
+      "cell": "882a100d1bfffff",
+      "decisions": 65,
+      "wrong_driver_rate": 0.3538,
+      "conditional_extra_wait_s_median": 327.2,
+      "lon": -73.9354,
+      "lat": 40.7249
+     },
+     {
+      "cell": "882a1008d3fffff",
+      "decisions": 3773,
+      "wrong_driver_rate": 0.353,
+      "conditional_extra_wait_s_median": 31.2,
+      "lon": -73.9435,
+      "lat": 40.7909
+     },
+     {
+      "cell": "882a100da9fffff",
+      "decisions": 318,
+      "wrong_driver_rate": 0.3522,
+      "conditional_extra_wait_s_median": 39.05,
+      "lon": -73.9628,
+      "lat": 40.6923
+     },
+     {
+      "cell": "882a100de1fffff",
+      "decisions": 324,
+      "wrong_driver_rate": 0.3519,
+      "conditional_extra_wait_s_median": 32.6,
+      "lon": -73.9573,
+      "lat": 40.7076
+     },
+     {
+      "cell": "882a100c6dfffff",
+      "decisions": 219,
+      "wrong_driver_rate": 0.3516,
+      "conditional_extra_wait_s_median": 36.0,
+      "lon": -73.8997,
+      "lat": 40.7523
+     },
+     {
+      "cell": "882a10728dfffff",
+      "decisions": 16449,
+      "wrong_driver_rate": 0.3511,
+      "conditional_extra_wait_s_median": 52.5,
+      "lon": -74.0153,
+      "lat": 40.7126
+     },
+     {
+      "cell": "882a100881fffff",
+      "decisions": 9469,
+      "wrong_driver_rate": 0.3505,
+      "conditional_extra_wait_s_median": 25.8,
+      "lon": -73.9712,
+      "lat": 40.7966
+     },
+     {
+      "cell": "882a1072c9fffff",
+      "decisions": 38641,
+      "wrong_driver_rate": 0.3493,
+      "conditional_extra_wait_s_median": 31.25,
+      "lon": -73.9928,
+      "lat": 40.7282
+     },
+     {
+      "cell": "882a1008dbfffff",
+      "decisions": 1408,
+      "wrong_driver_rate": 0.348,
+      "conditional_extra_wait_s_median": 29.15,
+      "lon": -73.9363,
+      "lat": 40.7969
+     },
+     {
+      "cell": "882a100d35fffff",
+      "decisions": 21849,
+      "wrong_driver_rate": 0.3479,
+      "conditional_extra_wait_s_median": 39.7,
+      "lon": -73.9838,
+      "lat": 40.7266
+     },
+     {
+      "cell": "882a1072c1fffff",
+      "decisions": 36817,
+      "wrong_driver_rate": 0.3448,
+      "conditional_extra_wait_s_median": 29.4,
+      "lon": -74.0012,
+      "lat": 40.7233
+     },
+     {
+      "cell": "882a100895fffff",
+      "decisions": 14707,
+      "wrong_driver_rate": 0.3437,
+      "conditional_extra_wait_s_median": 31.6,
+      "lon": -73.9722,
+      "lat": 40.7834
+     },
+     {
+      "cell": "882a1072cdfffff",
+      "decisions": 38581,
+      "wrong_driver_rate": 0.3436,
+      "conditional_extra_wait_s_median": 27.9,
+      "lon": -74.0037,
+      "lat": 40.731
+     },
+     {
+      "cell": "882a100f25fffff",
+      "decisions": 758,
+      "wrong_driver_rate": 0.343,
+      "conditional_extra_wait_s_median": 52.75,
+      "lon": -73.9443,
+      "lat": 40.7832
+     },
+     {
+      "cell": "882a1008d9fffff",
+      "decisions": 1955,
+      "wrong_driver_rate": 0.3427,
+      "conditional_extra_wait_s_median": 28.05,
+      "lon": -73.9374,
+      "lat": 40.8037
+     },
+     {
+      "cell": "882a103b0bfffff",
+      "decisions": 470,
+      "wrong_driver_rate": 0.3419,
+      "conditional_extra_wait_s_median": 175.25,
+      "lon": -73.7807,
+      "lat": 40.6481
+     },
+     {
+      "cell": "882a107749fffff",
+      "decisions": 360,
+      "wrong_driver_rate": 0.3417,
+      "conditional_extra_wait_s_median": 29.6,
+      "lon": -73.9765,
+      "lat": 40.6748
+     },
+     {
+      "cell": "882a1008c3fffff",
+      "decisions": 3279,
+      "wrong_driver_rate": 0.3413,
+      "conditional_extra_wait_s_median": 27.7,
+      "lon": -73.959,
+      "lat": 40.809
+     },
+     {
+      "cell": "882a100f53fffff",
+      "decisions": 6698,
+      "wrong_driver_rate": 0.3389,
+      "conditional_extra_wait_s_median": 26.65,
+      "lon": -73.8705,
+      "lat": 40.7734
+     },
+     {
+      "cell": "882a100de3fffff",
+      "decisions": 290,
+      "wrong_driver_rate": 0.3379,
+      "conditional_extra_wait_s_median": 27.9,
+      "lon": -73.9555,
+      "lat": 40.6969
+     },
+     {
+      "cell": "882a100ab9fffff",
+      "decisions": 86,
+      "wrong_driver_rate": 0.3372,
+      "conditional_extra_wait_s_median": 31.3,
+      "lon": -73.9233,
+      "lat": 40.8256
+     },
+     {
+      "cell": "882a100aa7fffff",
+      "decisions": 107,
+      "wrong_driver_rate": 0.3364,
+      "conditional_extra_wait_s_median": 62.5,
+      "lon": -73.9504,
+      "lat": 40.8276
+     },
+     {
+      "cell": "882a100dbdfffff",
+      "decisions": 146,
+      "wrong_driver_rate": 0.3356,
+      "conditional_extra_wait_s_median": 38.9,
+      "lon": -73.9574,
+      "lat": 40.6768
+     },
+     {
+      "cell": "882a100d81fffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.3333,
+      "conditional_extra_wait_s_median": 54.0,
+      "lon": -73.9406,
+      "lat": 40.6889
+     },
+     {
+      "cell": "882a100f6dfffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.3333,
+      "conditional_extra_wait_s_median": 47.4,
+      "lon": -73.917,
+      "lat": 40.807
+     },
+     {
+      "cell": "882a100f35fffff",
+      "decisions": 959,
+      "wrong_driver_rate": 0.3326,
+      "conditional_extra_wait_s_median": 28.5,
+      "lon": -73.9246,
+      "lat": 40.765
+     },
+     {
+      "cell": "882a100f31fffff",
+      "decisions": 358,
+      "wrong_driver_rate": 0.3324,
+      "conditional_extra_wait_s_median": 29.5,
+      "lon": -73.9148,
+      "lat": 40.7636
+     },
+     {
+      "cell": "882a100dc5fffff",
+      "decisions": 315,
+      "wrong_driver_rate": 0.3302,
+      "conditional_extra_wait_s_median": 29.25,
+      "lon": -73.9398,
+      "lat": 40.7094
+     },
+     {
+      "cell": "882a100aa3fffff",
+      "decisions": 970,
+      "wrong_driver_rate": 0.3299,
+      "conditional_extra_wait_s_median": 24.75,
+      "lon": -73.9464,
+      "lat": 40.8283
+     },
+     {
+      "cell": "882a103b61fffff",
+      "decisions": 94,
+      "wrong_driver_rate": 0.3298,
+      "conditional_extra_wait_s_median": 57.6,
+      "lon": -73.8016,
+      "lat": 40.6736
+     },
+     {
+      "cell": "882a100f37fffff",
+      "decisions": 593,
+      "wrong_driver_rate": 0.3288,
+      "conditional_extra_wait_s_median": 20.1,
+      "lon": -73.9211,
+      "lat": 40.7579
+     },
+     {
+      "cell": "882a1008b1fffff",
+      "decisions": 8559,
+      "wrong_driver_rate": 0.327,
+      "conditional_extra_wait_s_median": 28.1,
+      "lon": -73.9868,
+      "lat": 40.778
+     },
+     {
+      "cell": "882a100f1dfffff",
+      "decisions": 1944,
+      "wrong_driver_rate": 0.3256,
+      "conditional_extra_wait_s_median": 32.9,
+      "lon": -73.8854,
+      "lat": 40.7727
+     },
+     {
+      "cell": "882a100da3fffff",
+      "decisions": 581,
+      "wrong_driver_rate": 0.3201,
+      "conditional_extra_wait_s_median": 29.0,
+      "lon": -73.9704,
+      "lat": 40.6784
+     },
+     {
+      "cell": "882a10774dfffff",
+      "decisions": 585,
+      "wrong_driver_rate": 0.3179,
+      "conditional_extra_wait_s_median": 24.5,
+      "lon": -73.9851,
+      "lat": 40.6751
+     },
+     {
+      "cell": "882a1008c7fffff",
+      "decisions": 117,
+      "wrong_driver_rate": 0.3162,
+      "conditional_extra_wait_s_median": 20.1,
+      "lon": -73.9643,
+      "lat": 40.81
+     },
+     {
+      "cell": "882a100d3bfffff",
+      "decisions": 1074,
+      "wrong_driver_rate": 0.3147,
+      "conditional_extra_wait_s_median": 34.4,
+      "lon": -73.9594,
+      "lat": 40.7202
+     },
+     {
+      "cell": "882a100dc3fffff",
+      "decisions": 150,
+      "wrong_driver_rate": 0.3133,
+      "conditional_extra_wait_s_median": 27.2,
+      "lon": -73.926,
+      "lat": 40.6985
+     },
+     {
+      "cell": "882a100d11fffff",
+      "decisions": 115,
+      "wrong_driver_rate": 0.313,
+      "conditional_extra_wait_s_median": 47.05,
+      "lon": -73.9435,
+      "lat": 40.7234
+     },
+     {
+      "cell": "882a100f33fffff",
+      "decisions": 218,
+      "wrong_driver_rate": 0.3119,
+      "conditional_extra_wait_s_median": 26.9,
+      "lon": -73.9112,
+      "lat": 40.7544
+     },
+     {
+      "cell": "882a100f13fffff",
+      "decisions": 241,
+      "wrong_driver_rate": 0.3112,
+      "conditional_extra_wait_s_median": 25.0,
+      "lon": -73.8818,
+      "lat": 40.756
+     },
+     {
+      "cell": "882a100c5bfffff",
+      "decisions": 142,
+      "wrong_driver_rate": 0.3099,
+      "conditional_extra_wait_s_median": 35.4,
+      "lon": -73.8438,
+      "lat": 40.7224
+     },
+     {
+      "cell": "882a100dd5fffff",
+      "decisions": 68,
+      "wrong_driver_rate": 0.3088,
+      "conditional_extra_wait_s_median": 26.3,
+      "lon": -73.9232,
+      "lat": 40.6912
+     },
+     {
+      "cell": "882a100e87fffff",
+      "decisions": 68,
+      "wrong_driver_rate": 0.3088,
+      "conditional_extra_wait_s_median": 64.1,
+      "lon": -73.8167,
+      "lat": 40.704
+     },
+     {
+      "cell": "882a100a81fffff",
+      "decisions": 65,
+      "wrong_driver_rate": 0.3077,
+      "conditional_extra_wait_s_median": 65.7,
+      "lon": -73.9165,
+      "lat": 40.837
+     },
+     {
+      "cell": "882a100887fffff",
+      "decisions": 359,
+      "wrong_driver_rate": 0.3064,
+      "conditional_extra_wait_s_median": 28.8,
+      "lon": -73.9794,
+      "lat": 40.7899
+     },
+     {
+      "cell": "882a107293fffff",
+      "decisions": 1179,
+      "wrong_driver_rate": 0.3062,
+      "conditional_extra_wait_s_median": 31.0,
+      "lon": -73.9982,
+      "lat": 40.6789
+     },
+     {
+      "cell": "882a107297fffff",
+      "decisions": 49,
+      "wrong_driver_rate": 0.3061,
+      "conditional_extra_wait_s_median": 74.4,
+      "lon": -74.0071,
+      "lat": 40.6808
+     },
+     {
+      "cell": "882a100ab1fffff",
+      "decisions": 59,
+      "wrong_driver_rate": 0.3051,
+      "conditional_extra_wait_s_median": 9.6,
+      "lon": -73.9282,
+      "lat": 40.8186
+     },
+     {
+      "cell": "882a100f3dfffff",
+      "decisions": 528,
+      "wrong_driver_rate": 0.303,
+      "conditional_extra_wait_s_median": 57.3,
+      "lon": -73.9163,
+      "lat": 40.7703
+     },
+     {
+      "cell": "882a100f23fffff",
+      "decisions": 671,
+      "wrong_driver_rate": 0.301,
+      "conditional_extra_wait_s_median": 46.5,
+      "lon": -73.9258,
+      "lat": 40.7714
+     },
+     {
+      "cell": "882a100de9fffff",
+      "decisions": 997,
+      "wrong_driver_rate": 0.3009,
+      "conditional_extra_wait_s_median": 25.15,
+      "lon": -73.9489,
+      "lat": 40.7124
+     },
+     {
+      "cell": "882a10776dfffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.3,
+      "conditional_extra_wait_s_median": 36.9,
+      "lon": -74.014,
+      "lat": 40.6764
+     },
+     {
+      "cell": "882a100f39fffff",
+      "decisions": 210,
+      "wrong_driver_rate": 0.3,
+      "conditional_extra_wait_s_median": 34.9,
+      "lon": -73.9049,
+      "lat": 40.7692
+     },
+     {
+      "cell": "882a100f11fffff",
+      "decisions": 50,
+      "wrong_driver_rate": 0.3,
+      "conditional_extra_wait_s_median": 72.2,
+      "lon": -73.8847,
+      "lat": 40.7635
+     },
+     {
+      "cell": "882a107743fffff",
+      "decisions": 100,
+      "wrong_driver_rate": 0.3,
+      "conditional_extra_wait_s_median": 44.8,
+      "lon": -73.9813,
+      "lat": 40.662
+     },
+     {
+      "cell": "882a10770dfffff",
+      "decisions": 70,
+      "wrong_driver_rate": 0.3,
+      "conditional_extra_wait_s_median": 33.9,
+      "lon": -74.0029,
+      "lat": 40.6561
+     },
+     {
+      "cell": "882a1008cbfffff",
+      "decisions": 1067,
+      "wrong_driver_rate": 0.2999,
+      "conditional_extra_wait_s_median": 26.85,
+      "lon": -73.9501,
+      "lat": 40.8133
+     },
+     {
+      "cell": "882a100dabfffff",
+      "decisions": 241,
+      "wrong_driver_rate": 0.2988,
+      "conditional_extra_wait_s_median": 31.4,
+      "lon": -73.9604,
+      "lat": 40.6839
+     },
+     {
+      "cell": "882a1008b7fffff",
+      "decisions": 248,
+      "wrong_driver_rate": 0.2984,
+      "conditional_extra_wait_s_median": 19.55,
+      "lon": -73.9932,
+      "lat": 40.7717
+     },
+     {
+      "cell": "882a107257fffff",
+      "decisions": 217,
+      "wrong_driver_rate": 0.2949,
+      "conditional_extra_wait_s_median": 50.55,
+      "lon": -74.0076,
+      "lat": 40.752
+     },
+     {
+      "cell": "882a100d4bfffff",
+      "decisions": 994,
+      "wrong_driver_rate": 0.2948,
+      "conditional_extra_wait_s_median": 27.9,
+      "lon": -73.9331,
+      "lat": 40.7599
+     },
+     {
+      "cell": "882a100d51fffff",
+      "decisions": 1368,
+      "wrong_driver_rate": 0.2939,
+      "conditional_extra_wait_s_median": 30.7,
+      "lon": -73.9264,
+      "lat": 40.7444
+     },
+     {
+      "cell": "882a100d89fffff",
+      "decisions": 213,
+      "wrong_driver_rate": 0.2911,
+      "conditional_extra_wait_s_median": 30.95,
+      "lon": -73.9316,
+      "lat": 40.6953
+     },
+     {
+      "cell": "882a10774bfffff",
+      "decisions": 76,
+      "wrong_driver_rate": 0.2895,
+      "conditional_extra_wait_s_median": 28.5,
+      "lon": -73.9784,
+      "lat": 40.6657
+     },
+     {
+      "cell": "882a100a13fffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.2889,
+      "conditional_extra_wait_s_median": 7.2,
+      "lon": -73.9191,
+      "lat": 40.8673
+     },
+     {
+      "cell": "882a100c69fffff",
+      "decisions": 291,
+      "wrong_driver_rate": 0.2887,
+      "conditional_extra_wait_s_median": 27.6,
+      "lon": -73.8905,
+      "lat": 40.7474
+     },
+     {
+      "cell": "882a100dc7fffff",
+      "decisions": 245,
+      "wrong_driver_rate": 0.2857,
+      "conditional_extra_wait_s_median": 22.6,
+      "lon": -73.9351,
+      "lat": 40.6988
+     },
+     {
+      "cell": "882a107741fffff",
+      "decisions": 520,
+      "wrong_driver_rate": 0.2827,
+      "conditional_extra_wait_s_median": 28.9,
+      "lon": -73.9859,
+      "lat": 40.6688
+     },
+     {
+      "cell": "882a100dadfffff",
+      "decisions": 355,
+      "wrong_driver_rate": 0.2817,
+      "conditional_extra_wait_s_median": 33.85,
+      "lon": -73.9725,
+      "lat": 40.6947
+     },
+     {
+      "cell": "882a100a11fffff",
+      "decisions": 32,
+      "wrong_driver_rate": 0.2812,
+      "conditional_extra_wait_s_median": 5.4,
+      "lon": -73.9142,
+      "lat": 40.8719
+     },
+     {
+      "cell": "882a100c6bfffff",
+      "decisions": 89,
+      "wrong_driver_rate": 0.2809,
+      "conditional_extra_wait_s_median": 34.7,
+      "lon": -73.8864,
+      "lat": 40.7418
+     },
+     {
+      "cell": "882a100d5dfffff",
+      "decisions": 372,
+      "wrong_driver_rate": 0.2796,
+      "conditional_extra_wait_s_median": 25.0,
+      "lon": -73.9305,
+      "lat": 40.7521
+     },
+     {
+      "cell": "882a100d83fffff",
+      "decisions": 86,
+      "wrong_driver_rate": 0.2791,
+      "conditional_extra_wait_s_median": 38.75,
+      "lon": -73.9389,
+      "lat": 40.6798
+     },
+     {
+      "cell": "882a107747fffff",
+      "decisions": 184,
+      "wrong_driver_rate": 0.2772,
+      "conditional_extra_wait_s_median": 36.7,
+      "lon": -73.9931,
+      "lat": 40.6636
+     },
+     {
+      "cell": "882a1008d5fffff",
+      "decisions": 3747,
+      "wrong_driver_rate": 0.2736,
+      "conditional_extra_wait_s_median": 22.0,
+      "lon": -73.9563,
+      "lat": 40.8017
+     },
+     {
+      "cell": "882a100f07fffff",
+      "decisions": 287,
+      "wrong_driver_rate": 0.2718,
+      "conditional_extra_wait_s_median": 32.55,
+      "lon": -73.9091,
+      "lat": 40.7749
+     },
+     {
+      "cell": "882a100c4dfffff",
+      "decisions": 60,
+      "wrong_driver_rate": 0.2667,
+      "conditional_extra_wait_s_median": 30.4,
+      "lon": -73.8712,
+      "lat": 40.7519
+     },
+     {
+      "cell": "882a107759fffff",
+      "decisions": 75,
+      "wrong_driver_rate": 0.2667,
+      "conditional_extra_wait_s_median": 28.5,
+      "lon": -73.9608,
+      "lat": 40.6554
+     },
+     {
+      "cell": "882a103b6dfffff",
+      "decisions": 113,
+      "wrong_driver_rate": 0.2655,
+      "conditional_extra_wait_s_median": 25.5,
+      "lon": -73.8048,
+      "lat": 40.6813
+     },
+     {
+      "cell": "882a100db7fffff",
+      "decisions": 99,
+      "wrong_driver_rate": 0.2626,
+      "conditional_extra_wait_s_median": 35.4,
+      "lon": -73.9616,
+      "lat": 40.6625
+     },
+     {
+      "cell": "882a100d15fffff",
+      "decisions": 856,
+      "wrong_driver_rate": 0.2593,
+      "conditional_extra_wait_s_median": 27.2,
+      "lon": -73.953,
+      "lat": 40.7269
+     },
+     {
+      "cell": "882a100ab7fffff",
+      "decisions": 1110,
+      "wrong_driver_rate": 0.2577,
+      "conditional_extra_wait_s_median": 29.15,
+      "lon": -73.9396,
+      "lat": 40.8124
+     },
+     {
+      "cell": "882a100c47fffff",
+      "decisions": 74,
+      "wrong_driver_rate": 0.2568,
+      "conditional_extra_wait_s_median": 18.9,
+      "lon": -73.8787,
+      "lat": 40.738
+     },
+     {
+      "cell": "882a100d31fffff",
+      "decisions": 110,
+      "wrong_driver_rate": 0.2545,
+      "conditional_extra_wait_s_median": 65.25,
+      "lon": -73.9763,
+      "lat": 40.7237
+     },
+     {
+      "cell": "882a100db1fffff",
+      "decisions": 110,
+      "wrong_driver_rate": 0.2545,
+      "conditional_extra_wait_s_median": 28.0,
+      "lon": -73.9548,
+      "lat": 40.6697
+     },
+     {
+      "cell": "882a100ae7fffff",
+      "decisions": 372,
+      "wrong_driver_rate": 0.2527,
+      "conditional_extra_wait_s_median": 18.6,
+      "lon": -73.9385,
+      "lat": 40.849
+     },
+     {
+      "cell": "882a100d9dfffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.25,
+      "conditional_extra_wait_s_median": 23.35,
+      "lon": -73.9274,
+      "lat": 40.6782
+     },
+     {
+      "cell": "882a100c55fffff",
+      "decisions": 92,
+      "wrong_driver_rate": 0.25,
+      "conditional_extra_wait_s_median": 29.3,
+      "lon": -73.8618,
+      "lat": 40.7299
+     },
+     {
+      "cell": "882a107719fffff",
+      "decisions": 80,
+      "wrong_driver_rate": 0.25,
+      "conditional_extra_wait_s_median": 47.9,
+      "lon": -73.9741,
+      "lat": 40.6395
+     },
+     {
+      "cell": "882a100d03fffff",
+      "decisions": 199,
+      "wrong_driver_rate": 0.2462,
+      "conditional_extra_wait_s_median": 31.2,
+      "lon": -73.9542,
+      "lat": 40.7341
+     },
+     {
+      "cell": "882a100d13fffff",
+      "decisions": 135,
+      "wrong_driver_rate": 0.2444,
+      "conditional_extra_wait_s_median": 24.3,
+      "lon": -73.9428,
+      "lat": 40.7151
+     },
+     {
+      "cell": "882a100dc1fffff",
+      "decisions": 130,
+      "wrong_driver_rate": 0.2385,
+      "conditional_extra_wait_s_median": 29.4,
+      "lon": -73.9255,
+      "lat": 40.7056
+     },
+     {
+      "cell": "882a100debfffff",
+      "decisions": 181,
+      "wrong_driver_rate": 0.232,
+      "conditional_extra_wait_s_median": 14.1,
+      "lon": -73.9447,
+      "lat": 40.7032
+     },
+     {
+      "cell": "882a100a17fffff",
+      "decisions": 164,
+      "wrong_driver_rate": 0.2317,
+      "conditional_extra_wait_s_median": 16.5,
+      "lon": -73.9252,
+      "lat": 40.8663
+     },
+     {
+      "cell": "882a100aa9fffff",
+      "decisions": 693,
+      "wrong_driver_rate": 0.2309,
+      "conditional_extra_wait_s_median": 12.75,
+      "lon": -73.9411,
+      "lat": 40.841
+     },
+     {
+      "cell": "882a100ebbfffff",
+      "decisions": 39,
+      "wrong_driver_rate": 0.2308,
+      "conditional_extra_wait_s_median": 119.5,
+      "lon": -73.8101,
+      "lat": 40.689
+     },
+     {
+      "cell": "882a100ea9fffff",
+      "decisions": 96,
+      "wrong_driver_rate": 0.2292,
+      "conditional_extra_wait_s_median": 35.05,
+      "lon": -73.8287,
+      "lat": 40.7137
+     },
+     {
+      "cell": "882a1072ebfffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.2286,
+      "conditional_extra_wait_s_median": 9.6,
+      "lon": -74.0176,
+      "lat": 40.7173
+     },
+     {
+      "cell": "882a100ae3fffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.225,
+      "conditional_extra_wait_s_median": 1.1,
+      "lon": -73.9331,
+      "lat": 40.8472
+     },
+     {
+      "cell": "882a100abdfffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.2222,
+      "conditional_extra_wait_s_median": 50.15,
+      "lon": -73.9366,
+      "lat": 40.824
+     },
+     {
+      "cell": "882a100f57fffff",
+      "decisions": 9897,
+      "wrong_driver_rate": 0.2209,
+      "conditional_extra_wait_s_median": 21.4,
+      "lon": -73.8731,
+      "lat": 40.7741
+     },
+     {
+      "cell": "882a100ab5fffff",
+      "decisions": 634,
+      "wrong_driver_rate": 0.2208,
+      "conditional_extra_wait_s_median": 16.2,
+      "lon": -73.9416,
+      "lat": 40.8198
+     },
+     {
+      "cell": "882a100ae1fffff",
+      "decisions": 130,
+      "wrong_driver_rate": 0.2077,
+      "conditional_extra_wait_s_median": 38.0,
+      "lon": -73.934,
+      "lat": 40.8543
+     },
+     {
+      "cell": "882a107751fffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.2,
+      "conditional_extra_wait_s_median": 3.2,
+      "lon": -73.9707,
+      "lat": 40.6497
+     },
+     {
+      "cell": "882a100db9fffff",
+      "decisions": 47,
+      "wrong_driver_rate": 0.1915,
+      "conditional_extra_wait_s_median": 35.6,
+      "lon": -73.9468,
+      "lat": 40.6759
+     },
+     {
+      "cell": "882a100d39fffff",
+      "decisions": 74,
+      "wrong_driver_rate": 0.1892,
+      "conditional_extra_wait_s_median": 39.45,
+      "lon": -73.9577,
+      "lat": 40.7299
+     },
+     {
+      "cell": "882a100f2bfffff",
+      "decisions": 121,
+      "wrong_driver_rate": 0.1818,
+      "conditional_extra_wait_s_median": 146.95,
+      "lon": -73.9182,
+      "lat": 40.7778
+     },
+     {
+      "cell": "882a100c53fffff",
+      "decisions": 74,
+      "wrong_driver_rate": 0.1757,
+      "conditional_extra_wait_s_median": 40.1,
+      "lon": -73.8477,
+      "lat": 40.7204
+     },
+     {
+      "cell": "882a107753fffff",
+      "decisions": 46,
+      "wrong_driver_rate": 0.1739,
+      "conditional_extra_wait_s_median": 20.2,
+      "lon": -73.9672,
+      "lat": 40.6415
+     },
+     {
+      "cell": "882a100f1bfffff",
+      "decisions": 41,
+      "wrong_driver_rate": 0.1707,
+      "conditional_extra_wait_s_median": 42.1,
+      "lon": -73.8737,
+      "lat": 40.7597
+     },
+     {
+      "cell": "882a1001e1fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.1667,
+      "conditional_extra_wait_s_median": 54.9,
+      "lon": -73.8564,
+      "lat": 40.8371
+     },
+     {
+      "cell": "882a107757fffff",
+      "decisions": 83,
+      "wrong_driver_rate": 0.1566,
+      "conditional_extra_wait_s_median": 22.9,
+      "lon": -73.9767,
+      "lat": 40.6446
+     },
+     {
+      "cell": "882a100d8dfffff",
+      "decisions": 60,
+      "wrong_driver_rate": 0.15,
+      "conditional_extra_wait_s_median": 25.0,
+      "lon": -73.9441,
+      "lat": 40.695
+     },
+     {
+      "cell": "882a100c51fffff",
+      "decisions": 99,
+      "wrong_driver_rate": 0.1414,
+      "conditional_extra_wait_s_median": 26.2,
+      "lon": -73.8528,
+      "lat": 40.7267
+     },
+     {
+      "cell": "882a100db3fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.1333,
+      "conditional_extra_wait_s_median": 25.1,
+      "lon": -73.954,
+      "lat": 40.6613
+     },
+     {
+      "cell": "882a100abbfffff",
+      "decisions": 64,
+      "wrong_driver_rate": 0.125,
+      "conditional_extra_wait_s_median": 63.5,
+      "lon": -73.9203,
+      "lat": 40.8161
+     },
+     {
+      "cell": "882a100a95fffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.125,
+      "conditional_extra_wait_s_median": 23.5,
+      "lon": -73.9119,
+      "lat": 40.821
+     },
+     {
+      "cell": "882a100a89fffff",
+      "decisions": 50,
+      "wrong_driver_rate": 0.12,
+      "conditional_extra_wait_s_median": 9.05,
+      "lon": -73.9116,
+      "lat": 40.8435
+     },
+     {
+      "cell": "882a100c63fffff",
+      "decisions": 51,
+      "wrong_driver_rate": 0.1176,
+      "conditional_extra_wait_s_median": 3.4,
+      "lon": -73.895,
+      "lat": 40.7394
+     },
+     {
+      "cell": "882a103b6bfffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.1143,
+      "conditional_extra_wait_s_median": 79.55,
+      "lon": -73.7962,
+      "lat": 40.6683
+     },
+     {
+      "cell": "882a10775bfffff",
+      "decisions": 52,
+      "wrong_driver_rate": 0.0962,
+      "conditional_extra_wait_s_median": 0.5,
+      "lon": -73.9589,
+      "lat": 40.6475
+     },
+     {
+      "cell": "882a100d8bfffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.0889,
+      "conditional_extra_wait_s_median": 55.6,
+      "lon": -73.928,
+      "lat": 40.6847
+     },
+     {
+      "cell": "882a100d97fffff",
+      "decisions": 38,
+      "wrong_driver_rate": 0.0789,
+      "conditional_extra_wait_s_median": 38.7,
+      "lon": -73.9324,
+      "lat": 40.663
+     },
+     {
+      "cell": "882a100d95fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.0333,
+      "conditional_extra_wait_s_median": 53.3,
+      "lon": -73.9345,
+      "lat": 40.6717
+     },
+     {
+      "cell": "882a100a97fffff",
+      "decisions": 33,
+      "wrong_driver_rate": 0.0303,
+      "conditional_extra_wait_s_median": 76.4,
+      "lon": -73.9056,
+      "lat": 40.8144
+     },
+     {
+      "cell": "882a100e85fffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.0,
+      "conditional_extra_wait_s_median": null,
+      "lon": -73.8192,
+      "lat": 40.7091
+     },
+     {
+      "cell": "882a100a99fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.0,
+      "conditional_extra_wait_s_median": null,
+      "lon": -73.8921,
+      "lat": 40.8247
+     }
+    ],
+    "by_straight_line_band": [
+     {
+      "sl_pick_straight_line_band_m": [
+       0,
+       100
+      ],
+      "decisions": 334673,
+      "share": 0.1816,
+      "wrong_driver_rate": 0.552,
+      "conditional_extra_wait_s_median": 51.3
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       100,
+       250
+      ],
+      "decisions": 363737,
+      "share": 0.1973,
+      "wrong_driver_rate": 0.5456,
+      "conditional_extra_wait_s_median": 38.7
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       250,
+       500
+      ],
+      "decisions": 365844,
+      "share": 0.1985,
+      "wrong_driver_rate": 0.4587,
+      "conditional_extra_wait_s_median": 34.7
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       500,
+       1000
+      ],
+      "decisions": 361547,
+      "share": 0.1961,
+      "wrong_driver_rate": 0.3595,
+      "conditional_extra_wait_s_median": 33.0
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       1000,
+       2000
+      ],
+      "decisions": 300576,
+      "share": 0.1631,
+      "wrong_driver_rate": 0.3436,
+      "conditional_extra_wait_s_median": 43.5
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       2000,
+       100000
+      ],
+      "decisions": 116896,
+      "share": 0.0634,
+      "wrong_driver_rate": 0.2875,
+      "conditional_extra_wait_s_median": 57.3
+     }
+    ],
+    "water": {
+     "decisions_where_sl_pick_crosses_water": 61419,
+     "share_of_wrong_decisions": 0.0751,
+     "share_of_all_decisions": 0.0333,
+     "share_of_total_extra_wait": 0.254,
+     "conditional_extra_wait_s_median_when_crossing": 157.0,
+     "conditional_extra_wait_s_median_when_not": 37.9
+    },
+    "extra_wait_distribution_on_wrong_decisions": {
+     "p50": 40.4,
+     "p75": 75.2,
+     "p90": 130.1,
+     "p99": 471.3,
+     "max": 926.5
+    }
+   }
+  },
+  "2016-06-18": {
+   "measured_in_straight_replay": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "wrong_driver_rate": {
+     "mean": 0.4568,
+     "min": 0.4565,
+     "max": 0.4572,
+     "n_seeds": 5
+    },
+    "tie_rate": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_median": {
+     "mean": 34.2,
+     "min": 34.1,
+     "max": 34.3,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_p90": {
+     "mean": 99.1,
+     "min": 98.9,
+     "max": 99.3,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_mean": {
+     "mean": 47.1,
+     "min": 47.0,
+     "max": 47.1,
+     "n_seeds": 5
+    },
+    "conditional_extra_deadhead_m_median": {
+     "mean": 191.4,
+     "min": 190.5,
+     "max": 192.0,
+     "n_seeds": 5
+    },
+    "share_sl_pick_crosses_water": {
+     "mean": 0.0352,
+     "min": 0.0349,
+     "max": 0.0356,
+     "n_seeds": 5
+    },
+    "extra_wait_share_from_water_crossing_picks": {
+     "mean": 0.0816,
+     "min": 0.0809,
+     "max": 0.0827,
+     "n_seeds": 5
+    },
+    "total_extra_wait_hours_if_straight_line_everywhere": {
+     "mean": 2114.0,
+     "min": 2110.6,
+     "max": 2118.1,
+     "n_seeds": 5
+    }
+   },
+   "measured_in_road_replay": {
+    "seeds": [
+     0,
+     1,
+     2,
+     3,
+     4
+    ],
+    "wrong_driver_rate": {
+     "mean": 0.5031,
+     "min": 0.5027,
+     "max": 0.5036,
+     "n_seeds": 5
+    },
+    "tie_rate": {
+     "mean": 0.0,
+     "min": 0.0,
+     "max": 0.0,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_median": {
+     "mean": 40.0,
+     "min": 39.9,
+     "max": 40.0,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_p90": {
+     "mean": 122.0,
+     "min": 121.5,
+     "max": 122.5,
+     "n_seeds": 5
+    },
+    "conditional_extra_wait_s_mean": {
+     "mean": 58.6,
+     "min": 58.3,
+     "max": 58.8,
+     "n_seeds": 5
+    },
+    "conditional_extra_deadhead_m_median": {
+     "mean": 236.0,
+     "min": 235.1,
+     "max": 236.8,
+     "n_seeds": 5
+    },
+    "share_sl_pick_crosses_water": {
+     "mean": 0.0521,
+     "min": 0.0513,
+     "max": 0.0534,
+     "n_seeds": 5
+    },
+    "extra_wait_share_from_water_crossing_picks": {
+     "mean": 0.1668,
+     "min": 0.1616,
+     "max": 0.1708,
+     "n_seeds": 5
+    },
+    "total_extra_wait_hours_if_straight_line_everywhere": {
+     "mean": 2912.1,
+     "min": 2897.0,
+     "max": 2925.5,
+     "n_seeds": 5
+    }
+   },
+   "breakdowns_road_replay": {
+    "pooled_decisions": 1778619,
+    "seeds": 5,
+    "by_hour": {
+     "0": {
+      "decisions": 97182,
+      "wrong_driver_rate": 0.5064,
+      "conditional_extra_wait_s_median": 40.9,
+      "extra_wait_s_total": 2851497.4,
+      "sl_pick_straight_line_m_median": 449.3201
+     },
+     "1": {
+      "decisions": 87528,
+      "wrong_driver_rate": 0.5531,
+      "conditional_extra_wait_s_median": 40.6,
+      "extra_wait_s_total": 2434691.4,
+      "sl_pick_straight_line_m_median": 199.5717
+     },
+     "2": {
+      "decisions": 70254,
+      "wrong_driver_rate": 0.5655,
+      "conditional_extra_wait_s_median": 38.5,
+      "extra_wait_s_total": 1836646.4,
+      "sl_pick_straight_line_m_median": 179.5166
+     },
+     "3": {
+      "decisions": 53526,
+      "wrong_driver_rate": 0.5921,
+      "conditional_extra_wait_s_median": 38.8,
+      "extra_wait_s_total": 1510413.4,
+      "sl_pick_straight_line_m_median": 146.8403
+     },
+     "4": {
+      "decisions": 35310,
+      "wrong_driver_rate": 0.5864,
+      "conditional_extra_wait_s_median": 37.2,
+      "extra_wait_s_total": 977414.4,
+      "sl_pick_straight_line_m_median": 158.9733
+     },
+     "5": {
+      "decisions": 17310,
+      "wrong_driver_rate": 0.5421,
+      "conditional_extra_wait_s_median": 35.9,
+      "extra_wait_s_total": 485175.0,
+      "sl_pick_straight_line_m_median": 237.2636
+     },
+     "6": {
+      "decisions": 23249,
+      "wrong_driver_rate": 0.4653,
+      "conditional_extra_wait_s_median": 42.4,
+      "extra_wait_s_total": 951337.8,
+      "sl_pick_straight_line_m_median": 471.3486
+     },
+     "7": {
+      "decisions": 32876,
+      "wrong_driver_rate": 0.44,
+      "conditional_extra_wait_s_median": 44.9,
+      "extra_wait_s_total": 1155676.7,
+      "sl_pick_straight_line_m_median": 604.8761
+     },
+     "8": {
+      "decisions": 46065,
+      "wrong_driver_rate": 0.4061,
+      "conditional_extra_wait_s_median": 40.3,
+      "extra_wait_s_total": 1333902.8,
+      "sl_pick_straight_line_m_median": 708.6536
+     },
+     "9": {
+      "decisions": 65512,
+      "wrong_driver_rate": 0.4162,
+      "conditional_extra_wait_s_median": 45.5,
+      "extra_wait_s_total": 2167304.4,
+      "sl_pick_straight_line_m_median": 655.1816
+     },
+     "10": {
+      "decisions": 77793,
+      "wrong_driver_rate": 0.469,
+      "conditional_extra_wait_s_median": 42.2,
+      "extra_wait_s_total": 2631491.5,
+      "sl_pick_straight_line_m_median": 402.7454
+     },
+     "11": {
+      "decisions": 84561,
+      "wrong_driver_rate": 0.4691,
+      "conditional_extra_wait_s_median": 39.7,
+      "extra_wait_s_total": 2666393.0,
+      "sl_pick_straight_line_m_median": 355.1263
+     },
+     "12": {
+      "decisions": 90880,
+      "wrong_driver_rate": 0.4857,
+      "conditional_extra_wait_s_median": 40.2,
+      "extra_wait_s_total": 2875659.8,
+      "sl_pick_straight_line_m_median": 310.2201
+     },
+     "13": {
+      "decisions": 90092,
+      "wrong_driver_rate": 0.492,
+      "conditional_extra_wait_s_median": 39.9,
+      "extra_wait_s_total": 2722400.5,
+      "sl_pick_straight_line_m_median": 282.3125
+     },
+     "14": {
+      "decisions": 85816,
+      "wrong_driver_rate": 0.5409,
+      "conditional_extra_wait_s_median": 42.4,
+      "extra_wait_s_total": 2669210.4,
+      "sl_pick_straight_line_m_median": 200.7724
+     },
+     "15": {
+      "decisions": 84703,
+      "wrong_driver_rate": 0.5073,
+      "conditional_extra_wait_s_median": 40.2,
+      "extra_wait_s_total": 2523885.9,
+      "sl_pick_straight_line_m_median": 254.5435
+     },
+     "16": {
+      "decisions": 79919,
+      "wrong_driver_rate": 0.5207,
+      "conditional_extra_wait_s_median": 38.6,
+      "extra_wait_s_total": 2269921.3,
+      "sl_pick_straight_line_m_median": 225.2855
+     },
+     "17": {
+      "decisions": 88882,
+      "wrong_driver_rate": 0.507,
+      "conditional_extra_wait_s_median": 41.1,
+      "extra_wait_s_total": 2635695.1,
+      "sl_pick_straight_line_m_median": 271.4139
+     },
+     "18": {
+      "decisions": 97209,
+      "wrong_driver_rate": 0.5716,
+      "conditional_extra_wait_s_median": 42.2,
+      "extra_wait_s_total": 3083018.5,
+      "sl_pick_straight_line_m_median": 190.9676
+     },
+     "19": {
+      "decisions": 97764,
+      "wrong_driver_rate": 0.5443,
+      "conditional_extra_wait_s_median": 41.3,
+      "extra_wait_s_total": 3174753.6,
+      "sl_pick_straight_line_m_median": 215.7996
+     },
+     "20": {
+      "decisions": 81476,
+      "wrong_driver_rate": 0.5706,
+      "conditional_extra_wait_s_median": 40.6,
+      "extra_wait_s_total": 2459476.6,
+      "sl_pick_straight_line_m_median": 168.8062
+     },
+     "21": {
+      "decisions": 88663,
+      "wrong_driver_rate": 0.4943,
+      "conditional_extra_wait_s_median": 36.7,
+      "extra_wait_s_total": 2323173.5,
+      "sl_pick_straight_line_m_median": 300.4486
+     },
+     "22": {
+      "decisions": 100859,
+      "wrong_driver_rate": 0.4632,
+      "conditional_extra_wait_s_median": 36.6,
+      "extra_wait_s_total": 2654085.7,
+      "sl_pick_straight_line_m_median": 411.2572
+     },
+     "23": {
+      "decisions": 101190,
+      "wrong_driver_rate": 0.3752,
+      "conditional_extra_wait_s_median": 35.7,
+      "extra_wait_s_total": 2024270.2,
+      "sl_pick_straight_line_m_median": 535.2543
+     }
+    },
+    "by_cell": [
+     {
+      "cell": "882a100c2dfffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.7333,
+      "conditional_extra_wait_s_median": 117.6,
+      "lon": -73.9162,
+      "lat": 40.7325
+     },
+     {
+      "cell": "882a100d0bfffff",
+      "decisions": 226,
+      "wrong_driver_rate": 0.7257,
+      "conditional_extra_wait_s_median": 119.0,
+      "lon": -73.9498,
+      "lat": 40.7421
+     },
+     {
+      "cell": "882a100f65fffff",
+      "decisions": 69,
+      "wrong_driver_rate": 0.7246,
+      "conditional_extra_wait_s_median": 114.2,
+      "lon": -73.9272,
+      "lat": 40.8011
+     },
+     {
+      "cell": "882a107209fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.7,
+      "conditional_extra_wait_s_median": 26.8,
+      "lon": -74.0243,
+      "lat": 40.765
+     },
+     {
+      "cell": "882a103b29fffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.6889,
+      "conditional_extra_wait_s_median": 208.2,
+      "lon": -73.8068,
+      "lat": 40.6587
+     },
+     {
+      "cell": "882a100f67fffff",
+      "decisions": 75,
+      "wrong_driver_rate": 0.68,
+      "conditional_extra_wait_s_median": 96.9,
+      "lon": -73.9223,
+      "lat": 40.7948
+     },
+     {
+      "cell": "882a1008c7fffff",
+      "decisions": 61,
+      "wrong_driver_rate": 0.6721,
+      "conditional_extra_wait_s_median": 45.5,
+      "lon": -73.9644,
+      "lat": 40.81
+     },
+     {
+      "cell": "882a100d2dfffff",
+      "decisions": 95442,
+      "wrong_driver_rate": 0.6681,
+      "conditional_extra_wait_s_median": 69.7,
+      "lon": -73.9907,
+      "lat": 40.7499
+     },
+     {
+      "cell": "882a100c01fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.6667,
+      "conditional_extra_wait_s_median": 153.7,
+      "lon": -73.8826,
+      "lat": 40.7285
+     },
+     {
+      "cell": "882a100d67fffff",
+      "decisions": 58066,
+      "wrong_driver_rate": 0.6657,
+      "conditional_extra_wait_s_median": 47.8,
+      "lon": -73.9813,
+      "lat": 40.755
+     },
+     {
+      "cell": "882a100d29fffff",
+      "decisions": 57118,
+      "wrong_driver_rate": 0.6589,
+      "conditional_extra_wait_s_median": 56.2,
+      "lon": -73.9794,
+      "lat": 40.7474
+     },
+     {
+      "cell": "882a10725bfffff",
+      "decisions": 57217,
+      "wrong_driver_rate": 0.6504,
+      "conditional_extra_wait_s_median": 48.4,
+      "lon": -73.9913,
+      "lat": 40.7578
+     },
+     {
+      "cell": "882a100d21fffff",
+      "decisions": 62061,
+      "wrong_driver_rate": 0.6221,
+      "conditional_extra_wait_s_median": 44.2,
+      "lon": -73.9877,
+      "lat": 40.7421
+     },
+     {
+      "cell": "882a100d25fffff",
+      "decisions": 43129,
+      "wrong_driver_rate": 0.6194,
+      "conditional_extra_wait_s_median": 38.4,
+      "lon": -73.9979,
+      "lat": 40.7441
+     },
+     {
+      "cell": "882a107253fffff",
+      "decisions": 19095,
+      "wrong_driver_rate": 0.6151,
+      "conditional_extra_wait_s_median": 37.4,
+      "lon": -74.0014,
+      "lat": 40.7516
+     },
+     {
+      "cell": "882a100d65fffff",
+      "decisions": 73096,
+      "wrong_driver_rate": 0.5906,
+      "conditional_extra_wait_s_median": 41.6,
+      "lon": -73.984,
+      "lat": 40.763
+     },
+     {
+      "cell": "882a100d63fffff",
+      "decisions": 51202,
+      "wrong_driver_rate": 0.5831,
+      "conditional_extra_wait_s_median": 42.1,
+      "lon": -73.972,
+      "lat": 40.7535
+     },
+     {
+      "cell": "882a107257fffff",
+      "decisions": 997,
+      "wrong_driver_rate": 0.5767,
+      "conditional_extra_wait_s_median": 76.1,
+      "lon": -74.0077,
+      "lat": 40.7516
+     },
+     {
+      "cell": "882a100d05fffff",
+      "decisions": 6038,
+      "wrong_driver_rate": 0.5664,
+      "conditional_extra_wait_s_median": 73.65,
+      "lon": -73.9725,
+      "lat": 40.7452
+     },
+     {
+      "cell": "882a103b39fffff",
+      "decisions": 254,
+      "wrong_driver_rate": 0.5512,
+      "conditional_extra_wait_s_median": 46.8,
+      "lon": -73.7939,
+      "lat": 40.6441
+     },
+     {
+      "cell": "882a100d61fffff",
+      "decisions": 68677,
+      "wrong_driver_rate": 0.5504,
+      "conditional_extra_wait_s_median": 35.1,
+      "lon": -73.9731,
+      "lat": 40.7609
+     },
+     {
+      "cell": "882a100d2bfffff",
+      "decisions": 27539,
+      "wrong_driver_rate": 0.5503,
+      "conditional_extra_wait_s_median": 53.9,
+      "lon": -73.979,
+      "lat": 40.7403
+     },
+     {
+      "cell": "882a107219fffff",
+      "decisions": 15897,
+      "wrong_driver_rate": 0.5495,
+      "conditional_extra_wait_s_median": 45.8,
+      "lon": -74.0063,
+      "lat": 40.7457
+     },
+     {
+      "cell": "882a100de5fffff",
+      "decisions": 1021,
+      "wrong_driver_rate": 0.5426,
+      "conditional_extra_wait_s_median": 41.65,
+      "lon": -73.9644,
+      "lat": 40.7104
+     },
+     {
+      "cell": "882a100f6dfffff",
+      "decisions": 50,
+      "wrong_driver_rate": 0.54,
+      "conditional_extra_wait_s_median": 29.0,
+      "lon": -73.916,
+      "lat": 40.8062
+     },
+     {
+      "cell": "882a100e27fffff",
+      "decisions": 69,
+      "wrong_driver_rate": 0.5362,
+      "conditional_extra_wait_s_median": 48.5,
+      "lon": -73.8631,
+      "lat": 40.7576
+     },
+     {
+      "cell": "882a100d6bfffff",
+      "decisions": 30291,
+      "wrong_driver_rate": 0.5344,
+      "conditional_extra_wait_s_median": 40.6,
+      "lon": -73.9643,
+      "lat": 40.7592
+     },
+     {
+      "cell": "882a107259fffff",
+      "decisions": 19088,
+      "wrong_driver_rate": 0.5317,
+      "conditional_extra_wait_s_median": 35.6,
+      "lon": -73.9945,
+      "lat": 40.7647
+     },
+     {
+      "cell": "882a1008b7fffff",
+      "decisions": 110,
+      "wrong_driver_rate": 0.5273,
+      "conditional_extra_wait_s_median": 49.25,
+      "lon": -73.9929,
+      "lat": 40.7728
+     },
+     {
+      "cell": "882a103b2bfffff",
+      "decisions": 123,
+      "wrong_driver_rate": 0.5203,
+      "conditional_extra_wait_s_median": 41.2,
+      "lon": -73.8058,
+      "lat": 40.6518
+     },
+     {
+      "cell": "882a100d6dfffff",
+      "decisions": 19089,
+      "wrong_driver_rate": 0.5089,
+      "conditional_extra_wait_s_median": 35.1,
+      "lon": -73.9776,
+      "lat": 40.7669
+     },
+     {
+      "cell": "882a100d37fffff",
+      "decisions": 5632,
+      "wrong_driver_rate": 0.5036,
+      "conditional_extra_wait_s_median": 44.75,
+      "lon": -73.9828,
+      "lat": 40.7201
+     },
+     {
+      "cell": "882a1072cbfffff",
+      "decisions": 59372,
+      "wrong_driver_rate": 0.5034,
+      "conditional_extra_wait_s_median": 45.6,
+      "lon": -73.9899,
+      "lat": 40.7208
+     },
+     {
+      "cell": "882a100d27fffff",
+      "decisions": 49124,
+      "wrong_driver_rate": 0.5012,
+      "conditional_extra_wait_s_median": 36.3,
+      "lon": -73.9961,
+      "lat": 40.7366
+     },
+     {
+      "cell": "882a100aedfffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.5,
+      "conditional_extra_wait_s_median": 58.5,
+      "lon": -73.9306,
+      "lat": 40.8617
+     },
+     {
+      "cell": "882a100d33fffff",
+      "decisions": 666,
+      "wrong_driver_rate": 0.497,
+      "conditional_extra_wait_s_median": 35.4,
+      "lon": -73.9656,
+      "lat": 40.7141
+     },
+     {
+      "cell": "882a1008b3fffff",
+      "decisions": 36253,
+      "wrong_driver_rate": 0.4957,
+      "conditional_extra_wait_s_median": 37.2,
+      "lon": -73.9844,
+      "lat": 40.7704
+     },
+     {
+      "cell": "882a100f15fffff",
+      "decisions": 192,
+      "wrong_driver_rate": 0.4948,
+      "conditional_extra_wait_s_median": 62.0,
+      "lon": -73.8934,
+      "lat": 40.7673
+     },
+     {
+      "cell": "882a100d41fffff",
+      "decisions": 122,
+      "wrong_driver_rate": 0.4918,
+      "conditional_extra_wait_s_median": 413.0,
+      "lon": -73.9466,
+      "lat": 40.7632
+     },
+     {
+      "cell": "882a100d53fffff",
+      "decisions": 109,
+      "wrong_driver_rate": 0.4862,
+      "conditional_extra_wait_s_median": 54.9,
+      "lon": -73.9255,
+      "lat": 40.7368
+     },
+     {
+      "cell": "882a103b0dfffff",
+      "decisions": 92,
+      "wrong_driver_rate": 0.4783,
+      "conditional_extra_wait_s_median": 132.4,
+      "lon": -73.7899,
+      "lat": 40.6631
+     },
+     {
+      "cell": "882a103b15fffff",
+      "decisions": 1423,
+      "wrong_driver_rate": 0.4772,
+      "conditional_extra_wait_s_median": 31.7,
+      "lon": -73.7882,
+      "lat": 40.6417
+     },
+     {
+      "cell": "882a103b0bfffff",
+      "decisions": 382,
+      "wrong_driver_rate": 0.4764,
+      "conditional_extra_wait_s_median": 263.6,
+      "lon": -73.7806,
+      "lat": 40.6481
+     },
+     {
+      "cell": "882a107251fffff",
+      "decisions": 11848,
+      "wrong_driver_rate": 0.4754,
+      "conditional_extra_wait_s_median": 41.3,
+      "lon": -74.0008,
+      "lat": 40.7601
+     },
+     {
+      "cell": "882a100e25fffff",
+      "decisions": 6423,
+      "wrong_driver_rate": 0.4747,
+      "conditional_extra_wait_s_median": 38.0,
+      "lon": -73.8633,
+      "lat": 40.7694
+     },
+     {
+      "cell": "882a107281fffff",
+      "decisions": 14842,
+      "wrong_driver_rate": 0.4743,
+      "conditional_extra_wait_s_median": 81.65,
+      "lon": -74.0143,
+      "lat": 40.7046
+     },
+     {
+      "cell": "882a1072c9fffff",
+      "decisions": 53425,
+      "wrong_driver_rate": 0.4739,
+      "conditional_extra_wait_s_median": 29.1,
+      "lon": -73.9925,
+      "lat": 40.7279
+     },
+     {
+      "cell": "882a100f53fffff",
+      "decisions": 5156,
+      "wrong_driver_rate": 0.4711,
+      "conditional_extra_wait_s_median": 26.2,
+      "lon": -73.8706,
+      "lat": 40.7735
+     },
+     {
+      "cell": "882a100d69fffff",
+      "decisions": 40383,
+      "wrong_driver_rate": 0.4701,
+      "conditional_extra_wait_s_median": 30.8,
+      "lon": -73.9652,
+      "lat": 40.7657
+     },
+     {
+      "cell": "882a100da5fffff",
+      "decisions": 2454,
+      "wrong_driver_rate": 0.4678,
+      "conditional_extra_wait_s_median": 47.5,
+      "lon": -73.982,
+      "lat": 40.689
+     },
+     {
+      "cell": "882a100f1dfffff",
+      "decisions": 600,
+      "wrong_driver_rate": 0.4667,
+      "conditional_extra_wait_s_median": 17.6,
+      "lon": -73.8856,
+      "lat": 40.7723
+     },
+     {
+      "cell": "882a100f3bfffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.4667,
+      "conditional_extra_wait_s_median": 23.35,
+      "lon": -73.9014,
+      "lat": 40.7605
+     },
+     {
+      "cell": "882a100ac7fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.4667,
+      "conditional_extra_wait_s_median": 24.3,
+      "lon": -73.9111,
+      "lat": 40.8489
+     },
+     {
+      "cell": "882a100c37fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.4667,
+      "conditional_extra_wait_s_median": 71.55,
+      "lon": -73.903,
+      "lat": 40.7012
+     },
+     {
+      "cell": "882a100d17fffff",
+      "decisions": 1330,
+      "wrong_driver_rate": 0.4662,
+      "conditional_extra_wait_s_median": 31.85,
+      "lon": -73.9515,
+      "lat": 40.7187
+     },
+     {
+      "cell": "882a100dedfffff",
+      "decisions": 4889,
+      "wrong_driver_rate": 0.4655,
+      "conditional_extra_wait_s_median": 31.35,
+      "lon": -73.9584,
+      "lat": 40.7138
+     },
+     {
+      "cell": "882a100d23fffff",
+      "decisions": 55747,
+      "wrong_driver_rate": 0.4642,
+      "conditional_extra_wait_s_median": 39.3,
+      "lon": -73.986,
+      "lat": 40.7338
+     },
+     {
+      "cell": "882a107289fffff",
+      "decisions": 27557,
+      "wrong_driver_rate": 0.4639,
+      "conditional_extra_wait_s_median": 55.1,
+      "lon": -74.0081,
+      "lat": 40.7094
+     },
+     {
+      "cell": "882a1072d3fffff",
+      "decisions": 1669,
+      "wrong_driver_rate": 0.4572,
+      "conditional_extra_wait_s_median": 43.6,
+      "lon": -73.9847,
+      "lat": 40.6956
+     },
+     {
+      "cell": "882a100893fffff",
+      "decisions": 41482,
+      "wrong_driver_rate": 0.4543,
+      "conditional_extra_wait_s_median": 40.8,
+      "lon": -73.9567,
+      "lat": 40.7719
+     },
+     {
+      "cell": "882a100d01fffff",
+      "decisions": 970,
+      "wrong_driver_rate": 0.4505,
+      "conditional_extra_wait_s_median": 83.8,
+      "lon": -73.9548,
+      "lat": 40.7438
+     },
+     {
+      "cell": "882a103b03fffff",
+      "decisions": 8963,
+      "wrong_driver_rate": 0.4491,
+      "conditional_extra_wait_s_median": 161.5,
+      "lon": -73.7879,
+      "lat": 40.6461
+     },
+     {
+      "cell": "882a1072c5fffff",
+      "decisions": 4176,
+      "wrong_driver_rate": 0.4466,
+      "conditional_extra_wait_s_median": 38.7,
+      "lon": -74.0089,
+      "lat": 40.7251
+     },
+     {
+      "cell": "882a100d3dfffff",
+      "decisions": 6672,
+      "wrong_driver_rate": 0.4465,
+      "conditional_extra_wait_s_median": 64.3,
+      "lon": -73.9771,
+      "lat": 40.7314
+     },
+     {
+      "cell": "882a10721bfffff",
+      "decisions": 55276,
+      "wrong_driver_rate": 0.4462,
+      "conditional_extra_wait_s_median": 34.0,
+      "lon": -74.0054,
+      "lat": 40.7398
+     },
+     {
+      "cell": "882a1008c9fffff",
+      "decisions": 2605,
+      "wrong_driver_rate": 0.4457,
+      "conditional_extra_wait_s_median": 32.4,
+      "lon": -73.9526,
+      "lat": 40.823
+     },
+     {
+      "cell": "882a100d45fffff",
+      "decisions": 15049,
+      "wrong_driver_rate": 0.4447,
+      "conditional_extra_wait_s_median": 36.6,
+      "lon": -73.956,
+      "lat": 40.7653
+     },
+     {
+      "cell": "882a100aa7fffff",
+      "decisions": 378,
+      "wrong_driver_rate": 0.4444,
+      "conditional_extra_wait_s_median": 25.9,
+      "lon": -73.9506,
+      "lat": 40.8273
+     },
+     {
+      "cell": "882a10729bfffff",
+      "decisions": 1565,
+      "wrong_driver_rate": 0.4441,
+      "conditional_extra_wait_s_median": 35.8,
+      "lon": -73.9913,
+      "lat": 40.6851
+     },
+     {
+      "cell": "882a1008c1fffff",
+      "decisions": 1889,
+      "wrong_driver_rate": 0.4436,
+      "conditional_extra_wait_s_median": 24.5,
+      "lon": -73.9588,
+      "lat": 40.8154
+     },
+     {
+      "cell": "882a1072d5fffff",
+      "decisions": 733,
+      "wrong_driver_rate": 0.4434,
+      "conditional_extra_wait_s_median": 72.7,
+      "lon": -74.0004,
+      "lat": 40.7086
+     },
+     {
+      "cell": "882a1072c3fffff",
+      "decisions": 12384,
+      "wrong_driver_rate": 0.4432,
+      "conditional_extra_wait_s_median": 38.8,
+      "lon": -73.9996,
+      "lat": 40.7163
+     },
+     {
+      "cell": "882a100d43fffff",
+      "decisions": 2490,
+      "wrong_driver_rate": 0.4406,
+      "conditional_extra_wait_s_median": 53.6,
+      "lon": -73.941,
+      "lat": 40.7528
+     },
+     {
+      "cell": "882a100da7fffff",
+      "decisions": 2568,
+      "wrong_driver_rate": 0.4381,
+      "conditional_extra_wait_s_median": 46.2,
+      "lon": -73.9782,
+      "lat": 40.6824
+     },
+     {
+      "cell": "882a100db5fffff",
+      "decisions": 295,
+      "wrong_driver_rate": 0.4373,
+      "conditional_extra_wait_s_median": 60.7,
+      "lon": -73.9654,
+      "lat": 40.6725
+     },
+     {
+      "cell": "882a100db9fffff",
+      "decisions": 135,
+      "wrong_driver_rate": 0.437,
+      "conditional_extra_wait_s_median": 40.6,
+      "lon": -73.9468,
+      "lat": 40.6759
+     },
+     {
+      "cell": "882a100a53fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.4333,
+      "conditional_extra_wait_s_median": 28.9,
+      "lon": -73.9015,
+      "lat": 40.8837
+     },
+     {
+      "cell": "882a10089bfffff",
+      "decisions": 29988,
+      "wrong_driver_rate": 0.4322,
+      "conditional_extra_wait_s_median": 46.4,
+      "lon": -73.9493,
+      "lat": 40.7775
+     },
+     {
+      "cell": "882a100aa1fffff",
+      "decisions": 1306,
+      "wrong_driver_rate": 0.4319,
+      "conditional_extra_wait_s_median": 23.6,
+      "lon": -73.9444,
+      "lat": 40.835
+     },
+     {
+      "cell": "882a100de1fffff",
+      "decisions": 950,
+      "wrong_driver_rate": 0.4305,
+      "conditional_extra_wait_s_median": 31.9,
+      "lon": -73.9569,
+      "lat": 40.7081
+     },
+     {
+      "cell": "882a107299fffff",
+      "decisions": 3698,
+      "wrong_driver_rate": 0.4302,
+      "conditional_extra_wait_s_median": 38.7,
+      "lon": -73.9915,
+      "lat": 40.6915
+     },
+     {
+      "cell": "882a100d3bfffff",
+      "decisions": 2137,
+      "wrong_driver_rate": 0.4291,
+      "conditional_extra_wait_s_median": 32.8,
+      "lon": -73.9591,
+      "lat": 40.7203
+     },
+     {
+      "cell": "882a100ae3fffff",
+      "decisions": 70,
+      "wrong_driver_rate": 0.4286,
+      "conditional_extra_wait_s_median": 9.05,
+      "lon": -73.9324,
+      "lat": 40.8477
+     },
+     {
+      "cell": "882a100c2bfffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.4286,
+      "conditional_extra_wait_s_median": 248.1,
+      "lon": -73.9015,
+      "lat": 40.7243
+     },
+     {
+      "cell": "882a100d35fffff",
+      "decisions": 37665,
+      "wrong_driver_rate": 0.4271,
+      "conditional_extra_wait_s_median": 32.8,
+      "lon": -73.9834,
+      "lat": 40.7266
+     },
+     {
+      "cell": "882a103b1dfffff",
+      "decisions": 8274,
+      "wrong_driver_rate": 0.4262,
+      "conditional_extra_wait_s_median": 270.7,
+      "lon": -73.781,
+      "lat": 40.6457
+     },
+     {
+      "cell": "882a100f25fffff",
+      "decisions": 857,
+      "wrong_driver_rate": 0.4259,
+      "conditional_extra_wait_s_median": 43.1,
+      "lon": -73.9447,
+      "lat": 40.7831
+     },
+     {
+      "cell": "882a1008d3fffff",
+      "decisions": 5108,
+      "wrong_driver_rate": 0.4256,
+      "conditional_extra_wait_s_median": 36.3,
+      "lon": -73.9433,
+      "lat": 40.7909
+     },
+     {
+      "cell": "882a10728bfffff",
+      "decisions": 5779,
+      "wrong_driver_rate": 0.4255,
+      "conditional_extra_wait_s_median": 62.2,
+      "lon": -74.0077,
+      "lat": 40.7047
+     },
+     {
+      "cell": "882a100d87fffff",
+      "decisions": 353,
+      "wrong_driver_rate": 0.4249,
+      "conditional_extra_wait_s_median": 47.45,
+      "lon": -73.9503,
+      "lat": 40.6813
+     },
+     {
+      "cell": "882a100889fffff",
+      "decisions": 10461,
+      "wrong_driver_rate": 0.4246,
+      "conditional_extra_wait_s_median": 27.9,
+      "lon": -73.9663,
+      "lat": 40.8025
+     },
+     {
+      "cell": "882a10088bfffff",
+      "decisions": 12704,
+      "wrong_driver_rate": 0.4243,
+      "conditional_extra_wait_s_median": 36.0,
+      "lon": -73.965,
+      "lat": 40.7948
+     },
+     {
+      "cell": "882a10728dfffff",
+      "decisions": 14327,
+      "wrong_driver_rate": 0.4233,
+      "conditional_extra_wait_s_median": 69.65,
+      "lon": -74.0152,
+      "lat": 40.7123
+     },
+     {
+      "cell": "882a1008d9fffff",
+      "decisions": 2518,
+      "wrong_driver_rate": 0.423,
+      "conditional_extra_wait_s_median": 29.8,
+      "lon": -73.9373,
+      "lat": 40.8035
+     },
+     {
+      "cell": "882a100d49fffff",
+      "decisions": 544,
+      "wrong_driver_rate": 0.4228,
+      "conditional_extra_wait_s_median": 40.4,
+      "lon": -73.9317,
+      "lat": 40.766
+     },
+     {
+      "cell": "882a100dc3fffff",
+      "decisions": 249,
+      "wrong_driver_rate": 0.4217,
+      "conditional_extra_wait_s_median": 35.6,
+      "lon": -73.9252,
+      "lat": 40.6983
+     },
+     {
+      "cell": "882a100dbdfffff",
+      "decisions": 304,
+      "wrong_driver_rate": 0.4211,
+      "conditional_extra_wait_s_median": 42.1,
+      "lon": -73.9568,
+      "lat": 40.6767
+     },
+     {
+      "cell": "882a107213fffff",
+      "decisions": 488,
+      "wrong_driver_rate": 0.4201,
+      "conditional_extra_wait_s_median": 32.6,
+      "lon": -74.0101,
+      "lat": 40.7332
+     },
+     {
+      "cell": "882a100da1fffff",
+      "decisions": 1201,
+      "wrong_driver_rate": 0.4188,
+      "conditional_extra_wait_s_median": 35.4,
+      "lon": -73.9711,
+      "lat": 40.6878
+     },
+     {
+      "cell": "882a100897fffff",
+      "decisions": 15281,
+      "wrong_driver_rate": 0.4184,
+      "conditional_extra_wait_s_median": 28.3,
+      "lon": -73.9648,
+      "lat": 40.7735
+     },
+     {
+      "cell": "882a100d31fffff",
+      "decisions": 194,
+      "wrong_driver_rate": 0.4175,
+      "conditional_extra_wait_s_median": 62.7,
+      "lon": -73.9757,
+      "lat": 40.724
+     },
+     {
+      "cell": "882a1008bbfffff",
+      "decisions": 31948,
+      "wrong_driver_rate": 0.4154,
+      "conditional_extra_wait_s_median": 33.0,
+      "lon": -73.9797,
+      "lat": 40.7768
+     },
+     {
+      "cell": "882a1008b9fffff",
+      "decisions": 24913,
+      "wrong_driver_rate": 0.412,
+      "conditional_extra_wait_s_median": 32.4,
+      "lon": -73.9794,
+      "lat": 40.7839
+     },
+     {
+      "cell": "882a100d47fffff",
+      "decisions": 90,
+      "wrong_driver_rate": 0.4111,
+      "conditional_extra_wait_s_median": 234.3,
+      "lon": -73.9502,
+      "lat": 40.7546
+     },
+     {
+      "cell": "882a100c4dfffff",
+      "decisions": 95,
+      "wrong_driver_rate": 0.4105,
+      "conditional_extra_wait_s_median": 30.4,
+      "lon": -73.8703,
+      "lat": 40.7519
+     },
+     {
+      "cell": "882a1072c1fffff",
+      "decisions": 40304,
+      "wrong_driver_rate": 0.4099,
+      "conditional_extra_wait_s_median": 27.1,
+      "lon": -74.0009,
+      "lat": 40.7231
+     },
+     {
+      "cell": "882a1008ddfffff",
+      "decisions": 2513,
+      "wrong_driver_rate": 0.4095,
+      "conditional_extra_wait_s_median": 29.8,
+      "lon": -73.9469,
+      "lat": 40.8071
+     },
+     {
+      "cell": "882a1008d7fffff",
+      "decisions": 2436,
+      "wrong_driver_rate": 0.4093,
+      "conditional_extra_wait_s_median": 36.0,
+      "lon": -73.9524,
+      "lat": 40.7918
+     },
+     {
+      "cell": "882a100c67fffff",
+      "decisions": 255,
+      "wrong_driver_rate": 0.4078,
+      "conditional_extra_wait_s_median": 31.3,
+      "lon": -73.9049,
+      "lat": 40.7414
+     },
+     {
+      "cell": "882a100881fffff",
+      "decisions": 9874,
+      "wrong_driver_rate": 0.4054,
+      "conditional_extra_wait_s_median": 27.2,
+      "lon": -73.9713,
+      "lat": 40.7963
+     },
+     {
+      "cell": "882a1072d7fffff",
+      "decisions": 1284,
+      "wrong_driver_rate": 0.4034,
+      "conditional_extra_wait_s_median": 45.7,
+      "lon": -73.9924,
+      "lat": 40.7001
+     },
+     {
+      "cell": "882a100891fffff",
+      "decisions": 35534,
+      "wrong_driver_rate": 0.4034,
+      "conditional_extra_wait_s_median": 31.0,
+      "lon": -73.958,
+      "lat": 40.7792
+     },
+     {
+      "cell": "882a103b07fffff",
+      "decisions": 180,
+      "wrong_driver_rate": 0.4,
+      "conditional_extra_wait_s_median": 26.1,
+      "lon": -73.801,
+      "lat": 40.6466
+     },
+     {
+      "cell": "882a100a81fffff",
+      "decisions": 95,
+      "wrong_driver_rate": 0.4,
+      "conditional_extra_wait_s_median": 30.85,
+      "lon": -73.9175,
+      "lat": 40.8362
+     },
+     {
+      "cell": "882a100a87fffff",
+      "decisions": 150,
+      "wrong_driver_rate": 0.4,
+      "conditional_extra_wait_s_median": 42.55,
+      "lon": -73.9254,
+      "lat": 40.8304
+     },
+     {
+      "cell": "882a107203fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.4,
+      "conditional_extra_wait_s_median": 140.9,
+      "lon": -74.0312,
+      "lat": 40.7522
+     },
+     {
+      "cell": "882a100899fffff",
+      "decisions": 18439,
+      "wrong_driver_rate": 0.3998,
+      "conditional_extra_wait_s_median": 33.3,
+      "lon": -73.9512,
+      "lat": 40.7843
+     },
+     {
+      "cell": "882a100883fffff",
+      "decisions": 23353,
+      "wrong_driver_rate": 0.3995,
+      "conditional_extra_wait_s_median": 34.0,
+      "lon": -73.9732,
+      "lat": 40.7899
+     },
+     {
+      "cell": "882a1072cdfffff",
+      "decisions": 50585,
+      "wrong_driver_rate": 0.3977,
+      "conditional_extra_wait_s_median": 29.1,
+      "lon": -74.0029,
+      "lat": 40.7313
+     },
+     {
+      "cell": "882a100e85fffff",
+      "decisions": 58,
+      "wrong_driver_rate": 0.3966,
+      "conditional_extra_wait_s_median": 20.2,
+      "lon": -73.8187,
+      "lat": 40.7104
+     },
+     {
+      "cell": "882a1072c7fffff",
+      "decisions": 22509,
+      "wrong_driver_rate": 0.3956,
+      "conditional_extra_wait_s_median": 34.0,
+      "lon": -74.0096,
+      "lat": 40.7172
+     },
+     {
+      "cell": "882a100db1fffff",
+      "decisions": 344,
+      "wrong_driver_rate": 0.3953,
+      "conditional_extra_wait_s_median": 53.3,
+      "lon": -73.9561,
+      "lat": 40.6706
+     },
+     {
+      "cell": "882a1008d1fffff",
+      "decisions": 3510,
+      "wrong_driver_rate": 0.3895,
+      "conditional_extra_wait_s_median": 30.6,
+      "lon": -73.9446,
+      "lat": 40.7984
+     },
+     {
+      "cell": "882a1072d9fffff",
+      "decisions": 167,
+      "wrong_driver_rate": 0.3892,
+      "conditional_extra_wait_s_median": 103.5,
+      "lon": -73.9788,
+      "lat": 40.7135
+     },
+     {
+      "cell": "882a100c61fffff",
+      "decisions": 454,
+      "wrong_driver_rate": 0.3877,
+      "conditional_extra_wait_s_median": 38.8,
+      "lon": -73.8984,
+      "lat": 40.7446
+     },
+     {
+      "cell": "882a100dcdfffff",
+      "decisions": 80,
+      "wrong_driver_rate": 0.3875,
+      "conditional_extra_wait_s_median": 38.4,
+      "lon": -73.9335,
+      "lat": 40.7139
+     },
+     {
+      "cell": "882a107751fffff",
+      "decisions": 65,
+      "wrong_driver_rate": 0.3846,
+      "conditional_extra_wait_s_median": 44.5,
+      "lon": -73.9708,
+      "lat": 40.6501
+     },
+     {
+      "cell": "882a100dddfffff",
+      "decisions": 115,
+      "wrong_driver_rate": 0.3826,
+      "conditional_extra_wait_s_median": 24.95,
+      "lon": -73.913,
+      "lat": 40.6984
+     },
+     {
+      "cell": "882a100d8bfffff",
+      "decisions": 110,
+      "wrong_driver_rate": 0.3818,
+      "conditional_extra_wait_s_median": 19.7,
+      "lon": -73.9308,
+      "lat": 40.6847
+     },
+     {
+      "cell": "882a10729dfffff",
+      "decisions": 105,
+      "wrong_driver_rate": 0.381,
+      "conditional_extra_wait_s_median": 66.0,
+      "lon": -73.9988,
+      "lat": 40.693
+     },
+     {
+      "cell": "882a100f39fffff",
+      "decisions": 421,
+      "wrong_driver_rate": 0.38,
+      "conditional_extra_wait_s_median": 33.7,
+      "lon": -73.906,
+      "lat": 40.7693
+     },
+     {
+      "cell": "882a1008c3fffff",
+      "decisions": 3435,
+      "wrong_driver_rate": 0.3779,
+      "conditional_extra_wait_s_median": 28.9,
+      "lon": -73.9575,
+      "lat": 40.8092
+     },
+     {
+      "cell": "882a1008dbfffff",
+      "decisions": 2165,
+      "wrong_driver_rate": 0.3755,
+      "conditional_extra_wait_s_median": 30.4,
+      "lon": -73.9362,
+      "lat": 40.7967
+     },
+     {
+      "cell": "882a10089dfffff",
+      "decisions": 3043,
+      "wrong_driver_rate": 0.374,
+      "conditional_extra_wait_s_median": 31.1,
+      "lon": -73.9608,
+      "lat": 40.788
+     },
+     {
+      "cell": "882a100f31fffff",
+      "decisions": 728,
+      "wrong_driver_rate": 0.3736,
+      "conditional_extra_wait_s_median": 27.2,
+      "lon": -73.9149,
+      "lat": 40.7637
+     },
+     {
+      "cell": "882a100dc7fffff",
+      "decisions": 630,
+      "wrong_driver_rate": 0.373,
+      "conditional_extra_wait_s_median": 27.4,
+      "lon": -73.9347,
+      "lat": 40.6999
+     },
+     {
+      "cell": "882a100d55fffff",
+      "decisions": 1217,
+      "wrong_driver_rate": 0.3722,
+      "conditional_extra_wait_s_median": 35.4,
+      "lon": -73.9375,
+      "lat": 40.748
+     },
+     {
+      "cell": "882a100ae1fffff",
+      "decisions": 250,
+      "wrong_driver_rate": 0.372,
+      "conditional_extra_wait_s_median": 29.2,
+      "lon": -73.9326,
+      "lat": 40.855
+     },
+     {
+      "cell": "882a100c05fffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.3714,
+      "conditional_extra_wait_s_median": 25.4,
+      "lon": -73.8939,
+      "lat": 40.7283
+     },
+     {
+      "cell": "882a100dabfffff",
+      "decisions": 481,
+      "wrong_driver_rate": 0.3701,
+      "conditional_extra_wait_s_median": 26.8,
+      "lon": -73.9602,
+      "lat": 40.6841
+     },
+     {
+      "cell": "882a103b01fffff",
+      "decisions": 260,
+      "wrong_driver_rate": 0.3692,
+      "conditional_extra_wait_s_median": 63.7,
+      "lon": -73.792,
+      "lat": 40.6554
+     },
+     {
+      "cell": "882a1072ddfffff",
+      "decisions": 3848,
+      "wrong_driver_rate": 0.369,
+      "conditional_extra_wait_s_median": 27.15,
+      "lon": -73.9908,
+      "lat": 40.7147
+     },
+     {
+      "cell": "882a100d0dfffff",
+      "decisions": 225,
+      "wrong_driver_rate": 0.3689,
+      "conditional_extra_wait_s_median": 124.0,
+      "lon": -73.958,
+      "lat": 40.7488
+     },
+     {
+      "cell": "882a100d4dfffff",
+      "decisions": 7289,
+      "wrong_driver_rate": 0.3684,
+      "conditional_extra_wait_s_median": 41.2,
+      "lon": -73.9492,
+      "lat": 40.7715
+     },
+     {
+      "cell": "882a100f1bfffff",
+      "decisions": 150,
+      "wrong_driver_rate": 0.3667,
+      "conditional_extra_wait_s_median": 52.0,
+      "lon": -73.8736,
+      "lat": 40.7592
+     },
+     {
+      "cell": "882a100acdfffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.3667,
+      "conditional_extra_wait_s_median": 17.3,
+      "lon": -73.903,
+      "lat": 40.8622
+     },
+     {
+      "cell": "882a103b63fffff",
+      "decisions": 90,
+      "wrong_driver_rate": 0.3667,
+      "conditional_extra_wait_s_median": 134.6,
+      "lon": -73.8021,
+      "lat": 40.6648
+     },
+     {
+      "cell": "882a100d91fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.3667,
+      "conditional_extra_wait_s_median": 22.4,
+      "lon": -73.9232,
+      "lat": 40.6704
+     },
+     {
+      "cell": "882a100c65fffff",
+      "decisions": 525,
+      "wrong_driver_rate": 0.3657,
+      "conditional_extra_wait_s_median": 30.7,
+      "lon": -73.9083,
+      "lat": 40.7456
+     },
+     {
+      "cell": "882a100ab7fffff",
+      "decisions": 1489,
+      "wrong_driver_rate": 0.3653,
+      "conditional_extra_wait_s_median": 27.7,
+      "lon": -73.9397,
+      "lat": 40.8125
+     },
+     {
+      "cell": "882a100d8dfffff",
+      "decisions": 210,
+      "wrong_driver_rate": 0.3619,
+      "conditional_extra_wait_s_median": 22.0,
+      "lon": -73.9432,
+      "lat": 40.6946
+     },
+     {
+      "cell": "882a100eb9fffff",
+      "decisions": 94,
+      "wrong_driver_rate": 0.3617,
+      "conditional_extra_wait_s_median": 70.3,
+      "lon": -73.813,
+      "lat": 40.6963
+     },
+     {
+      "cell": "882a100ab1fffff",
+      "decisions": 130,
+      "wrong_driver_rate": 0.3615,
+      "conditional_extra_wait_s_median": 52.3,
+      "lon": -73.9284,
+      "lat": 40.8186
+     },
+     {
+      "cell": "882a107293fffff",
+      "decisions": 1343,
+      "wrong_driver_rate": 0.3596,
+      "conditional_extra_wait_s_median": 35.2,
+      "lon": -73.9975,
+      "lat": 40.6794
+     },
+     {
+      "cell": "882a100f3dfffff",
+      "decisions": 1143,
+      "wrong_driver_rate": 0.3587,
+      "conditional_extra_wait_s_median": 28.2,
+      "lon": -73.9159,
+      "lat": 40.7703
+     },
+     {
+      "cell": "882a100f13fffff",
+      "decisions": 564,
+      "wrong_driver_rate": 0.3546,
+      "conditional_extra_wait_s_median": 26.3,
+      "lon": -73.8822,
+      "lat": 40.7558
+     },
+     {
+      "cell": "882a100da3fffff",
+      "decisions": 993,
+      "wrong_driver_rate": 0.3535,
+      "conditional_extra_wait_s_median": 33.3,
+      "lon": -73.9693,
+      "lat": 40.6786
+     },
+     {
+      "cell": "882a107759fffff",
+      "decisions": 204,
+      "wrong_driver_rate": 0.3529,
+      "conditional_extra_wait_s_median": 53.5,
+      "lon": -73.9596,
+      "lat": 40.6551
+     },
+     {
+      "cell": "882a100ebbfffff",
+      "decisions": 122,
+      "wrong_driver_rate": 0.3525,
+      "conditional_extra_wait_s_median": 130.7,
+      "lon": -73.8096,
+      "lat": 40.6896
+     },
+     {
+      "cell": "882a107757fffff",
+      "decisions": 80,
+      "wrong_driver_rate": 0.35,
+      "conditional_extra_wait_s_median": 34.6,
+      "lon": -73.9785,
+      "lat": 40.6444
+     },
+     {
+      "cell": "882a100ab5fffff",
+      "decisions": 1052,
+      "wrong_driver_rate": 0.3498,
+      "conditional_extra_wait_s_median": 26.6,
+      "lon": -73.9414,
+      "lat": 40.8195
+     },
+     {
+      "cell": "882a1072d1fffff",
+      "decisions": 553,
+      "wrong_driver_rate": 0.3472,
+      "conditional_extra_wait_s_median": 71.9,
+      "lon": -73.9879,
+      "lat": 40.7023
+     },
+     {
+      "cell": "882a100dc1fffff",
+      "decisions": 566,
+      "wrong_driver_rate": 0.3463,
+      "conditional_extra_wait_s_median": 17.5,
+      "lon": -73.9257,
+      "lat": 40.7061
+     },
+     {
+      "cell": "882a100ab3fffff",
+      "decisions": 313,
+      "wrong_driver_rate": 0.345,
+      "conditional_extra_wait_s_median": 55.65,
+      "lon": -73.9274,
+      "lat": 40.8093
+     },
+     {
+      "cell": "882a1008b1fffff",
+      "decisions": 7438,
+      "wrong_driver_rate": 0.3434,
+      "conditional_extra_wait_s_median": 32.75,
+      "lon": -73.9868,
+      "lat": 40.778
+     },
+     {
+      "cell": "882a100d81fffff",
+      "decisions": 105,
+      "wrong_driver_rate": 0.3429,
+      "conditional_extra_wait_s_median": 40.0,
+      "lon": -73.9412,
+      "lat": 40.6872
+     },
+     {
+      "cell": "882a100aa9fffff",
+      "decisions": 808,
+      "wrong_driver_rate": 0.3428,
+      "conditional_extra_wait_s_median": 18.0,
+      "lon": -73.9401,
+      "lat": 40.8411
+     },
+     {
+      "cell": "882a100895fffff",
+      "decisions": 16072,
+      "wrong_driver_rate": 0.3415,
+      "conditional_extra_wait_s_median": 31.3,
+      "lon": -73.9723,
+      "lat": 40.783
+     },
+     {
+      "cell": "882a100d89fffff",
+      "decisions": 345,
+      "wrong_driver_rate": 0.3391,
+      "conditional_extra_wait_s_median": 23.1,
+      "lon": -73.9326,
+      "lat": 40.6949
+     },
+     {
+      "cell": "882a100c43fffff",
+      "decisions": 65,
+      "wrong_driver_rate": 0.3385,
+      "conditional_extra_wait_s_median": 48.15,
+      "lon": -73.8657,
+      "lat": 40.7358
+     },
+     {
+      "cell": "882a100d09fffff",
+      "decisions": 1069,
+      "wrong_driver_rate": 0.3377,
+      "conditional_extra_wait_s_median": 33.1,
+      "lon": -73.9482,
+      "lat": 40.7474
+     },
+     {
+      "cell": "882a100aa3fffff",
+      "decisions": 1521,
+      "wrong_driver_rate": 0.3373,
+      "conditional_extra_wait_s_median": 19.7,
+      "lon": -73.9461,
+      "lat": 40.8278
+     },
+     {
+      "cell": "882a100d5bfffff",
+      "decisions": 1336,
+      "wrong_driver_rate": 0.3361,
+      "conditional_extra_wait_s_median": 30.4,
+      "lon": -73.9186,
+      "lat": 40.7433
+     },
+     {
+      "cell": "882a100d13fffff",
+      "decisions": 328,
+      "wrong_driver_rate": 0.3354,
+      "conditional_extra_wait_s_median": 22.55,
+      "lon": -73.9422,
+      "lat": 40.7157
+     },
+     {
+      "cell": "882a100dbbfffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.3333,
+      "conditional_extra_wait_s_median": 19.1,
+      "lon": -73.9419,
+      "lat": 40.6671
+     },
+     {
+      "cell": "882a100f19fffff",
+      "decisions": 138,
+      "wrong_driver_rate": 0.3333,
+      "conditional_extra_wait_s_median": 46.95,
+      "lon": -73.8758,
+      "lat": 40.7702
+     },
+     {
+      "cell": "882a100d4bfffff",
+      "decisions": 1341,
+      "wrong_driver_rate": 0.3304,
+      "conditional_extra_wait_s_median": 31.1,
+      "lon": -73.9327,
+      "lat": 40.7594
+     },
+     {
+      "cell": "882a100d57fffff",
+      "decisions": 100,
+      "wrong_driver_rate": 0.33,
+      "conditional_extra_wait_s_median": 35.9,
+      "lon": -73.9347,
+      "lat": 40.7382
+     },
+     {
+      "cell": "882a100f35fffff",
+      "decisions": 1885,
+      "wrong_driver_rate": 0.3268,
+      "conditional_extra_wait_s_median": 42.6,
+      "lon": -73.9242,
+      "lat": 40.7646
+     },
+     {
+      "cell": "882a100d85fffff",
+      "decisions": 540,
+      "wrong_driver_rate": 0.3259,
+      "conditional_extra_wait_s_median": 31.15,
+      "lon": -73.954,
+      "lat": 40.6895
+     },
+     {
+      "cell": "882a1008cbfffff",
+      "decisions": 2033,
+      "wrong_driver_rate": 0.3242,
+      "conditional_extra_wait_s_median": 23.2,
+      "lon": -73.95,
+      "lat": 40.8131
+     },
+     {
+      "cell": "882a100d83fffff",
+      "decisions": 170,
+      "wrong_driver_rate": 0.3235,
+      "conditional_extra_wait_s_median": 29.7,
+      "lon": -73.9394,
+      "lat": 40.6797
+     },
+     {
+      "cell": "882a100dd5fffff",
+      "decisions": 155,
+      "wrong_driver_rate": 0.3226,
+      "conditional_extra_wait_s_median": 20.2,
+      "lon": -73.9217,
+      "lat": 40.6904
+     },
+     {
+      "cell": "882a100c69fffff",
+      "decisions": 949,
+      "wrong_driver_rate": 0.3224,
+      "conditional_extra_wait_s_median": 32.1,
+      "lon": -73.8903,
+      "lat": 40.7475
+     },
+     {
+      "cell": "882a100f17fffff",
+      "decisions": 309,
+      "wrong_driver_rate": 0.3204,
+      "conditional_extra_wait_s_median": 33.2,
+      "lon": -73.8913,
+      "lat": 40.7557
+     },
+     {
+      "cell": "882a10774dfffff",
+      "decisions": 889,
+      "wrong_driver_rate": 0.3183,
+      "conditional_extra_wait_s_median": 24.9,
+      "lon": -73.9845,
+      "lat": 40.6758
+     },
+     {
+      "cell": "882a100d51fffff",
+      "decisions": 1573,
+      "wrong_driver_rate": 0.3179,
+      "conditional_extra_wait_s_median": 27.6,
+      "lon": -73.9257,
+      "lat": 40.7443
+     },
+     {
+      "cell": "882a100c5bfffff",
+      "decisions": 215,
+      "wrong_driver_rate": 0.3163,
+      "conditional_extra_wait_s_median": 94.85,
+      "lon": -73.8445,
+      "lat": 40.7222
+     },
+     {
+      "cell": "882a100d15fffff",
+      "decisions": 1406,
+      "wrong_driver_rate": 0.3158,
+      "conditional_extra_wait_s_median": 20.45,
+      "lon": -73.9525,
+      "lat": 40.7263
+     },
+     {
+      "cell": "882a107747fffff",
+      "decisions": 330,
+      "wrong_driver_rate": 0.3152,
+      "conditional_extra_wait_s_median": 24.15,
+      "lon": -73.993,
+      "lat": 40.6644
+     },
+     {
+      "cell": "882a100d5dfffff",
+      "decisions": 1067,
+      "wrong_driver_rate": 0.3149,
+      "conditional_extra_wait_s_median": 25.5,
+      "lon": -73.9311,
+      "lat": 40.7521
+     },
+     {
+      "cell": "882a1008d5fffff",
+      "decisions": 6866,
+      "wrong_driver_rate": 0.3149,
+      "conditional_extra_wait_s_median": 23.9,
+      "lon": -73.9562,
+      "lat": 40.8016
+     },
+     {
+      "cell": "882a100debfffff",
+      "decisions": 436,
+      "wrong_driver_rate": 0.3142,
+      "conditional_extra_wait_s_median": 28.7,
+      "lon": -73.9451,
+      "lat": 40.7032
+     },
+     {
+      "cell": "882a100de9fffff",
+      "decisions": 2311,
+      "wrong_driver_rate": 0.3133,
+      "conditional_extra_wait_s_median": 18.3,
+      "lon": -73.949,
+      "lat": 40.7125
+     },
+     {
+      "cell": "882a100c53fffff",
+      "decisions": 99,
+      "wrong_driver_rate": 0.3131,
+      "conditional_extra_wait_s_median": 42.9,
+      "lon": -73.8478,
+      "lat": 40.7213
+     },
+     {
+      "cell": "882a100ab9fffff",
+      "decisions": 115,
+      "wrong_driver_rate": 0.313,
+      "conditional_extra_wait_s_median": 39.5,
+      "lon": -73.9226,
+      "lat": 40.824
+     },
+     {
+      "cell": "882a100dc5fffff",
+      "decisions": 763,
+      "wrong_driver_rate": 0.3119,
+      "conditional_extra_wait_s_median": 24.15,
+      "lon": -73.9391,
+      "lat": 40.709
+     },
+     {
+      "cell": "882a107297fffff",
+      "decisions": 90,
+      "wrong_driver_rate": 0.3111,
+      "conditional_extra_wait_s_median": 65.2,
+      "lon": -74.0087,
+      "lat": 40.6805
+     },
+     {
+      "cell": "882a100f23fffff",
+      "decisions": 910,
+      "wrong_driver_rate": 0.3088,
+      "conditional_extra_wait_s_median": 37.2,
+      "lon": -73.9251,
+      "lat": 40.7719
+     },
+     {
+      "cell": "882a100c55fffff",
+      "decisions": 144,
+      "wrong_driver_rate": 0.3056,
+      "conditional_extra_wait_s_median": 39.1,
+      "lon": -73.8617,
+      "lat": 40.7301
+     },
+     {
+      "cell": "882a100887fffff",
+      "decisions": 274,
+      "wrong_driver_rate": 0.3029,
+      "conditional_extra_wait_s_median": 26.6,
+      "lon": -73.9792,
+      "lat": 40.7903
+     },
+     {
+      "cell": "882a100a1bfffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.3,
+      "conditional_extra_wait_s_median": 127.1,
+      "lon": -73.9093,
+      "lat": 40.8734
+     },
+     {
+      "cell": "882a100de3fffff",
+      "decisions": 300,
+      "wrong_driver_rate": 0.3,
+      "conditional_extra_wait_s_median": 27.1,
+      "lon": -73.9535,
+      "lat": 40.6967
+     },
+     {
+      "cell": "882a100a17fffff",
+      "decisions": 619,
+      "wrong_driver_rate": 0.2973,
+      "conditional_extra_wait_s_median": 39.75,
+      "lon": -73.9262,
+      "lat": 40.8662
+     },
+     {
+      "cell": "882a100e87fffff",
+      "decisions": 71,
+      "wrong_driver_rate": 0.2958,
+      "conditional_extra_wait_s_median": 74.8,
+      "lon": -73.8158,
+      "lat": 40.7038
+     },
+     {
+      "cell": "882a10770dfffff",
+      "decisions": 115,
+      "wrong_driver_rate": 0.2957,
+      "conditional_extra_wait_s_median": 22.4,
+      "lon": -74.0023,
+      "lat": 40.6564
+     },
+     {
+      "cell": "882a107291fffff",
+      "decisions": 968,
+      "wrong_driver_rate": 0.2944,
+      "conditional_extra_wait_s_median": 26.1,
+      "lon": -73.9978,
+      "lat": 40.6853
+     },
+     {
+      "cell": "882a10774bfffff",
+      "decisions": 245,
+      "wrong_driver_rate": 0.2939,
+      "conditional_extra_wait_s_median": 28.9,
+      "lon": -73.9777,
+      "lat": 40.6657
+     },
+     {
+      "cell": "882a107741fffff",
+      "decisions": 911,
+      "wrong_driver_rate": 0.2931,
+      "conditional_extra_wait_s_median": 20.4,
+      "lon": -73.9859,
+      "lat": 40.6689
+     },
+     {
+      "cell": "882a100d39fffff",
+      "decisions": 110,
+      "wrong_driver_rate": 0.2909,
+      "conditional_extra_wait_s_median": 7.9,
+      "lon": -73.958,
+      "lat": 40.7298
+     },
+     {
+      "cell": "882a100c6dfffff",
+      "decisions": 327,
+      "wrong_driver_rate": 0.2905,
+      "conditional_extra_wait_s_median": 18.3,
+      "lon": -73.8997,
+      "lat": 40.7526
+     },
+     {
+      "cell": "882a100c09fffff",
+      "decisions": 245,
+      "wrong_driver_rate": 0.2898,
+      "conditional_extra_wait_s_median": 34.8,
+      "lon": -73.8722,
+      "lat": 40.7336
+     },
+     {
+      "cell": "882a100d03fffff",
+      "decisions": 409,
+      "wrong_driver_rate": 0.2885,
+      "conditional_extra_wait_s_median": 37.5,
+      "lon": -73.9547,
+      "lat": 40.7334
+     },
+     {
+      "cell": "882a100f57fffff",
+      "decisions": 5724,
+      "wrong_driver_rate": 0.2851,
+      "conditional_extra_wait_s_median": 52.6,
+      "lon": -73.8731,
+      "lat": 40.7741
+     },
+     {
+      "cell": "882a107745fffff",
+      "decisions": 178,
+      "wrong_driver_rate": 0.2809,
+      "conditional_extra_wait_s_median": 35.15,
+      "lon": -73.9931,
+      "lat": 40.6706
+     },
+     {
+      "cell": "882a100c6bfffff",
+      "decisions": 225,
+      "wrong_driver_rate": 0.28,
+      "conditional_extra_wait_s_median": 25.5,
+      "lon": -73.8874,
+      "lat": 40.742
+     },
+     {
+      "cell": "882a100ea9fffff",
+      "decisions": 105,
+      "wrong_driver_rate": 0.2762,
+      "conditional_extra_wait_s_median": 37.7,
+      "lon": -73.8281,
+      "lat": 40.7141
+     },
+     {
+      "cell": "882a100aabfffff",
+      "decisions": 70,
+      "wrong_driver_rate": 0.2714,
+      "conditional_extra_wait_s_median": 38.5,
+      "lon": -73.9386,
+      "lat": 40.8328
+     },
+     {
+      "cell": "882a100f2bfffff",
+      "decisions": 126,
+      "wrong_driver_rate": 0.2698,
+      "conditional_extra_wait_s_median": 62.25,
+      "lon": -73.9179,
+      "lat": 40.7778
+     },
+     {
+      "cell": "882a100e07fffff",
+      "decisions": 89,
+      "wrong_driver_rate": 0.2697,
+      "conditional_extra_wait_s_median": 41.4,
+      "lon": -73.8313,
+      "lat": 40.7611
+     },
+     {
+      "cell": "882a100dadfffff",
+      "decisions": 510,
+      "wrong_driver_rate": 0.2686,
+      "conditional_extra_wait_s_median": 40.9,
+      "lon": -73.972,
+      "lat": 40.694
+     },
+     {
+      "cell": "882a100c5dfffff",
+      "decisions": 90,
+      "wrong_driver_rate": 0.2667,
+      "conditional_extra_wait_s_median": 73.35,
+      "lon": -73.8525,
+      "lat": 40.7355
+     },
+     {
+      "cell": "882a100c51fffff",
+      "decisions": 105,
+      "wrong_driver_rate": 0.2667,
+      "conditional_extra_wait_s_median": 22.0,
+      "lon": -73.8523,
+      "lat": 40.7266
+     },
+     {
+      "cell": "882a100ae7fffff",
+      "decisions": 694,
+      "wrong_driver_rate": 0.2651,
+      "conditional_extra_wait_s_median": 36.2,
+      "lon": -73.9382,
+      "lat": 40.849
+     },
+     {
+      "cell": "882a107749fffff",
+      "decisions": 608,
+      "wrong_driver_rate": 0.2648,
+      "conditional_extra_wait_s_median": 25.7,
+      "lon": -73.9771,
+      "lat": 40.675
+     },
+     {
+      "cell": "882a100f11fffff",
+      "decisions": 68,
+      "wrong_driver_rate": 0.2647,
+      "conditional_extra_wait_s_median": 20.8,
+      "lon": -73.8846,
+      "lat": 40.7641
+     },
+     {
+      "cell": "882a100f37fffff",
+      "decisions": 1459,
+      "wrong_driver_rate": 0.2591,
+      "conditional_extra_wait_s_median": 17.95,
+      "lon": -73.921,
+      "lat": 40.7573
+     },
+     {
+      "cell": "882a100c45fffff",
+      "decisions": 266,
+      "wrong_driver_rate": 0.2556,
+      "conditional_extra_wait_s_median": 24.1,
+      "lon": -73.8803,
+      "lat": 40.7485
+     },
+     {
+      "cell": "882a100abdfffff",
+      "decisions": 110,
+      "wrong_driver_rate": 0.2545,
+      "conditional_extra_wait_s_median": 44.3,
+      "lon": -73.9352,
+      "lat": 40.8243
+     },
+     {
+      "cell": "882a100da9fffff",
+      "decisions": 556,
+      "wrong_driver_rate": 0.2536,
+      "conditional_extra_wait_s_median": 40.9,
+      "lon": -73.9623,
+      "lat": 40.692
+     },
+     {
+      "cell": "882a107743fffff",
+      "decisions": 215,
+      "wrong_driver_rate": 0.2512,
+      "conditional_extra_wait_s_median": 26.4,
+      "lon": -73.982,
+      "lat": 40.6617
+     },
+     {
+      "cell": "882a100dc9fffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.25,
+      "conditional_extra_wait_s_median": 85.05,
+      "lon": -73.9194,
+      "lat": 40.7106
+     },
+     {
+      "cell": "882a100d95fffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.25,
+      "conditional_extra_wait_s_median": 19.15,
+      "lon": -73.9348,
+      "lat": 40.6703
+     },
+     {
+      "cell": "882a100f07fffff",
+      "decisions": 604,
+      "wrong_driver_rate": 0.2483,
+      "conditional_extra_wait_s_median": 21.1,
+      "lon": -73.9095,
+      "lat": 40.7748
+     },
+     {
+      "cell": "882a107625fffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.2444,
+      "conditional_extra_wait_s_median": 8.6,
+      "lon": -73.9653,
+      "lat": 40.6345
+     },
+     {
+      "cell": "882a100de7fffff",
+      "decisions": 50,
+      "wrong_driver_rate": 0.24,
+      "conditional_extra_wait_s_median": 72.9,
+      "lon": -73.9611,
+      "lat": 40.6986
+     },
+     {
+      "cell": "882a100db7fffff",
+      "decisions": 250,
+      "wrong_driver_rate": 0.24,
+      "conditional_extra_wait_s_median": 29.95,
+      "lon": -73.9617,
+      "lat": 40.6623
+     },
+     {
+      "cell": "882a100c47fffff",
+      "decisions": 209,
+      "wrong_driver_rate": 0.2392,
+      "conditional_extra_wait_s_median": 30.15,
+      "lon": -73.8782,
+      "lat": 40.7385
+     },
+     {
+      "cell": "882a100dcbfffff",
+      "decisions": 95,
+      "wrong_driver_rate": 0.2316,
+      "conditional_extra_wait_s_median": 23.35,
+      "lon": -73.9161,
+      "lat": 40.7035
+     },
+     {
+      "cell": "882a100e3dfffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.2286,
+      "conditional_extra_wait_s_median": 49.85,
+      "lon": -73.8432,
+      "lat": 40.7546
+     },
+     {
+      "cell": "882a100c49fffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.225,
+      "conditional_extra_wait_s_median": 43.8,
+      "lon": -73.8604,
+      "lat": 40.7511
+     },
+     {
+      "cell": "882a107415fffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.2222,
+      "conditional_extra_wait_s_median": 2.75,
+      "lon": -73.9796,
+      "lat": 40.5775
+     },
+     {
+      "cell": "882a10776dfffff",
+      "decisions": 50,
+      "wrong_driver_rate": 0.22,
+      "conditional_extra_wait_s_median": 15.6,
+      "lon": -74.014,
+      "lat": 40.6755
+     },
+     {
+      "cell": "882a103b61fffff",
+      "decisions": 134,
+      "wrong_driver_rate": 0.2164,
+      "conditional_extra_wait_s_median": 40.3,
+      "lon": -73.8015,
+      "lat": 40.6729
+     },
+     {
+      "cell": "882a100c63fffff",
+      "decisions": 75,
+      "wrong_driver_rate": 0.2133,
+      "conditional_extra_wait_s_median": 13.4,
+      "lon": -73.8949,
+      "lat": 40.7393
+     },
+     {
+      "cell": "882a100dd3fffff",
+      "decisions": 50,
+      "wrong_driver_rate": 0.2,
+      "conditional_extra_wait_s_median": 36.9,
+      "lon": -73.909,
+      "lat": 40.6816
+     },
+     {
+      "cell": "882a100f33fffff",
+      "decisions": 541,
+      "wrong_driver_rate": 0.1867,
+      "conditional_extra_wait_s_median": 20.7,
+      "lon": -73.9112,
+      "lat": 40.7543
+     },
+     {
+      "cell": "882a100d11fffff",
+      "decisions": 200,
+      "wrong_driver_rate": 0.185,
+      "conditional_extra_wait_s_median": 35.5,
+      "lon": -73.942,
+      "lat": 40.7231
+     },
+     {
+      "cell": "882a100c0bfffff",
+      "decisions": 49,
+      "wrong_driver_rate": 0.1837,
+      "conditional_extra_wait_s_median": 29.8,
+      "lon": -73.8677,
+      "lat": 40.7232
+     },
+     {
+      "cell": "882a100a11fffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.1778,
+      "conditional_extra_wait_s_median": 74.0,
+      "lon": -73.9154,
+      "lat": 40.8712
+     },
+     {
+      "cell": "882a10754bfffff",
+      "decisions": 57,
+      "wrong_driver_rate": 0.1754,
+      "conditional_extra_wait_s_median": 23.05,
+      "lon": -74.0308,
+      "lat": 40.6249
+     },
+     {
+      "cell": "882a100a13fffff",
+      "decisions": 80,
+      "wrong_driver_rate": 0.175,
+      "conditional_extra_wait_s_median": 18.7,
+      "lon": -73.9185,
+      "lat": 40.8667
+     },
+     {
+      "cell": "882a100a8dfffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.1714,
+      "conditional_extra_wait_s_median": 34.3,
+      "lon": -73.9183,
+      "lat": 40.8441
+     },
+     {
+      "cell": "882a100c19fffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.1714,
+      "conditional_extra_wait_s_median": 63.6,
+      "lon": -73.859,
+      "lat": 40.7125
+     },
+     {
+      "cell": "882a100d59fffff",
+      "decisions": 178,
+      "wrong_driver_rate": 0.1685,
+      "conditional_extra_wait_s_median": 60.9,
+      "lon": -73.9184,
+      "lat": 40.7467
+     },
+     {
+      "cell": "882a10775bfffff",
+      "decisions": 72,
+      "wrong_driver_rate": 0.1667,
+      "conditional_extra_wait_s_median": 44.95,
+      "lon": -73.9595,
+      "lat": 40.6484
+     },
+     {
+      "cell": "882a100ae9fffff",
+      "decisions": 115,
+      "wrong_driver_rate": 0.1652,
+      "conditional_extra_wait_s_median": 20.8,
+      "lon": -73.9244,
+      "lat": 40.8617
+     },
+     {
+      "cell": "882a100db3fffff",
+      "decisions": 55,
+      "wrong_driver_rate": 0.1636,
+      "conditional_extra_wait_s_median": 103.2,
+      "lon": -73.9529,
+      "lat": 40.6609
+     },
+     {
+      "cell": "882a100d9dfffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.1556,
+      "conditional_extra_wait_s_median": 24.1,
+      "lon": -73.9269,
+      "lat": 40.6787
+     },
+     {
+      "cell": "882a100eadfffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.15,
+      "conditional_extra_wait_s_median": 86.0,
+      "lon": -73.8371,
+      "lat": 40.7183
+     },
+     {
+      "cell": "882a100a95fffff",
+      "decisions": 75,
+      "wrong_driver_rate": 0.1467,
+      "conditional_extra_wait_s_median": 12.2,
+      "lon": -73.9117,
+      "lat": 40.8213
+     },
+     {
+      "cell": "882a100abbfffff",
+      "decisions": 91,
+      "wrong_driver_rate": 0.1429,
+      "conditional_extra_wait_s_median": 71.6,
+      "lon": -73.9203,
+      "lat": 40.8156
+     },
+     {
+      "cell": "882a100a19fffff",
+      "decisions": 45,
+      "wrong_driver_rate": 0.1111,
+      "conditional_extra_wait_s_median": 100.6,
+      "lon": -73.9059,
+      "lat": 40.8779
+     },
+     {
+      "cell": "882a107665fffff",
+      "decisions": 55,
+      "wrong_driver_rate": 0.1091,
+      "conditional_extra_wait_s_median": 3.6,
+      "lon": -73.9517,
+      "lat": 40.653
+     },
+     {
+      "cell": "882a107735fffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.1,
+      "conditional_extra_wait_s_median": 4.35,
+      "lon": -74.0249,
+      "lat": 40.6321
+     },
+     {
+      "cell": "882a10743bfffff",
+      "decisions": 100,
+      "wrong_driver_rate": 0.1,
+      "conditional_extra_wait_s_median": 9.0,
+      "lon": -73.9868,
+      "lat": 40.5758
+     },
+     {
+      "cell": "882a100dd1fffff",
+      "decisions": 40,
+      "wrong_driver_rate": 0.1,
+      "conditional_extra_wait_s_median": 40.0,
+      "lon": -73.9114,
+      "lat": 40.6886
+     },
+     {
+      "cell": "882a107705fffff",
+      "decisions": 73,
+      "wrong_driver_rate": 0.0822,
+      "conditional_extra_wait_s_median": 50.1,
+      "lon": -74.0088,
+      "lat": 40.6511
+     },
+     {
+      "cell": "882a103b6dfffff",
+      "decisions": 67,
+      "wrong_driver_rate": 0.0746,
+      "conditional_extra_wait_s_median": 88.9,
+      "lon": -73.8047,
+      "lat": 40.681
+     },
+     {
+      "cell": "882a10762dfffff",
+      "decisions": 70,
+      "wrong_driver_rate": 0.0571,
+      "conditional_extra_wait_s_median": 41.3,
+      "lon": -73.9557,
+      "lat": 40.64
+     },
+     {
+      "cell": "882a100d93fffff",
+      "decisions": 30,
+      "wrong_driver_rate": 0.0,
+      "conditional_extra_wait_s_median": null,
+      "lon": -73.9232,
+      "lat": 40.6619
+     },
+     {
+      "cell": "882a1070b3fffff",
+      "decisions": 180,
+      "wrong_driver_rate": 0.0,
+      "conditional_extra_wait_s_median": null,
+      "lon": -74.0893,
+      "lat": 40.6403
+     },
+     {
+      "cell": "882a107753fffff",
+      "decisions": 35,
+      "wrong_driver_rate": 0.0,
+      "conditional_extra_wait_s_median": null,
+      "lon": -73.9665,
+      "lat": 40.6409
+     },
+     {
+      "cell": "882a100cadfffff",
+      "decisions": 65,
+      "wrong_driver_rate": 0.0,
+      "conditional_extra_wait_s_median": null,
+      "lon": -73.8968,
+      "lat": 40.6763
+     },
+     {
+      "cell": "882a10755dfffff",
+      "decisions": 43,
+      "wrong_driver_rate": 0.0,
+      "conditional_extra_wait_s_median": null,
+      "lon": -74.0268,
+      "lat": 40.6216
+     },
+     {
+      "cell": "882a1070e5fffff",
+      "decisions": 130,
+      "wrong_driver_rate": 0.0,
+      "conditional_extra_wait_s_median": null,
+      "lon": -74.101,
+      "lat": 40.6839
+     }
+    ],
+    "by_straight_line_band": [
+     {
+      "sl_pick_straight_line_band_m": [
+       0,
+       100
+      ],
+      "decisions": 392947,
+      "share": 0.2209,
+      "wrong_driver_rate": 0.5493,
+      "conditional_extra_wait_s_median": 54.0
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       100,
+       250
+      ],
+      "decisions": 407281,
+      "share": 0.229,
+      "wrong_driver_rate": 0.5435,
+      "conditional_extra_wait_s_median": 38.6
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       250,
+       500
+      ],
+      "decisions": 430240,
+      "share": 0.2419,
+      "wrong_driver_rate": 0.4913,
+      "conditional_extra_wait_s_median": 34.0
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       500,
+       1000
+      ],
+      "decisions": 342819,
+      "share": 0.1927,
+      "wrong_driver_rate": 0.4472,
+      "conditional_extra_wait_s_median": 33.8
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       1000,
+       2000
+      ],
+      "decisions": 167919,
+      "share": 0.0944,
+      "wrong_driver_rate": 0.4644,
+      "conditional_extra_wait_s_median": 42.4
+     },
+     {
+      "sl_pick_straight_line_band_m": [
+       2000,
+       100000
+      ],
+      "decisions": 37410,
+      "share": 0.021,
+      "wrong_driver_rate": 0.4001,
+      "conditional_extra_wait_s_median": 60.9
+     }
+    ],
+    "water": {
+     "decisions_where_sl_pick_crosses_water": 46584,
+     "share_of_wrong_decisions": 0.0521,
+     "share_of_all_decisions": 0.0262,
+     "share_of_total_extra_wait": 0.1668,
+     "conditional_extra_wait_s_median_when_crossing": 133.2,
+     "conditional_extra_wait_s_median_when_not": 38.3
+    },
+    "extra_wait_distribution_on_wrong_decisions": {
+     "p50": 40.0,
+     "p75": 74.8,
+     "p90": 122.0,
+     "p99": 382.8,
+     "max": 949.7
+    }
+   }
+  }
+ },
+ "sensitivity": {
+  "2016-06-16_road_N5250_T600_seed0_cruise": {
+   "rule": "road",
+   "repositioning": "cruise",
+   "fleet_size": 5250,
+   "abandon_after_s": 600,
+   "match_rate": 0.7133,
+   "no_candidates_share": 0.2645,
+   "wait_s": {
+    "median": 205.0,
+    "p90": 405.1,
+    "mean": 221.9
+   },
+   "utilisation": 0.6961,
+   "deadhead_m_per_ride_median": 1604.4,
+   "wrong_driver_rate": 0.2248,
+   "conditional_extra_wait_s": {
+    "median": 37.1,
+    "p90": 149.7,
+    "mean": 70.6
+   }
+  },
+  "2016-06-16_road_N7500_T300_seed0_cruise": {
+   "rule": "road",
+   "repositioning": "cruise",
+   "fleet_size": 7500,
+   "abandon_after_s": 300,
+   "match_rate": 0.9109,
+   "no_candidates_share": 0.0064,
+   "wait_s": {
+    "median": 91.0,
+    "p90": 217.8,
+    "mean": 104.5
+   },
+   "utilisation": 0.5625,
+   "deadhead_m_per_ride_median": 665.0,
+   "wrong_driver_rate": 0.4796,
+   "conditional_extra_wait_s": {
+    "median": 41.2,
+    "p90": 146.6,
+    "mean": 68.1
+   }
+  },
+  "2016-06-16_road_N7500_T600_seed0_none": {
+   "rule": "road",
+   "repositioning": "none",
+   "fleet_size": 7500,
+   "abandon_after_s": 600,
+   "match_rate": 0.5229,
+   "no_candidates_share": 0.3557,
+   "wait_s": {
+    "median": 241.9,
+    "p90": 433.3,
+    "mean": 249.2
+   },
+   "utilisation": 0.3717,
+   "deadhead_m_per_ride_median": 1929.8,
+   "wrong_driver_rate": 0.3027,
+   "conditional_extra_wait_s": {
+    "median": 73.1,
+    "p90": 469.9,
+    "mean": 153.5
+   }
+  },
+  "2016-06-16_road_N7500_T900_seed0_cruise": {
+   "rule": "road",
+   "repositioning": "cruise",
+   "fleet_size": 7500,
+   "abandon_after_s": 900,
+   "match_rate": 0.9322,
+   "no_candidates_share": 0.0677,
+   "wait_s": {
+    "median": 103.7,
+    "p90": 309.5,
+    "mean": 137.6
+   },
+   "utilisation": 0.595,
+   "deadhead_m_per_ride_median": 766.4,
+   "wrong_driver_rate": 0.4388,
+   "conditional_extra_wait_s": {
+    "median": 38.8,
+    "p90": 115.8,
+    "mean": 56.7
+   }
+  },
+  "2016-06-16_road_N8000_T600_seed0_none": {
+   "rule": "road",
+   "repositioning": "none",
+   "fleet_size": 8000,
+   "abandon_after_s": 600,
+   "match_rate": 0.5533,
+   "no_candidates_share": 0.328,
+   "wait_s": {
+    "median": 236.9,
+    "p90": 429.3,
+    "mean": 245.5
+   },
+   "utilisation": 0.3676,
+   "deadhead_m_per_ride_median": 1891.7,
+   "wrong_driver_rate": 0.3162,
+   "conditional_extra_wait_s": {
+    "median": 72.5,
+    "p90": 469.3,
+    "mean": 148.8
+   }
+  },
+  "2016-06-16_road_N9750_T600_seed0_cruise": {
+   "rule": "road",
+   "repositioning": "cruise",
+   "fleet_size": 9750,
+   "abandon_after_s": 600,
+   "match_rate": 0.9718,
+   "no_candidates_share": 0.0245,
+   "wait_s": {
+    "median": 75.1,
+    "p90": 220.8,
+    "mean": 99.4
+   },
+   "utilisation": 0.4594,
+   "deadhead_m_per_ride_median": 544.7,
+   "wrong_driver_rate": 0.5331,
+   "conditional_extra_wait_s": {
+    "median": 41.4,
+    "p90": 114.8,
+    "mean": 58.2
+   }
+  },
+  "2016-06-16_road_N9750_T600_seed0_none": {
+   "rule": "road",
+   "repositioning": "none",
+   "fleet_size": 9750,
+   "abandon_after_s": 600,
+   "match_rate": 0.6511,
+   "no_candidates_share": 0.2049,
+   "wait_s": {
+    "median": 218.7,
+    "p90": 417.5,
+    "mean": 231.8
+   },
+   "utilisation": 0.3519,
+   "deadhead_m_per_ride_median": 1727.9,
+   "wrong_driver_rate": 0.353,
+   "conditional_extra_wait_s": {
+    "median": 83.1,
+    "p90": 545.2,
+    "mean": 181.9
+   }
+  },
+  "2016-06-16_straight_N7500_T600_seed0_none": {
+   "rule": "straight",
+   "repositioning": "none",
+   "fleet_size": 7500,
+   "abandon_after_s": 600,
+   "match_rate": 0.5259,
+   "no_candidates_share": 0.4741,
+   "wait_s": {
+    "median": 245.3,
+    "p90": 441.1,
+    "mean": 257.4
+   },
+   "utilisation": 0.3761,
+   "deadhead_m_per_ride_median": 1950.0,
+   "wrong_driver_rate": 0.1691,
+   "conditional_extra_wait_s": {
+    "median": 36.0,
+    "p90": 106.6,
+    "mean": 51.7
+   }
+  }
+ }
+}

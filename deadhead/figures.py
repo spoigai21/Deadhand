@@ -135,6 +135,88 @@ def fig_worst_pairs(d, out, crossings_path):
     fig.suptitle(f"The worst pairs by road ÷ straight-line distance, {DAYNAME.get(list(d['days'])[0])}, labelled with the water crossing on the route or, if none, the roads at each end.", fontsize=9, color=INK2, x=0.01, ha="left")
     fig.tight_layout(); fig.savefig(out / "phase1_worst_pairs.png", dpi=160); plt.close(fig)
 
+# ---------- Phase 2 ----------
+
+def fig_calibration(d, out):
+    cal = d["fleet_calibration"]
+    if len(cal) < 2:
+        return
+    fig, axes = plt.subplots(1, 2, figsize=(9, 3.3))
+    xs = [c["fleet_size"] for c in cal]
+    ax = axes[0]
+    ax.plot(xs, [100 * c["match_rate"] for c in cal], "-o", color=BLUE, lw=2, ms=6, mec=SURFACE)
+    for x, c in zip(xs, cal):
+        ax.annotate(f"{100 * c['match_rate']:.1f}%", (x, 100 * c["match_rate"]), xytext=(0, 7), textcoords="offset points", ha="center", fontsize=7.5, color=INK2)
+    ax.axhspan(90, 95, color="#ecebe6", zorder=0); ax.set_ylabel("requests matched inside 600 s, %"); ax.set_xlabel("simulated fleet size")
+    ax.set_title("Fleet size calibration: the road-aware rule, Thursday, seed 0", loc="left", fontsize=9.5)
+    ax = axes[1]
+    ax.plot(xs, [c["wait_s_median"] for c in cal], "-o", color=BLUE, lw=2, ms=6, mec=SURFACE, label="median wait")
+    ax.plot(xs, [c["wait_s_p90"] for c in cal], "-o", color=ORANGE, lw=2, ms=6, mec=SURFACE, label="p90 wait")
+    ax.set_ylabel("rider wait, s (free-flow pickup leg)"); ax.set_xlabel("simulated fleet size"); ax.legend(frameon=False, fontsize=8)
+    ax.set_title("Wait against fleet size", loc="left", fontsize=9.5)
+    fig.suptitle("Supply is simulated (ASSUMPTIONS.md). The shaded band is the 90–95% target the baseline fleet is chosen in.", fontsize=9, color=INK2, x=0.01, ha="left")
+    fig.tight_layout(); fig.savefig(out / "phase2_calibration.png", dpi=160); plt.close(fig)
+
+def fig_wrong_driver_by_hour(d, out):
+    days = [day for day in d["mode_a"] if "breakdowns_road_replay" in d["mode_a"][day]]
+    if not days:
+        return
+    fig, axes = plt.subplots(1, 2, figsize=(9.5, 3.4))
+    for day, color in zip(days, (BLUE, ORANGE)):
+        bh = d["mode_a"][day]["breakdowns_road_replay"]["by_hour"]
+        hours = sorted(int(h) for h in bh)
+        axes[0].plot(hours, [100 * bh[str(h)]["wrong_driver_rate"] for h in hours], "-o", color=color, lw=2, ms=4, mec=SURFACE, label=DAYNAME.get(day, day))
+        axes[1].plot(hours, [bh[str(h)]["conditional_extra_wait_s_median"] for h in hours], "-o", color=color, lw=2, ms=4, mec=SURFACE, label=DAYNAME.get(day, day))
+    axes[0].set_ylabel("wrong-driver rate, %"); axes[0].set_ylim(0, None)
+    axes[1].set_ylabel("median extra wait, s"); axes[1].set_ylim(0, None)
+    for ax, t in zip(axes, ("Wrong-driver rate by hour", "Conditional cost by hour")):
+        ax.set_xlabel("hour of day"); ax.set_xticks(range(0, 24, 3)); ax.set_title(t, loc="left", fontsize=9.5)
+    axes[0].legend(frameon=False, fontsize=8)
+    fig.suptitle("Finding 1, Mode A: measured in the road-aware replay, pooled over seeds. Free-flow routing; supply simulated.", fontsize=9, color=INK2, x=0.01, ha="left")
+    fig.tight_layout(); fig.savefig(out / "phase2_wrong_driver_by_hour.png", dpi=160); plt.close(fig)
+
+def fig_wrong_driver_map(d, out, crossings_path):
+    day = next((day for day in d["mode_a"] if "breakdowns_road_replay" in d["mode_a"][day]), None)
+    if day is None:
+        return
+    cells = d["mode_a"][day]["breakdowns_road_replay"]["by_cell"]
+    fig, axes = plt.subplots(1, 2, figsize=(12, 7))
+    for ax, key, label, vmax_q in zip(axes, ("wrong_driver_rate", "conditional_extra_wait_s_median"), ("share of decisions where the straight line picks a slower driver", "median extra wait on those decisions, s"), (0.98, 0.95)):
+        vals = np.array([c[key] if c[key] is not None else np.nan for c in cells]); okm = ~np.isnan(vals)
+        polys = [boundary_lonlat(int(c["cell"], 16)) for c, k in zip(cells, okm) if k]
+        draw_water(ax); ax.add_collection(LineCollection(crossings_lines(crossings_path), colors="#b8b7b1", linewidths=0.8, zorder=1))
+        pc = PolyCollection(polys, array=vals[okm], cmap=RAMP, norm=Normalize(vmin=float(np.nanquantile(vals, 0.02)), vmax=float(np.nanquantile(vals, vmax_q))), edgecolors=SURFACE, linewidths=0.3, zorder=2)
+        ax.add_collection(pc)
+        lons = [c["lon"] for c in cells]; lats = [c["lat"] for c in cells]
+        ax.set_xlim(min(lons) - 0.01, max(lons) + 0.01); ax.set_ylim(min(lats) - 0.01, max(lats) + 0.01)
+        ax.set_aspect(1 / np.cos(np.radians(40.75))); ax.grid(False); ax.set_xticks([]); ax.set_yticks([])
+        for sp in ax.spines.values(): sp.set_visible(False)
+        cb = fig.colorbar(pc, ax=ax, shrink=0.45, pad=0.01); cb.set_label(label, fontsize=8); cb.outline.set_visible(False)
+        ax.set_title(label[0].upper() + label[1:], loc="left", fontsize=9)
+    fig.suptitle(f"Finding 1 on the map: {DAYNAME.get(day, day)}, H3 resolution 8, cells with at least 30 decisions, pooled over seeds. Shaded: water; grey: crossings.", fontsize=9, color=INK2, x=0.01, ha="left")
+    fig.tight_layout(); fig.savefig(out / "phase2_wrong_driver_map.png", dpi=160); plt.close(fig)
+
+def fig_mode_b(d, out):
+    days = list(d["mode_b"])
+    if not days:
+        return
+    metrics = [("wait_s_median", "median wait, s"), ("wait_s_p90", "p90 wait, s"), ("deadhead_m_per_ride_median", "median empty metres per ride"), ("match_rate", "match rate")]
+    fig, axes = plt.subplots(1, len(metrics), figsize=(11, 3.2))
+    for ax, (key, label) in zip(axes, metrics):
+        x = np.arange(len(days)); w = 0.36
+        for j, (rule, color, name) in enumerate((("straight", ORANGE, "straight-line rule"), ("road", BLUE, "road-aware rule"))):
+            vals = [d["mode_b"][day].get(rule, {}).get(key, {}) for day in days]
+            means = [v.get("mean", 0) if v else 0 for v in vals]
+            bars = ax.bar(x + (j - 0.5) * w, means, w * 0.94, color=color, label=name)
+            for b_, v in zip(bars, vals):
+                if v:
+                    ax.errorbar(b_.get_x() + b_.get_width() / 2, v["mean"], yerr=[[v["mean"] - v["min"]], [v["max"] - v["mean"]]], fmt="none", ecolor=INK2, elinewidth=1, capsize=2)
+                    ax.annotate(f"{v['mean']:.2f}" if key == "match_rate" else f"{v['mean']:.0f}", (b_.get_x() + b_.get_width() / 2, v["mean"]), xytext=(0, 4), textcoords="offset points", ha="center", fontsize=7.5, color=INK2)
+        ax.set_xticks(x); ax.set_xticklabels([DAYNAME.get(day, day).split(" ")[0] for day in days]); ax.set_title(label, loc="left", fontsize=9.5); ax.set_ylim(0, None)
+    axes[0].legend(frameon=False, fontsize=8)
+    fig.suptitle("Finding 1, Mode B: each rule replayed end to end. Bars are the mean over seeds; whiskers the min and max. Supply simulated; free-flow routing.", fontsize=9, color=INK2, x=0.01, ha="left")
+    fig.tight_layout(); fig.savefig(out / "phase2_mode_b.png", dpi=160); plt.close(fig)
+
 def main(results="results", figures="figures"):
     out = Path(figures); out.mkdir(exist_ok=True)
     files = sorted(glob.glob(f"{results}/phase1/disagreement_cpu-apple-m5_seed*.json"))
@@ -143,6 +225,11 @@ def main(results="results", figures="figures"):
         crossings = d["config"]["crossings_geojson"]
         fig_distributions(d, out); fig_legs_by_distance(d, out); fig_cell_maps(d, out, crossings); fig_worst_pairs(d, out, crossings)
         print("phase1 figures from", files[0])
+    files = sorted(glob.glob(f"{results}/phase2/finding1_cpu-apple-m5*.json"))
+    if files:
+        d = json.load(open(files[0]))
+        fig_calibration(d, out); fig_wrong_driver_by_hour(d, out); fig_wrong_driver_map(d, out, d["config"]["crossings_geojson"]); fig_mode_b(d, out)
+        print("phase2 figures from", files[0])
 
 if __name__ == "__main__":
     main(*sys.argv[1:])

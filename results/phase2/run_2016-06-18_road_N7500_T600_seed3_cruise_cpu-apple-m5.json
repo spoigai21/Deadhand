@@ -1,0 +1,78 @@
+{
+ "run_id": "2016-06-18_road_N7500_T600_seed3_cruise",
+ "day": "2016-06-18",
+ "rule": "road",
+ "fleet_size": 7500,
+ "seed": 3,
+ "abandon_after_s": 600,
+ "repositioning": "cruise",
+ "cruising": {
+  "cruises": 98279,
+  "stays": 784184,
+  "km_total": 445451.5,
+  "hours_total": 13347.2,
+  "cruise_after_s": 300,
+  "cruise_ring_k": 5
+ },
+ "config": {
+  "partitions": 8,
+  "key_resolution": 6,
+  "h3_resolution": 8,
+  "ring_k": 3,
+  "candidates_k": 50,
+  "straight_line_speed_mps": 8.243,
+  "initial_positions_window_s": 3600
+ },
+ "hardware": {
+  "cpu": "Apple M5",
+  "os": "macOS-26.6.2-arm64-arm-64bit",
+  "python": "3.12.14"
+ },
+ "initial_position_pool_rows": 22654,
+ "decisions": 362824,
+ "seconds": 1801.2,
+ "decisions_per_s": 201.4,
+ "table_ms_median": 2.82,
+ "decision_ms_median": 4.82,
+ "decision_ms_p99": 13.29,
+ "counts": {
+  "matched": 354566,
+  "no_candidates": 7080,
+  "abandoned": 1178,
+  "unroutable_candidates": 1
+ },
+ "match_rate": 0.9772,
+ "wait_s": {
+  "median": 84.9,
+  "p90": 226.3,
+  "mean": 106.4
+ },
+ "deadhead_m_per_ride": {
+  "median": 613.4,
+  "mean": 817.2
+ },
+ "deadhead_km_total": 289736.0,
+ "promised_eta_error_s": {
+  "median": 0.0,
+  "p90": 0.0
+ },
+ "utilisation": 0.4958,
+ "utilisation_including_cruising": 0.57,
+ "mode_a": {
+  "decisions_with_candidates": 355745,
+  "wrong_driver_rate": 0.503,
+  "tie_rate": 0.0,
+  "conditional_extra_wait_s": {
+   "median": 39.9,
+   "p90": 121.6,
+   "mean": 58.5
+  },
+  "conditional_extra_deadhead_m": {
+   "median": 235.4,
+   "p90": 895.0
+  },
+  "share_sl_pick_crosses_water": 0.0514,
+  "extra_wait_share_from_water_crossing_picks": 0.1671,
+  "total_extra_wait_s_if_straight_line_everywhere": 10477106.0
+ }
+}

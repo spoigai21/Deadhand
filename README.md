@@ -5,8 +5,9 @@ road network, sharded by map cell across a Java consumer group, and measured und
 **Deadhead** is the industry term for a vehicle driving empty between rides; it is the cost the
 two findings here are measured in.
 
-**Status: Phase 1 complete — the road network measured against the straight line.** The service
-is not built yet. `SPEC.md` is the plan; `PREDICTION.md` holds the guesses written before each
+**Status: Phase 2 complete — the demand streams through Kafka, a single-process matcher replays a
+full day, and the straight-line shortcut is priced at the level of the decision.** The sharded Java
+service (Phase 3) is not built yet. `SPEC.md` is the plan; `PREDICTION.md` holds the guesses written before each
 measurement, with the outcome beside them; `NUMBERS.md` holds every figure with the file behind it;
 `ASSUMPTIONS.md` is the supply model.
 
@@ -72,6 +73,48 @@ their endpoints. All figures are in `NUMBERS.md`; the plots are in `figures/`.
 eight Python threads against one OSRM container on the laptop. A day of 400,000 decisions is a few
 minutes of routing. Per-pair routing stays; no hex-to-hex matrix.
 
+## Phase 2 — the stream, the oracle, and Finding 1
+
+**Supply is simulated** (`ASSUMPTIONS.md`): 7,500 drivers, starting at real dropoffs, idle at their
+dropoff after each trip, cruising toward the previous hour's demand after five idle minutes. The
+demand, the map and every route are real. The fleet size is a calibration: the smallest fleet at
+which the road-aware rule matches 90–95% of the day inside a promised 600 s. **The model as first
+written, with no repositioning, could not serve the day at any size tried**, and that failure is
+recorded in `NUMBERS.md` alongside the baseline.
+
+**What runs.** A day of demand is a Kafka topic with 8 partitions keyed by the pickup's coarse H3
+cell. One Python consumer reads every partition, merges them into event-time order, keeps the fleet
+in memory, and writes one record per decision to an `assignments` topic keyed by request id. Two
+ranking rules sit behind one interface and rank the same candidate set, the 50 nearest idle drivers
+by straight line within three hex rings: **straight-line** picks the nearest by air, **road-aware**
+picks the nearest by road time. At every decision the matcher also records what the other rule
+would have picked. It runs at 235 decisions per second, 4 ms per decision, a day in 28 minutes, and
+the same seed gives byte-identical assignments twice. No request was matched twice and no driver
+claimed twice in 28 replays. All figures below are five-seed means; the spread is in `NUMBERS.md`.
+
+**Finding 1: what the straight-line shortcut costs, decision by decision.**
+
+- On the weekday, the straight line picks a slower driver than the road in **44% of decisions**.
+  On exactly those decisions the rider waits **40 s longer at the median and 130 s at the 90th
+  percentile**, and the driver drives 237 m further empty.
+- End to end (each rule replayed on its own), the road-aware rule cuts the median wait from
+  **125 s to 103 s** and empty driving from **912 m to 763 m per ride**: 50,000 empty kilometres a
+  day across the fleet. Match rates are the same within half a point.
+- The straight-line rule's promised pickup time is missed on **94% of rides**, by 1.8× at the median.
+- **Water is where the cost concentrates.** Straight-line picks whose route crosses a river are 3%
+  of decisions and carry **a quarter of the total extra wait**: 157 s at the median against 38 s
+  elsewhere. On the map the worst cells sit at the East River crossings and the RFK Bridge approach.
+- **The rate depends on how dense supply is.** With 3,000 drivers it is 15%; with 9,750 it is 53%;
+  in the evening peak, when the nearest driver is a kilometre away, it falls to about 20%. The
+  conditional cost does not move: 35–45 s at the median in every hour and at every fleet size.
+- The weekend repeats the weekday: 50% of decisions, 40 s median.
+- **The prediction was wrong on the rate** (15% predicted) **and right on the water share.**
+
+![by hour](figures/phase2_wrong_driver_by_hour.png)
+![map](figures/phase2_wrong_driver_map.png)
+![mode b](figures/phase2_mode_b.png)
+![calibration](figures/phase2_calibration.png)
+
 ## Prior art, by name
 
 Road-network ride-sharing simulators exist and are good: **AMoD2**, a deep-RL taxi dispatcher,
@@ -94,6 +137,18 @@ docker compose up -d osrm
 .venv/bin/python -m deadhead.phase0_data data/tlc/opendata results/phase0
 .venv/bin/python -m deadhead.phase0_crossings data/osm results/phase0
 .venv/bin/python -m deadhead.phase0_osrm data/tlc/opendata/yellow_2016-06-16.parquet results/phase0
+.venv/bin/python -m pytest -q
+```
+
+## Reproduce Phase 2
+
+```bash
+docker compose up -d kafka
+.venv/bin/python -m deadhead.stream configs/phase2.yaml                 # both days into Kafka, ~3 s
+.venv/bin/python -m deadhead.oracle configs/phase2.yaml --day 2016-06-16 --rule road --seed 0   # one replay, ~28 min
+scripts/phase2_runs.sh 7500                                              # all 28 replays, ~3 h on one laptop
+.venv/bin/python -m deadhead.phase2_metrics configs/phase2.yaml
+.venv/bin/python -m deadhead.figures results figures
 .venv/bin/python -m pytest -q
 ```
 
