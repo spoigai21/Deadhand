@@ -5,9 +5,10 @@ road network, sharded by map cell across a Java consumer group, and measured und
 **Deadhead** is the industry term for a vehicle driving empty between rides; it is the cost the
 two findings here are measured in.
 
-**Status: Phase 0 complete — data and map verified, predictions committed.** No results yet.
-`SPEC.md` is the plan; `PREDICTION.md` holds the guesses written before any measurement;
-`NUMBERS.md` will hold every figure with the file behind it.
+**Status: Phase 1 complete — the road network measured against the straight line.** The service
+is not built yet. `SPEC.md` is the plan; `PREDICTION.md` holds the guesses written before each
+measurement, with the outcome beside them; `NUMBERS.md` holds every figure with the file behind it;
+`ASSUMPTIONS.md` is the supply model.
 
 ## Honest limits (read these first)
 
@@ -36,6 +37,41 @@ two findings here are measured in.
 - **Water crossings, computed not hand-picked.** 144 named bridges and tunnels whose road
   geometry crosses water, from the Verrazzano-Narrows to the Harlem River bridges.
 
+## Phase 1 — how far the road disagrees with the straight line
+
+**The supply side is simulated** (`ASSUMPTIONS.md`): an idle driver is a real dropoff from the
+prior hour, thinned to a stated density. The demand side, the map, and every route are real.
+
+Two kinds of pair were routed on the real road network and compared with the straight line between
+their endpoints. All figures are in `NUMBERS.md`; the plots are in `figures/`.
+
+- **Real trips** (40,000 per day, pickup to dropoff): the road is **1.32× the straight line at the
+  median, 1.63× at the 90th percentile**, the same on a Thursday and a Saturday. A quarter of trips
+  cross water, and those are barely worse (1.36 against 1.31). On a committed trip the river costs
+  little.
+- **Simulated pickup legs** (driver to pickup, the 50 nearest candidates by straight line for 6,000
+  requests per day): the road is **2.0× the straight line at the median and 4.9× at the 90th
+  percentile**. The leg a matcher compares is short, 270 m at the median, and short legs are where
+  one-way streets, divided avenues and limited-access roads bite: **2.7× for legs under 250 m,
+  1.9× for 250–500 m, 1.5× for 1–2 km.** Those per-band numbers hold when the supply density is
+  halved or more than doubled; only the headline moves, because density sets the leg length.
+- **The worst pairs are named, not hand-picked.** Outside the airports, the worst legs are drivers
+  already inside a bridge or tunnel approach: a driver 122 m from a pickup but committed to the
+  Brooklyn-Battery Tunnel is 8.2 km away by road (67×); the Queensboro Bridge upper level (62×),
+  the Queens-Midtown Tunnel (46×) and the Williamsburg Bridge (54×) do the same. The worst trips
+  start on one-way avenues. The airport terminal loops are worse than any street: a driver on
+  JFK Terminal 4 Departures 103 m from a pickup is 8.9 km away by road.
+- **The prediction was wrong.** `PREDICTION.md` guessed 1.35× for legs; the measurement is 2.0×.
+  The guess for trips was close. The record stays.
+
+![distributions](figures/phase1_ratio_distributions.png)
+![legs by distance](figures/phase1_legs_by_distance.png)
+![worst pairs](figures/phase1_worst_pairs.png)
+
+**The routing layer** answers 3,500 routes per second and 2,000 one-to-50 tables per second from
+eight Python threads against one OSRM container on the laptop. A day of 400,000 decisions is a few
+minutes of routing. Per-pair routing stays; no hex-to-hex matrix.
+
 ## Prior art, by name
 
 Road-network ride-sharing simulators exist and are good: **AMoD2**, a deep-RL taxi dispatcher,
@@ -58,5 +94,13 @@ docker compose up -d osrm
 .venv/bin/python -m deadhead.phase0_data data/tlc/opendata results/phase0
 .venv/bin/python -m deadhead.phase0_crossings data/osm results/phase0
 .venv/bin/python -m deadhead.phase0_osrm data/tlc/opendata/yellow_2016-06-16.parquet results/phase0
+.venv/bin/python -m pytest -q
+```
+
+## Reproduce Phase 1
+
+```bash
+.venv/bin/python -m deadhead.phase1_disagreement configs/phase1.yaml   # ~2 min; writes results/phase1 and data/phase1
+.venv/bin/python -m deadhead.figures results figures
 .venv/bin/python -m pytest -q
 ```

@@ -52,3 +52,71 @@ coordinates for any year (June 2016 and June 2015 checked by hand).
 | Peak hour | Thu 16 June 21:00, 24,860 requests, 6.91/s | same |
 | Load time, the week | Polars 2.0.0 **0.067 s**, pandas 3.0.6 0.098 s | same |
 | Observed median speed by hour (Phase 5 calibration input) | in file, `median_speed_mps_by_hour` | same |
+
+## Phase 1 — the road network as the ground truth
+
+All from `results/phase1/disagreement_cpu-apple-m5_seed0.json` (config `configs/phase1.yaml`, seed 0,
+OSRM v6.0.0 free-flow, H3 resolution 8, ring 3, 50 candidates, idle fraction 0.2). Raw pairs are
+regenerated into `data/phase1/` by `deadhead/phase1_disagreement.py`. Supply is simulated
+(`ASSUMPTIONS.md`); every leg number below inherits that.
+
+### Real trips, pickup → dropoff (40,000 sampled per day)
+
+| Figure | Thursday 16 June | Saturday 18 June |
+|---|---|---|
+| Pairs kept (excluded: snap > 250 m / both ends on one road point / straight line < 100 m) | **39,640** (144 / 117 / 99) | **39,652** (101 / 135 / 112) |
+| Road ÷ straight-line **distance**: median / p90 / p99 | **1.323 / 1.631 / 2.445** | 1.316 / 1.637 / 2.532 |
+| Road ÷ straight-line **time**: median / p90 / p99 | **1.265 / 1.684 / 2.645** | 1.269 / 1.704 / 2.663 |
+| Distance ratio excluding airport pairs: median | 1.313 | 1.310 |
+| Share of trips touching JFK or LGA; their median ratio | 7.1%; 1.384 | 4.9%; 1.383 |
+| Share of trips whose route uses a named water crossing | **22.8%** | 23.5% |
+| Median distance ratio, crossing water / not crossing | **1.359 / 1.309** | 1.351 / 1.303 |
+| Most-used crossings (trips in the sample) | Queens-Midtown Tunnel 3,336; Queensboro Bridge upper 2,301, lower 2,266; Holland Tunnel 1,486; Williamsburg Bridge 1,297; Lincoln Tunnel 916; Brooklyn Bridge 636 | Queens-Midtown Tunnel 3,500; Queensboro upper 2,221, lower 2,190; Williamsburg 1,389; Holland 1,384; Lincoln 1,047; Brooklyn 695 |
+| Median distance ratio by straight-line band: 500–1000 m / 1–2 km / 2–5 km / over 5 km | 1.386 / 1.335 / 1.278 / 1.335 | 1.383 / 1.335 / 1.284 / 1.308 |
+| Resolution-8 cells with ≥ 20 pairs; highest cell median | 87; 1.496 (Queens, east of the Queensboro Bridge) | 103; 1.532 |
+| Worst trip outside airports | **21.8×**: 246 m straight line, 5,364 m by road, origin on 1st Avenue | 33.6×: 189 m / 6,358 m, Queensboro Bridge upper level |
+| Worst trip overall | 32.0×: 118 m / 3,771 m on the JFK access road | 43.7×: 143 m / 6,238 m, JFK Terminal 4 |
+
+### Simulated pickup legs, driver → pickup (6,000 requests per day, up to 50 candidates each)
+
+| Figure | Thursday 16 June | Saturday 18 June |
+|---|---|---|
+| Idle positions in the pool (0.2 of prior-hour dropoffs) | 81,944 | 77,262 |
+| Requests routed; requests with no candidate in the ring | 5,999; 1 | 5,996; 4 |
+| Requests whose candidate set hit the 50 cap | 96.8% | 96.6% |
+| Pairs kept (excluded: straight line < 100 m / both ends on one road point / snap > 250 m) | **261,379** (33,773 / 310 / 55) | **263,602** (31,264 / 198 / 100) |
+| Straight-line length of a candidate leg: median / p90 / p99 | **270 m / 628 m / 2,034 m** | 290 m / 657 m / 1,983 m |
+| Road time of a candidate leg: median / p90 | 94.5 s / 186.6 s | 97.0 s / 185.8 s |
+| Road ÷ straight-line **distance**: median / p90 / p99 | **2.002 / 4.853 / 10.685** | 1.929 / 4.583 / 9.697 |
+| Road ÷ straight-line **time**: median / p90 / p99 | **2.432 / 5.576 / 10.939** | 2.321 / 5.284 / 10.147 |
+| Distance ratio excluding airport pairs: median / p90 | 1.973 / 4.627 | 1.911 / 4.439 |
+| Share of legs touching JFK or LGA; their median ratio | 3.5%; **4.269** | 2.1%; 4.444 |
+| By straight-line band, share of legs: 100–250 / 250–500 / 500–1000 / 1–2 km / 2–5 km | 43.5% / 41.2% / 11.0% / 3.3% / 1.0% | 37.3% / 45.6% / 12.1% / 4.0% / 1.0% |
+| By band, **median distance ratio** | **2.70 / 1.90 / 1.60 / 1.47 / 1.64** | 2.69 / 1.89 / 1.56 / 1.45 / 1.46 |
+| By band, p90 distance ratio | 6.04 / 3.52 / 3.25 / 2.79 / 2.86 | 5.97 / 3.46 / 2.74 / 2.81 / 2.42 |
+| By band, median seconds the road adds over the straight-line promise | 53 / 53 / 69 / 88 / 140 | 53 / 53 / 63 / 82 / 96 |
+| Median ratio by hour: 05:00 / 09:00 / 19:00 | 1.49 / 2.00 / 2.28 | 1.49 / 1.84 / 2.07 |
+| Resolution-8 cells with ≥ 20 pairs | 156 | 170 |
+| Worst leg outside airports | **66.7×**: 122 m straight line, 8,164 m by road, the driver inside the Brooklyn-Battery Tunnel approach | 53.9×: 159 m / 8,577 m, same tunnel |
+| Other worst legs outside airports | 62.2× Queensboro Bridge upper level (108 m / 6,723 m); 45.5× East 38th Street → Queens-Midtown Tunnel (103 m / 4,698 m) | 53.5× Williamsburg Bridge (109 m / 5,821 m); 47.4× Queensboro upper level (139 m / 6,590 m) |
+| Worst leg overall | 86.8×: 103 m / 8,910 m, driver on JFK Terminal 4 Departures | 87.8×: 102 m / 8,985 m, same road |
+| Road the driver sits on, in the 200 worst legs | Terminal 4 Departures 87; Terminal 7 Departures 12; Van Wyck Expressway 11; Brooklyn-Battery Tunnel 8; 1st Avenue 6; FDR Drive 5 | Terminal 4 Departures 91; Terminal C Inner Departures 11; Van Wyck 8 |
+
+### Sensitivity to supply density (Thursday; Saturday in the file)
+
+| Idle fraction | Idle positions | Median leg, straight line | Distance ratio median / p90 | Median ratio by band 100–250 / 250–500 / 500–1000 / 1–2 km |
+|---|---|---|---|---|
+| 0.1 | 40,972 | 367 m | 1.801 / 3.91 | 2.71 / 1.89 / 1.56 / 1.45 |
+| **0.2 (baseline)** | 81,944 | 270 m | **2.002 / 4.85** | 2.70 / 1.90 / 1.60 / 1.47 |
+| 0.5 | 204,860 | 187 m | 2.301 / 6.16 | 2.83 / 1.91 / 1.57 / 1.51 |
+
+### The straight-line speed and the routing layer
+
+| Figure | Value |
+|---|---|
+| Straight-line speed used for the time ratio (median OSRM road speed over the 79,292 sampled trips) | **8.243 m/s** (29.7 km/h) |
+| 40,000 routes with geometry, 8 threads | 11.5 s, **3,487 routes/s** |
+| 5,999 one-to-50 tables, 8 threads | 2.91 s, **2,058 tables/s** |
+| Routing benchmark, 2,000 routes: 1 / 4 / 8 threads | 1,019 / 3,129 / 3,553 routes/s |
+| Routing benchmark, 300 one-to-50 tables: 1 / 4 / 8 threads | 332 / 1,737 / 2,132 tables/s |
+| Snap distance over all pairs (driver end): median / p90 / max kept | 5.9 m / 20.4 m / 229 m |

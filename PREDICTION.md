@@ -131,3 +131,21 @@ calibration are group-by work it does without a copy. Nothing bigger than a week
 **What the demand rate means for the system** (recorded now so it is not discovered later): at
 4–7 requests per second, real-time replay does not stress anything. The throughput numbers in P4
 are therefore stated at **maximum replay speed**, not ×1, and the ×1 figure is latency only.
+
+---
+
+## Phase 1 result, 2026-10-19 — against P1
+
+*Appended after the run. P1 above is unchanged.* Numbers in `NUMBERS.md`, Phase 1 section.
+
+| P1 said | Phase 1 found | Verdict |
+|---|---|---|
+| Trips: median 1.25, p90 1.6 | **median 1.32, p90 1.63** (both days) | p90 right, median 6% worse than predicted. The grid alone is not the whole story: a quarter of trips cross water. |
+| Pickup legs: median 1.35, p90 2.0 | **median 2.00, p90 4.85** at the baseline density; **1.47 median for 1–2 km legs, 2.70 for 100–250 m legs** | **Wrong by a wide margin.** The shape was right (short legs are worse) and the size was not: at the lengths a matcher actually compares, the straight line is off by 2× at the median, not 1.35×. The headline moves with supply density only because density sets the leg length; the per-band numbers hold at 0.1, 0.2 and 0.5. |
+| Worst pairs straddle the East River and the Harlem River, ratios above 4 | The worst legs are drivers **already inside a bridge or tunnel approach**: Brooklyn-Battery Tunnel 66.7×, Queensboro Bridge upper level 62.2×, Queens-Midtown Tunnel 45.5×, Williamsburg Bridge 53.5×. The worst trips start on one-way avenues (1st Avenue 21.8×) and the Queensboro approaches. The Harlem River does not appear. Airport terminal loops are worse than anything on the street (JFK Terminal 4, 86.8×). | **Half right.** East River crossings dominate the worst list, but the mechanism is being *on* the crossing, not being across it. The Harlem River prediction was wrong. |
+| Hudson crossings barely appear | Holland and Lincoln Tunnels are the 4th and 6th most-used crossings by real trips, but none is in a worst-30 list | Right for the worst pairs, wrong about how often the Hudson is crossed at all. |
+| (not predicted) | Trips that cross water have a median ratio of **1.36 against 1.31** for trips that do not | A river adds little to a committed trip. The disagreement lives in the short leg, not the long trip. This is the number Phase 2 is built on. |
+
+**What this changes for P2.** The wrong-driver rate was predicted at 15% on the assumption that legs
+disagree by 1.35× at the median. At 2× with a p90 near 5, the straight-line ranking of a 50-candidate
+set will be reshuffled far more often than that. P2 stays as written; it is probably too low.

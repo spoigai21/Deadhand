@@ -1,0 +1,24 @@
+# Phase 1 — the road network as the ground truth. Nothing tunable lives in code.
+seed: 0
+osrm: http://localhost:5001
+hardware_lane: cpu-apple-m5
+trips_dir: data/tlc/opendata
+crossings_geojson: results/phase0/water_crossings.geojson
+days: ["2016-06-16", "2016-06-18"]      # Thursday (weekday), Saturday (weekend); Phase 0 chose them
+h3_resolution: 8                        # candidate search cell (Appendix A may revisit)
+ring_k: 3                               # grid_disk radius in cells around the pickup: the matching radius
+candidates_k: 50                        # the candidate set is the nearest K by straight line inside the ring
+supply_pool_window_s: 3600              # ASSUMPTIONS.md: a plausible idle position is a real dropoff in the prior hour
+idle_fraction: 0.2                      # ASSUMPTIONS.md: share of prior-hour dropoffs that stand in for idle vehicles
+idle_fraction_sensitivity: [0.1, 0.5]   # the legs distribution is re-run at these; a denser fleet means shorter legs
+airports:                               # bounding boxes; terminal loops are a known source of extreme ratios and are reported apart
+  JFK: [-73.83, 40.62, -73.75, 40.67]
+  LGA: [-73.89, 40.76, -73.85, 40.785]
+distance_bands_m: [100, 250, 500, 1000, 2000, 5000, 100000]
+n_trips_per_day: 40000                  # real pickup -> dropoff pairs sampled per day
+n_requests_per_day: 6000                # requests whose candidate legs (driver -> pickup) are routed
+min_straight_line_m: 100                # pairs shorter than this are excluded; the ratio is undefined at zero
+max_snap_m: 250                         # pairs where either endpoint snaps farther than this are excluded
+n_worst: 30                             # worst pairs listed and mapped, with their crossings named
+threads: 8                              # concurrent HTTP calls to OSRM
+bench_routes: 2000                      # routing-layer throughput benchmark size
