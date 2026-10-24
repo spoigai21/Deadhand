@@ -11,6 +11,8 @@ class OSRM:
         self.threads = threads
         self.session = requests.Session()
         self.session.mount("http://", requests.adapters.HTTPAdapter(pool_connections=threads, pool_maxsize=threads * 2))
+        # one connection per call: on a kept-alive connection through Docker's port proxy a small reply arrives 40 ms late (BUGS.md #4)
+        self.session.headers["Connection"] = "close"
 
     @staticmethod
     def _coords(pts):
@@ -56,6 +58,28 @@ class OSRM:
         return {"road_s": [row[0] for row in r["durations"]], "road_m": [row[0] for row in r["distances"]],
                 "snap_src_m": [w["distance"] for w in r["sources"]], "snap_dst_m": r["destinations"][0]["distance"],
                 "road_src": [w.get("name", "") for w in r["sources"]], "road_dst": r["destinations"][0].get("name", "")}
+
+    def table_many_to_many(self, sources, dests, max_locations=1000):
+        """Road duration and distance from every source to every destination: two len(sources) x len(dests) lists, None where
+        unroutable. osrm-routed caps the sources and the destinations of one call (--max-table-size, 1000 here); a batch
+        beyond that is split into blocks and `calls` says how many calls it took (one for every batch in the runs)."""
+        S, D = len(sources), len(dests)
+        road_s = [[None] * D for _ in range(S)]; road_m = [[None] * D for _ in range(S)]
+        calls = 0
+        for d0 in range(0, D, max_locations):
+            dd = dests[d0:d0 + max_locations]
+            for s0 in range(0, S, max_locations):
+                ss = sources[s0:s0 + max_locations]
+                pts = list(ss) + list(dd)
+                params = {"annotations": "duration,distance", "sources": ";".join(map(str, range(len(ss)))), "destinations": ";".join(map(str, range(len(ss), len(pts))))}
+                r = self._get(f"{self.base}/table/v1/driving/{self._coords(pts)}", params); calls += 1
+                if r.get("code") != "Ok":
+                    raise RuntimeError(f"OSRM table: {r}")
+                for i, row in enumerate(r["durations"]):
+                    road_s[s0 + i][d0:d0 + len(dd)] = row
+                for i, row in enumerate(r["distances"]):
+                    road_m[s0 + i][d0:d0 + len(dd)] = row
+        return {"road_s": road_s, "road_m": road_m, "calls": calls}
 
     def tables(self, jobs):
         with ThreadPoolExecutor(self.threads) as ex:

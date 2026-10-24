@@ -5,3 +5,5 @@ __pycache__/
 .pytest_cache/
 *.osrm*
 results/phase2/logs/
+results/phase3/logs/
+results/phase4/logs/

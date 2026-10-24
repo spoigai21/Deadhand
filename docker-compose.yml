@@ -1,5 +1,8 @@
-# Phase 0: the routing engine. Phase 2: the Kafka broker. The Java workers arrive in Phase 3.
-# Build the routing data once (scripts/osrm_build.sh), then `docker compose up osrm`.
+# Phase 0: the routing engine. Phase 2: the Kafka broker. Phase 3: the Java workers (profile `workers`).
+# Build the routing data once (scripts/osrm_build.sh), then `docker compose up osrm kafka`.
+# The measurements in NUMBERS.md ran the workers as host JVMs (deadhead/phase3_service.py); the `worker` service is the
+# same jar from a clean machine: `docker compose --profile workers up --scale worker=4 worker` after the launcher has
+# created a run's topics, with RUN_ARGS set to the launcher's worker arguments.
 services:
   osrm:
     image: ghcr.io/project-osrm/osrm-backend:v6.0.0
@@ -21,10 +24,12 @@ services:
       KAFKA_NODE_ID: 1
       KAFKA_PROCESS_ROLES: broker,controller
       KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9093
-      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+      # two listeners: localhost:9092 for host processes (the producer, the oracle, the launcher), kafka:19092 for containers
+      KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,INTERNAL://0.0.0.0:19092,CONTROLLER://0.0.0.0:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,INTERNAL://kafka:19092
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
       KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
-      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,INTERNAL:PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
@@ -32,3 +37,12 @@ services:
       KAFKA_NUM_PARTITIONS: 8
       KAFKA_LOG_RETENTION_HOURS: 168
       KAFKA_HEAP_OPTS: "-Xmx1g -Xms512m"
+
+  worker:
+    # one member of the consumer group; scale to N. Pass the launcher's worker arguments in RUN_ARGS (see deadhead/phase3_service.py)
+    build: ./consumer
+    profiles: ["workers"]
+    depends_on: [kafka, osrm]
+    volumes:
+      - ./data/phase3:/app/data/phase3:ro
+    command: ["--kafka=kafka:19092", "--osrm=http://osrm:5000", "${RUN_ARGS:---run=unset}"]

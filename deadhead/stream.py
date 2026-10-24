@@ -15,8 +15,9 @@ from confluent_kafka import Producer, Consumer, TopicPartition
 from confluent_kafka.admin import AdminClient, NewTopic
 from .data import load_week, day_requests, PU_DT
 
-def requests_topic(day):
-    return f"requests-{day}"
+def requests_topic(day, key_resolution=6):
+    """requests-<day> is keyed by the resolution-6 parent cell (SPEC.md); other key resolutions get a suffix."""
+    return f"requests-{day}" if key_resolution == 6 else f"requests-{day}-k{key_resolution}"
 
 def ensure_topic(bootstrap, name, partitions, recreate=False):
     admin = AdminClient({"bootstrap.servers": bootstrap})
@@ -33,7 +34,7 @@ def produce_day(cfg, day):
     """Replay one day's clean requests into requests-<day>. Returns the count and the producer's rate."""
     week = load_week(cfg["trips_dir"])
     demand = day_requests(week, day).sort(PU_DT, "trip_id").with_columns(pl.col(PU_DT).dt.epoch("s").alias("t_epoch"), pl.col(PU_DT).dt.hour().alias("hour"))
-    topic = ensure_topic(cfg["kafka"], requests_topic(day), cfg["partitions"], recreate=True)
+    topic = ensure_topic(cfg["kafka"], requests_topic(day, cfg["key_resolution"]), cfg["partitions"], recreate=True)
     # idempotent so retries cannot reorder a partition: the oracle's event-time merge relies on per-partition order
     p = Producer({"bootstrap.servers": cfg["kafka"], "enable.idempotence": True, "linger.ms": 20, "batch.num.messages": 10000, "compression.type": "lz4", "queue.buffering.max.messages": 200000})
     speed = cfg.get("replay_speed", "max")
@@ -45,10 +46,13 @@ def produce_day(cfg, day):
             lag = (t - t0_event) / float(speed) - (time.perf_counter() - t0_wall)
             if lag > 0:
                 time.sleep(lag)
-        key = h3.cell_to_parent(h3.latlng_to_cell(r["pickup_latitude"], r["pickup_longitude"], cfg["h3_resolution"]), cfg["key_resolution"])
+        pu_cell = h3.latlng_to_cell(r["pickup_latitude"], r["pickup_longitude"], cfg["h3_resolution"])
+        do_cell = h3.latlng_to_cell(r["dropoff_latitude"], r["dropoff_longitude"], cfg["h3_resolution"])
+        key = h3.cell_to_parent(pu_cell, cfg["key_resolution"])
+        # pu_cell/do_cell: the resolution-8 cells, so a consumer without an H3 library (the Java workers, Phase 3) can index drivers
         rec = {"type": "request", "request_id": int(r["trip_id"]), "t": t, "hour": int(r["hour"]),
                "pu_lon": r["pickup_longitude"], "pu_lat": r["pickup_latitude"], "do_lon": r["dropoff_longitude"], "do_lat": r["dropoff_latitude"],
-               "trip_s": int(r["duration_s"]), "key_cell": key}
+               "trip_s": int(r["duration_s"]), "key_cell": key, "pu_cell": pu_cell, "do_cell": do_cell}
         while True:
             try:
                 p.produce(topic, key=key, value=json.dumps(rec).encode()); break
@@ -87,5 +91,7 @@ def read_topic(bootstrap, topic, group="ledger-reader"):
 
 if __name__ == "__main__":
     cfg = yaml.safe_load(open(sys.argv[1]))
+    if len(sys.argv) > 2 and sys.argv[2].startswith("--key-resolution="):
+        cfg["key_resolution"] = int(sys.argv.pop(2).split("=")[1])
     for day in sys.argv[2:] or cfg["days"]:
         print(json.dumps(produce_day(cfg, day)))

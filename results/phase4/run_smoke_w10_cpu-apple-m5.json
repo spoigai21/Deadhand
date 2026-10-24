@@ -1,0 +1,114 @@
+{
+ "run_id": "smoke_w10",
+ "day": "2016-06-16",
+ "rule": "road",
+ "fleet_size": 7500,
+ "seed": 0,
+ "abandon_after_s": 600,
+ "repositioning": "cruise",
+ "cruising": {
+  "cruises": 6749,
+  "stays": 3864,
+  "km_total": 27457.8,
+  "hours_total": 834.8,
+  "cruise_after_s": 300,
+  "cruise_ring_k": 5
+ },
+ "config": {
+  "partitions": 8,
+  "key_resolution": 6,
+  "h3_resolution": 8,
+  "ring_k": 3,
+  "candidates_k": 50,
+  "straight_line_speed_mps": 8.243,
+  "initial_positions_window_s": 3600
+ },
+ "hardware": {
+  "cpu": "Apple M5",
+  "os": "macOS-26.6.2-arm64-arm-64bit",
+  "python": "3.12.14"
+ },
+ "initial_position_pool_rows": 20238,
+ "decisions": 4000,
+ "seconds": 81.7,
+ "decisions_per_s": 48.9,
+ "table_ms_median": 582.98,
+ "decision_ms_median": 3.51,
+ "decision_ms_p99": 52.13,
+ "counts": {
+  "matched": 3747,
+  "rolled": 12760,
+  "abandoned": 252,
+  "no_candidates": 1
+ },
+ "match_rate": 0.9367,
+ "wait_s": {
+  "median": 66.6,
+  "p90": 333.4,
+  "mean": 122.3
+ },
+ "deadhead_m_per_ride": {
+  "median": 491.4,
+  "mean": 1005.6
+ },
+ "deadhead_km_total": 3768.1,
+ "promised_eta_error_s": {
+  "median": 0.0,
+  "p90": 0.0
+ },
+ "utilisation": 0.0054,
+ "utilisation_including_cruising": 0.0101,
+ "mode_a": {
+  "decisions_with_candidates": 3998,
+  "wrong_driver_rate": 0.5822,
+  "tie_rate": 0.0026,
+  "conditional_extra_wait_s": {
+   "median": 50.8,
+   "p90": 103.0,
+   "mean": 56.4
+  },
+  "conditional_extra_deadhead_m": {
+   "median": 347.9,
+   "p90": 863.3
+  },
+  "share_sl_pick_crosses_water": 0.0,
+  "extra_wait_share_from_water_crossing_picks": 0.0,
+  "total_extra_wait_s_if_straight_line_everywhere": 98871.0,
+  "straight_line_served_too": 0.9205,
+  "s6n4": {
+   "slower_rate": 0.055,
+   "no_visible_rate": 0.0238,
+   "unserved_by_shard_rate": 0.044,
+   "conditional_extra_wait_s_median": 21.5
+  },
+  "s8n4": {
+   "slower_rate": 0.1201,
+   "no_visible_rate": 0.1561,
+   "unserved_by_shard_rate": 0.1188,
+   "conditional_extra_wait_s_median": 40.8
+  }
+ },
+ "cruise_point": "hash",
+ "window_s": 10.0,
+ "ring_k": 3,
+ "batches": {
+  "count": 120,
+  "size_median": 67.5,
+  "size_max": 397,
+  "size_mean": 139.7,
+  "table_calls": 134,
+  "batch_ms_median": 497.1,
+  "batch_ms_p99": 1701.1,
+  "rolled_rounds_total": 12760,
+  "requests_rolled_at_least_once": 836
+ },
+ "rider_wait_s": {
+  "median": 89.0,
+  "p90": 386.4,
+  "mean": 145.1
+ },
+ "queue_s": {
+  "median": 6.0,
+  "mean": 22.9
+ }
+}

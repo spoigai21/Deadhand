@@ -1,0 +1,500 @@
+{
+ "run_id": "svc_2016-06-16_W4_k6_range_seed3_until1200_kill1030",
+ "day": "2016-06-16",
+ "workers": 4,
+ "seed": 3,
+ "key_resolution": 6,
+ "assignor": "range",
+ "speed": "max",
+ "pace_from": null,
+ "until": "12:00",
+ "watermark_slack_s": 30,
+ "session_timeout_ms": 6000,
+ "fleet_size": 7500,
+ "fleet_by_partition": {
+  "0": 3616,
+  "2": 1574,
+  "4": 194,
+  "7": 177,
+  "3": 1596,
+  "5": 197,
+  "1": 129,
+  "6": 17
+ },
+ "hardware": {
+  "cpu": "Apple M5",
+  "os": "macOS-26.6.2-arm64-arm-64bit",
+  "python": "3.12.14"
+ },
+ "jvm": "openjdk version \"21.0.11\" 2026-04-21",
+ "wall_s": 516.5,
+ "records": 144795,
+ "requests_decided": 144596,
+ "redelivered_records": 199,
+ "decisions_per_s_wall": 280.0,
+ "kill": {
+  "worker": "w0",
+  "wall_ms": 1792627764844,
+  "event_t": 1466073000.0,
+  "owned": [
+   0,
+   1
+  ],
+  "assignment_before": {
+   "w0": [
+    0,
+    1
+   ],
+   "w2": [
+    4,
+    5
+   ],
+   "w1": [
+    2,
+    3
+   ],
+   "w3": [
+    6,
+    7
+   ]
+  }
+ },
+ "events": [
+  {
+   "event": "assigned",
+   "wall_ms": 1792627356862,
+   "gen": 1,
+   "partitions": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627357348,
+   "gen": 1,
+   "partitions": [
+    0
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627357754,
+   "gen": 1,
+   "partitions": [
+    1
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627358270,
+   "gen": 1,
+   "partitions": [
+    2
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627358786,
+   "gen": 1,
+   "partitions": [
+    3
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627359288,
+   "gen": 1,
+   "partitions": [
+    4
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627359799,
+   "gen": 1,
+   "partitions": [
+    5
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627360307,
+   "gen": 1,
+   "partitions": [
+    6
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627360813,
+   "gen": 1,
+   "partitions": [
+    7
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "revoked",
+   "wall_ms": 1792627360817,
+   "gen": 1,
+   "partitions": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792627360858,
+   "gen": 2,
+   "partitions": [
+    6,
+    7
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792627360897,
+   "gen": 2,
+   "partitions": [
+    4,
+    5
+   ],
+   "clock": 0,
+   "worker": "w2"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792627360898,
+   "gen": 2,
+   "partitions": [
+    2,
+    3
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627361086,
+   "gen": 2,
+   "partitions": [
+    4
+   ],
+   "clock": 0,
+   "worker": "w2"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627361204,
+   "gen": 2,
+   "partitions": [
+    5
+   ],
+   "clock": 0,
+   "worker": "w2"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627361212,
+   "gen": 2,
+   "partitions": [
+    2
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627361335,
+   "gen": 2,
+   "partitions": [
+    3
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "revoked",
+   "wall_ms": 1792627771461,
+   "gen": 2,
+   "partitions": [
+    6,
+    7
+   ],
+   "clock": 1466073040,
+   "worker": "w3"
+  },
+  {
+   "event": "revoked",
+   "wall_ms": 1792627771486,
+   "gen": 2,
+   "partitions": [
+    4,
+    5
+   ],
+   "clock": 1466073040,
+   "worker": "w2"
+  },
+  {
+   "event": "revoked",
+   "wall_ms": 1792627771666,
+   "gen": 2,
+   "partitions": [
+    2,
+    3
+   ],
+   "clock": 1466073040,
+   "worker": "w1"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792627771709,
+   "gen": 3,
+   "partitions": [
+    6,
+    7
+   ],
+   "clock": 1466073040,
+   "worker": "w3"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792627771711,
+   "gen": 3,
+   "partitions": [
+    3,
+    4,
+    5
+   ],
+   "clock": 1466073040,
+   "worker": "w2"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792627771720,
+   "gen": 3,
+   "partitions": [
+    0,
+    1,
+    2
+   ],
+   "clock": 1466073040,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627773207,
+   "gen": 3,
+   "partitions": [
+    3
+   ],
+   "clock": 1466073040,
+   "worker": "w2"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627773880,
+   "gen": 3,
+   "partitions": [
+    0
+   ],
+   "clock": 1466073040,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792627773935,
+   "gen": 3,
+   "partitions": [
+    1
+   ],
+   "clock": 1466073040,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792627867161,
+   "gen": 3,
+   "partitions": [],
+   "clock": 1466078398,
+   "worker": "w3"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792627867214,
+   "gen": 3,
+   "partitions": [],
+   "clock": 1466078399,
+   "worker": "w2"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792627867671,
+   "gen": 3,
+   "partitions": [],
+   "clock": 1466078399,
+   "worker": "w1"
+  }
+ ],
+ "workers_summary": {
+  "w1": {
+   "worker": "w1",
+   "run": "svc_2016-06-16_W4_k6_range_seed3_until1200_kill1030",
+   "decisions": 67915,
+   "matched": 53186,
+   "abandoned": 311,
+   "no_candidates": 14418,
+   "redelivered": 199,
+   "cruises": 17503,
+   "stays": 38070,
+   "cruise_km": 74328.43227743063,
+   "cruise_h": 2283.622065188513,
+   "unroutable_candidates": 0,
+   "folds": 4,
+   "fold_ms_total": 2567,
+   "gated_polls": 39137,
+   "osrm_calls": 71000,
+   "osrm_retries": 0,
+   "wall_s": 513.742,
+   "decision_ms_median": 3.0,
+   "decision_ms_p99": 16.0,
+   "table_ms_median": 2.204709,
+   "profile": {
+    "await_ack": "78206 calls, 72.5 s",
+    "commit": "442 calls, 1.3 s",
+    "cruise": "68652 calls, 39.1 s",
+    "osrm_route": "17503 calls, 27.9 s",
+    "osrm_table": "53497 calls, 128.8 s",
+    "poll_clocks": "39702 calls, 5.1 s",
+    "poll_fleetlog": "39702 calls, 8.0 s",
+    "poll_requests": "39702 calls, 201.9 s",
+    "process": "68114 calls, 251.6 s"
+   }
+  },
+  "w2": {
+   "worker": "w2",
+   "run": "svc_2016-06-16_W4_k6_range_seed3_until1200_kill1030",
+   "decisions": 5899,
+   "matched": 5118,
+   "abandoned": 56,
+   "no_candidates": 725,
+   "redelivered": 0,
+   "cruises": 5489,
+   "stays": 5419,
+   "cruise_km": 28389.555799999933,
+   "cruise_h": 773.6860833333376,
+   "unroutable_candidates": 0,
+   "folds": 3,
+   "fold_ms_total": 1718,
+   "gated_polls": 75373,
+   "osrm_calls": 10663,
+   "osrm_retries": 0,
+   "wall_s": 511.882,
+   "decision_ms_median": 4.0,
+   "decision_ms_p99": 23.0,
+   "table_ms_median": 2.797708,
+   "profile": {
+    "await_ack": "10240 calls, 11.2 s",
+    "commit": "437 calls, 1.7 s",
+    "cruise": "8673 calls, 17.3 s",
+    "osrm_route": "5489 calls, 10.8 s",
+    "osrm_table": "5174 calls, 15.5 s",
+    "poll_clocks": "76079 calls, 10.0 s",
+    "poll_fleetlog": "76079 calls, 11.1 s",
+    "poll_requests": "76079 calls, 403.3 s",
+    "process": "5899 calls, 32.1 s"
+   }
+  },
+  "w3": {
+   "worker": "w3",
+   "run": "svc_2016-06-16_W4_k6_range_seed3_until1200_kill1030",
+   "decisions": 1731,
+   "matched": 1254,
+   "abandoned": 0,
+   "no_candidates": 477,
+   "redelivered": 0,
+   "cruises": 2768,
+   "stays": 4667,
+   "cruise_km": 12973.058799999972,
+   "cruise_h": 341.94508333333414,
+   "unroutable_candidates": 0,
+   "folds": 8,
+   "fold_ms_total": 3908,
+   "gated_polls": 79371,
+   "osrm_calls": 4022,
+   "osrm_retries": 0,
+   "wall_s": 511.918,
+   "decision_ms_median": 3.0,
+   "decision_ms_p99": 26.0,
+   "table_ms_median": 2.031667,
+   "profile": {
+    "await_ack": "4072 calls, 5.1 s",
+    "commit": "390 calls, 1.0 s",
+    "cruise": "4679 calls, 10.3 s",
+    "osrm_route": "2768 calls, 6.0 s",
+    "osrm_table": "1254 calls, 3.4 s",
+    "poll_clocks": "79517 calls, 10.7 s",
+    "poll_fleetlog": "79517 calls, 12.0 s",
+    "poll_requests": "79517 calls, 427.7 s",
+    "process": "1731 calls, 9.8 s"
+   }
+  }
+ },
+ "decisions_per_s_active": 285.4,
+ "decision_ms": {
+  "median": 4.0,
+  "p99": 17.0
+ },
+ "counts": {
+  "status": [
+   "matched",
+   "no_candidates",
+   "abandoned"
+  ],
+  "len": [
+   128328,
+   15856,
+   412
+  ]
+ },
+ "delay_s": {
+  "median": 0.0,
+  "p99": 0.0,
+  "max": 24.0,
+  "over_30s": 0
+ }
+}

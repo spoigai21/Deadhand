@@ -23,6 +23,7 @@ class Fleet:
         self.cruise_heap = []     # (cruise_at, driver, generation)
         self.generation = np.zeros(self.n, dtype=np.int64)   # bumped on every claim so a stale cruise event is ignored
         self.cruises = 0; self.cruise_m = 0.0; self.cruise_s = 0.0; self.stays = 0
+        self.cruise_n = np.zeros(self.n, dtype=np.int64)   # cruises so far per driver; the deterministic target point is drawn from it
         if cruise_after_s is not None:
             for d in range(self.n):
                 heapq.heappush(self.cruise_heap, (start_t + cruise_after_s, d, 0))
@@ -49,7 +50,7 @@ class Fleet:
                 heapq.heappush(self.cruise_heap, (t + self.cruise_after_s, d, int(self.generation[d])))
 
     def cruise(self, t, sample_target, route):
-        """Drivers idle since before t - cruise_after_s drive toward demand: sample_target(t, cell) -> (lon, lat) in the
+        """Drivers idle since before t - cruise_after_s drive toward demand: sample_target(t, cell, driver) -> (lon, lat) in the
         busiest nearby cell of the previous hour, or None to stay put. They are unavailable while driving and go idle at
         the target. route(a, b) -> (road_m, road_s) or None."""
         while self.cruise_heap and self.cruise_heap[0][0] <= t:
@@ -59,7 +60,7 @@ class Fleet:
             s = self.idle_by_cell.get(int(self.cell[d]))
             if s is None or d not in s:
                 continue
-            target = sample_target(t, int(self.cell[d]))
+            target = sample_target(t, int(self.cell[d]), d)
             if target is None:                # already in the busiest cell around: stay, look again later
                 heapq.heappush(self.cruise_heap, (t + self.cruise_after_s, d, gen)); self.stays += 1
                 continue
@@ -69,7 +70,7 @@ class Fleet:
             s.discard(d)
             self.busy_until[d] = t + road_s
             heapq.heappush(self.heap, (t + road_s, d, lon, lat))
-            self.cruises += 1; self.cruise_m += road_m; self.cruise_s += road_s
+            self.cruises += 1; self.cruise_m += road_m; self.cruise_s += road_s; self.cruise_n[d] += 1
 
     def ring(self, cell):
         c = int(cell)

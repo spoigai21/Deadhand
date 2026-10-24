@@ -216,3 +216,171 @@ Map: `figures/phase2_wrong_driver_map.png`.
 showed the straight line is worst on short legs. The conditional cost does not move with density: it
 sits at 35–45 s at the median everywhere, and at over two minutes when the straight-line pick's route
 crosses water.
+
+## Phase 3 — the service
+
+All from `results/phase3/finding2_cpu-apple-m5.json`, aggregated from `results/phase3/run_ref_*.json` (the
+reference oracle: five weekday seeds and one weekend seed, ledgers in `data/phase3/assignments_ref_*.parquet`)
+and `results/phase3/svc_*.json` (one file per service run, ledgers in `data/phase3/svc_*.parquet`); config
+`configs/phase3.yaml`. **Hardware:** Apple M5, 16 GB, macOS; workers are local JVM processes (Java 21, 2 GB
+heap each) on the same machine as the Kafka 3.9.1 broker and the OSRM v6.0.0 container (Docker Desktop,
+amd64 emulated). The routing clients open a connection per call (`BUGS.md` #4). **Supply is simulated**
+(`ASSUMPTIONS.md`). Where seeds are pooled the figure is the mean with min and max in brackets.
+
+### The reference oracle (the Phase 2 model with a deterministic cruise point, `cruise_point: hash`)
+
+| Figure | Thu, 5 seeds | Sat, seed 0 |
+|---|---|---|
+| Matched | 93.26% [93.21–93.28] | 97.74% |
+| No idle driver in the ring / abandoned | 5.7% / 1.0% | 1.9% / 0.3% |
+| Rider wait, median / p90 | 103.0 s [102.7–103.3] / 305.6 s | 85.1 s / 226.4 s |
+| Finding 1 wrong-driver rate (unchanged from Phase 2) | 44.4% [44.3–44.5] | 50.3% |
+| Throughput, three replays sharing the machine | 216 decisions/s (seeds 0–1), 184 (seeds 2–4) | 181 |
+
+The Phase 2 numbers reproduce: the hash cruise point and the hour-23 fix (`BUGS.md` #3) move nothing visible.
+
+### How the key hashes: partition balance (the producers' default partitioner, CRC32 of the key modulo 8)
+
+| Key resolution (cell edge) | Distinct cells, Thu | Busiest partition's share, Thu / Sat | Busiest cell's share, Thu | Ceiling speedup over one worker |
+|---|---|---|---|---|
+| 5 (about 8 km) | 11 | 53.4% / 49.5% | 53.4% | 1.87× |
+| **6 (about 3.2 km, the baseline)** | 40 | **57.8%** / 55.7% | **49.5%** (one Midtown cell) | **1.73×** |
+| 7 (about 1.2 km) | 149 | 47.4% / 43.4% | 23.7% | 2.11× |
+| 8 (about 460 m) | 545 | 19.5% / 18.1% | 5.2% | 5.14× |
+
+Thu partition shares at resolution 6: 57.8%, 0.2%, 23.4%, 15.1%, 0.2%, 1.8%, 1.2%, 0.3%. Three of eight
+partitions carry 96% of the day; a resolution-6 cell is bigger than Midtown's demand peak, so the shard
+that is cheap to build cannot balance.
+
+### Finding 2, Mode A — the boundary cost, paired one-step (Thu, 5 seeds; Sat, seed 0)
+
+Measured in the oracle's ledger: at every decision the oracle also records, for each key resolution r and
+worker count N under the contiguous (`RangeAssignor`) mapping of the 8 partitions onto N workers, the best
+driver among the candidates whose cell lies in the same worker's partitions as the pickup. **Slower pick**:
+that driver's road time exceeds the oracle's pick. **No visible candidate**: the oracle had candidates and
+the shard has none. The two are disjoint shares of the decisions with candidates (368,655 on Thu, seed 0).
+The **halo** rows share one ring of neighbouring cells' drivers with the owning worker (the upper line, G7).
+
+| Key res. | N | Slower pick | No visible candidate | Visible candidates, median (oracle: 50) | Extra wait on slower picks, median / p90 | Extra wait, whole day | Halo: slower / no visible |
+|---|---|---|---|---|---|---|---|
+| 5 | 2 | 0.0% | 0.0% | 50 | — | 0.5 h | 0 / 0 |
+| 5 | 4 | 12.2% [12.1–12.2] | 4.2% | 22 | 58.1 s / 231 s | 1,183 h | 0 / 0 |
+| 5 | 8 | 11.9% | 5.0% | 21 | 58.1 s / 235 s | 1,171 h | 0 / 0 |
+| 6 | 2 | 0.4% | 0.3% | 50 | 63.9 s / 254 s | 42 h | 0 / 0 |
+| **6** | **4** | **8.7% [8.7–8.8]** | **4.0% [3.9–4.0]** | **30** | **64.1 s [63.5–64.4] / 252 s** | **923 h [916–937]** | **0 / 0** |
+| 6 | 8 | 8.8% | 4.0% | 30 | 64.2 s / 252 s | 927 h | 0 / 0 |
+| 7 | 2 | 12.7% | 5.6% | 20 | 59.0 s / 217 s | 1,195 h | 0.3% / 0.3% |
+| 7 | 4 | 15.0% [14.9–15.1] | 10.9% | 10 | 57.4 s / 224 s | 1,435 h | 0.4% / 0.5% |
+| 7 | 8 | 15.6% | 14.7% | 8 | 53.1 s / 204 s | 1,365 h | 0.5% / 0.5% |
+| 8 | 2 | 23.9% | 5.6% | 14 | 56.1 s / 202 s | 2,112 h | 7.1% / 3.6% |
+| 8 | 4 | 33.3% [33.2–33.4] | 14.4% | 5 | 64.8 s / 227 s | 3,344 h | 8.2% / 7.1% |
+| 8 | 8 | 31.5% | 25.5% | 2 | 69.3 s / 245 s | 3,415 h | 7.3% / 10.8% |
+
+Saturday, seed 0, N = 4: resolution 5 11.0% / 2.0%, 42.1 s; **resolution 6 7.9% / 2.0%, 47.1 s / 170 s, 562 h**;
+resolution 7 15.4% / 6.6%, 46.0 s; resolution 8 31.8% / 10.1%, 53.5 s. Halo at resolution 6: 0 / 0; at 7:
+0.3% / 0.1%; at 8: 5.2% / 3.1%.
+
+**Why N = 4 and N = 8 read the same at resolutions 5 and 6:** the three partitions that carry 96% of the
+day land on three different workers at N = 4 already; more workers split only the empty ones.
+
+**Why resolution 8 is worst with the most cells:** the key hashes, so neighbouring fine cells sit on
+different workers and a ring-3 search sees a fifth of its candidates. The spec's reason for the coarse key,
+measured: 8.7% at resolution 6 against 33.3% at resolution 8 for the same N.
+
+**By hour** (Thu, resolution 6, N = 4, pooled over seeds): 5–10% of decisions through the night and the
+working day, rising to **10.9% at 18:00, 12.4% at 19:00, 13.5% at 22:00 and 15.2% at 23:00**; the no-visible
+share peaks at 10% at 06:00 and 18:00. The conditional cost is 25–50 s at the median midday and **85–116 s
+from 18:00**, when the nearest driver is far and the one across the edge is the only close one.
+
+**By partition** (Thu, resolution 6, N = 4): the Midtown partition (217k decisions) 7.6% slower picks and
+2.0% no visible; the two other busy partitions 10.6% / 6.4% and 9.8% / 5.3%; the partition with 2,947
+decisions has no visible candidate on 33% of them.
+
+### Finding 2, Mode B — the service replayed end to end against the oracle (Thu seed 0; Sat seed 0)
+
+The service and the oracle decide the same 391,042 requests; every run decided every request
+(`missing_in_service` = 0). At N = 1 the service is the oracle's mirror: **the same status and the same
+driver on all 391,042 requests**, so every difference at N > 1 is the shard's. At N > 1 the fleets' paths
+diverge from the first different decision, so the per-request driver agreement (3.1% at N = 2, 1.8% at
+N = 4) says nothing; the system-level figures are the comparison.
+
+| Figure, Thu | Oracle | W = 1, res 6 | W = 2, res 6 | **W = 4, res 6** | W = 8, res 6 | W = 4, res 7 | W = 8, res 7 |
+|---|---|---|---|---|---|---|---|
+| Matched | 93.28% | 93.28% | 93.10% | **89.25%** | 89.19% | 87.55% | 86.13% |
+| No idle driver visible in the ring | 5.73% | 5.73% | 5.96% | **9.79%** | 9.78% | 11.78% | 13.50% |
+| Candidates per decision, median | 50 | 50 | 50 | 50 | 50 | 20 | 17 |
+| Served riders' wait, median / p90 | 102.9 s / 304.8 s | same | 103.0 / 305.5 | 93.2 / 287.8 | 92.9 / 287.4 | 91.5 / 259.1 | 87.5 / 240.5 |
+| Empty metres per ride, median | 760 m | 760 m | 760 m | 682 m | 680 m | 666 m | 636 m |
+| Empty km, whole day | 390,542 | 390,542 | 389,064 | 342,151 | 341,243 | 313,146 | 287,511 |
+
+Saturday, W = 4, resolution 6: matched **95.10% against the oracle's 97.74%**, no visible driver 4.60% against
+1.94%, wait 86.2 s / 235.9 s against 85.1 s / 226.4 s, 623 m against 615 m per ride.
+
+**Read the wait column with the match column.** The shard serves fewer riders (4 points fewer on the weekday
+at W = 4), and the riders it drops are the ones whose only close driver was across an edge: the long waits.
+The survivors' median wait falls by selection, not by a better match. Mode A is the paired measurement; Mode
+B is what the service would show on a dashboard, and the dashboard would look fine.
+
+### Throughput at maximum replay speed (Thu seed 0, whole day, 391,042 decisions; hardware above)
+
+| Matcher | Workers | Key res. | Wall | Decisions/s | Decision, median / p99 | 1-to-50 table call, median | Busiest worker's share |
+|---|---|---|---|---|---|---|---|
+| Python oracle, one process (Phase 2 run file, kept-alive connection) | 1 | — | 1,663 s | 235 | 3.95 ms / 11.6 ms | 2.67 ms | 100% |
+| **Java worker** | **1** | 6 | 1,177 s | **332** | 3 ms / 10 ms | 1.75 ms | 100% |
+| Java consumer group | 2 | 6 | 1,138 s | 344 | 3 / 10 | 1.52 | 96.5% |
+| Java consumer group | **4** | 6 | 748 s | **523** | 3 / 10 | 1.63 | 58.0% |
+| Java consumer group | 8 | 6 | 725 s | 540 | 3 / 12 | 2.01 | 57.8% |
+| Java consumer group | 4 | 7 | 599 s | 653 | 2 / 10 | 1.61 | 50.8% |
+| Java consumer group | 8 | 7 | 608 s | 644 | 3 / 15 | 1.97 | 47.4% |
+| Java consumer group, Sat | 4 | 6 | 809 s | 449 | 3 / 12 | 1.76 | 56.0% |
+
+**Java against Python per worker: 1.41×** (332 against 235 decisions/s), and the decision itself is 3 ms
+against 4 ms: the routing call is the decision. The one-worker profile: 1,147 s processing, of which the
+table calls are 640 s (56%), waiting for the fleet log's acknowledgements 203 s (18%), cruise routing 70 s.
+**Scaling follows the key's balance, not the worker count:** 1 → 2 workers gains 3% because the second worker
+holds 3.5% of the day; 4 workers reach 523/s, 1.57× one worker against the 1.73× ceiling of the 58%
+partition; 8 workers add nothing. Resolution 7 lifts the ceiling to 2.11× and the group to 653/s (1.97×),
+at the Finding 2 cost in the table above. The resolution-7 runs also route fewer candidates (20 against 50
+at the median), which is part of their speed.
+
+### Latency at ×1 replay speed (Thu seed 0, 4 workers, resolution 6, window 21:00–21:15, 6,213 decisions)
+
+| Figure | Value | File |
+|---|---|---|
+| Match latency, median / p99 / max | **18 ms / 63 ms / 134 ms** | `svc_svc_2016-06-16_W4_k6_range_seed0_x1_until2115_cpu-apple-m5.json` |
+
+Measured from the moment the request is due (its event time mapped to the wall clock at ×1) to the moment
+its decision record has been sent, so it includes the poll, the fleet-log acknowledgement and the routing
+call. The day is replayed at maximum speed up to 21:00 and paced from there; the window is the evening peak.
+
+### The kill test (Thu, 4 workers, resolution 6, replay to 12:00, 144,596 requests per run, 10 runs)
+
+The worker owning partition 0 (58% of the day) and partition 1 is killed with SIGKILL at event time 09:00 +
+30 min × seed, five seeds per assignor. Session timeout 6 s, heartbeat 2 s, peer clock expiry two session
+timeouts. The eager runs for seeds 0–2 shared the machine with three oracle replays; the rest ran alone.
+Checks, all against the oracle's request set and the service's ledgers and fleet log: every one of the
+oracle's requests has a decision in the service; no request has two different decisions; no driver is claimed
+while a previous claim's trip is still running, judged at the moment of the decision (`BUGS.md` #7); every
+driver is in exactly one region after the kill.
+
+| Figure | Eager (`RangeAssignor`), seeds 0–4 | Cooperative (`CooperativeStickyAssignor`), seeds 0–4 |
+|---|---|---|
+| **Requests matched twice (conflicting decisions)** | **0, 0, 0, 0, 0** | **0, 0, 0, 0, 0** |
+| **Drivers claimed twice** | **0, 0, 0, 0, 0** | **0, 0, 0, 0, 0** |
+| Overlaps when judged by request time instead (all delayed requests, none real) | 18, 23, 14, 13, 13 | 22, 20, 20, 19, 17 |
+| Records redelivered after the kill, all re-emitted identically | 16, 19, 37, 199, 198 | 37, 116, 204, 49, 78 |
+| Missing requests / drivers in two regions / drivers lost | 0 / 0 / 0 in every run | 0 / 0 / 0 in every run |
+| Successor takes the orphaned partitions, s after the kill | 6.35, 7.15, 7.02, 6.88, 5.97 | 7.50, 6.60, 6.57, 7.38, 7.51 |
+| Longest pause in decisions, orphaned partitions | 11.1, 16.3, 14.2, 17.4, 15.1 s | 10.5, 10.9, 11.5, 11.7, 15.6 s |
+| Longest pause in decisions, the survivors' partitions | 25.7, 17.4, 27.7, 35.0, 31.1 s | 11.4, 22.8, 23.6, 25.2, 28.5 s |
+| Folding done by the survivors after the kill, total | 6.9–8.2 s | 1.8–2.1 s |
+| Requests decided late | 54–79 per run | 61–91 per run |
+| Their delay, median / max (event seconds; the 30 s slack bounds it) | 11–14 s / 24–28 s | 10–18 s / 20–30 s |
+
+**What the pause is.** The 6 s session timeout is the floor under both assignors: a kill is a missed
+heartbeat, and no assignor detects it sooner. After detection the eager rebalance revokes every partition and
+every worker rebuilds its regions from the log (7–8 s of folding across the group); the cooperative one moves
+only the two orphaned partitions (2 s). The survivors' longer pause is the event-time gate at maximum replay
+speed: they may run 30 s of event time ahead of the dead worker's last clock, which at this speed is about a
+second of wall clock, and then they wait for the successor. At ×1 the same 30 s of slack would cover the
+whole 7 s takeover and the survivors would not pause at all.

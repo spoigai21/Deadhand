@@ -1,0 +1,638 @@
+{
+ "run_id": "smoke_w10",
+ "day": "2016-06-16",
+ "workers": 4,
+ "seed": 0,
+ "key_resolution": 6,
+ "assignor": "range",
+ "speed": "max",
+ "pace_from": null,
+ "until": "00:40",
+ "window_s": 10.0,
+ "watermark_slack_s": 30,
+ "session_timeout_ms": 6000,
+ "fleet_size": 7500,
+ "fleet_by_partition": {
+  "0": 3633,
+  "2": 1593,
+  "3": 1564,
+  "5": 173,
+  "4": 211,
+  "7": 187,
+  "1": 127,
+  "6": 12
+ },
+ "hardware": {
+  "cpu": "Apple M5",
+  "os": "macOS-26.6.2-arm64-arm-64bit",
+  "python": "3.12.14"
+ },
+ "jvm": "openjdk version \"21.0.11\" 2026-04-21",
+ "wall_s": 121.8,
+ "records": 9241,
+ "requests_decided": 9241,
+ "redelivered_records": 0,
+ "decisions_per_s_wall": 75.9,
+ "kill": null,
+ "events": [
+  {
+   "event": "assigned",
+   "wall_ms": 1792808824175,
+   "gen": 1,
+   "partitions": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808824786,
+   "gen": 1,
+   "partitions": [
+    0
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808825142,
+   "gen": 1,
+   "partitions": [
+    1
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808825690,
+   "gen": 1,
+   "partitions": [
+    2
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808826201,
+   "gen": 1,
+   "partitions": [
+    3
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808826706,
+   "gen": 1,
+   "partitions": [
+    4
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808827212,
+   "gen": 1,
+   "partitions": [
+    5
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808827722,
+   "gen": 1,
+   "partitions": [
+    6
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808828225,
+   "gen": 1,
+   "partitions": [
+    7
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "revoked",
+   "wall_ms": 1792808828231,
+   "gen": 1,
+   "partitions": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792808828286,
+   "gen": 2,
+   "partitions": [
+    2,
+    3
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792808828328,
+   "gen": 2,
+   "partitions": [
+    4,
+    5
+   ],
+   "clock": 0,
+   "worker": "w2"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792808828328,
+   "gen": 2,
+   "partitions": [
+    6,
+    7
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792808828330,
+   "gen": 2,
+   "partitions": [
+    0,
+    1
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808828598,
+   "gen": 2,
+   "partitions": [
+    6
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808828656,
+   "gen": 2,
+   "partitions": [
+    4
+   ],
+   "clock": 0,
+   "worker": "w2"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808828775,
+   "gen": 2,
+   "partitions": [
+    0
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808829127,
+   "gen": 2,
+   "partitions": [
+    7
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808829132,
+   "gen": 2,
+   "partitions": [
+    5
+   ],
+   "clock": 0,
+   "worker": "w2"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792808829215,
+   "gen": 2,
+   "partitions": [
+    1
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808922596,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466037930,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808923193,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466038270,
+   "worker": "w0"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808923541,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466038750,
+   "worker": "w3"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808925806,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466039960,
+   "worker": "w0"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808931925,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466041960,
+   "worker": "w0"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808933168,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466064740,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808933212,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466067540,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808933234,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466068020,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808933249,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466068710,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808933357,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466073890,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808933736,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466078680,
+   "worker": "w2"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808933889,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466089040,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808934110,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466095720,
+   "worker": "w3"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808934508,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466104230,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808934542,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466104250,
+   "worker": "w2"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808934603,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466104540,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808934633,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466105180,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808934859,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466110030,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808934894,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466120760,
+   "worker": "w3"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808934956,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466120797,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808934981,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466120797,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808935058,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466120797,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808935076,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466120797,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808935082,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466120797,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808935110,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466120797,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792808935128,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466121260,
+   "worker": "w1"
+  }
+ ],
+ "workers_summary": {
+  "w0": {
+   "worker": "w0",
+   "run": "smoke_w10",
+   "decisions": 5328,
+   "matched": 5302,
+   "abandoned": 26,
+   "no_candidates": 0,
+   "redelivered": 0,
+   "cruises": 11919,
+   "stays": 56506,
+   "cruise_km": 43710.94539999999,
+   "cruise_h": 1385.9752777777742,
+   "unroutable_candidates": 0,
+   "folds": 2,
+   "fold_ms_total": 835,
+   "gated_polls": 1287,
+   "osrm_calls": 12173,
+   "osrm_retries": 0,
+   "wall_s": 118.688,
+   "decision_ms_median": 287.0,
+   "decision_ms_p99": 1307.0,
+   "table_ms_median": 232.804208,
+   "window_s": 10.0,
+   "batches": 240,
+   "rolled_rounds": 904,
+   "profile": {
+    "await_ack": "5667 calls, 6.6 s",
+    "cruise": "686 calls, 22.9 s",
+    "osrm_route": "11919 calls, 20.6 s",
+    "osrm_table": "240 calls, 67.9 s",
+    "poll_clocks": "1815 calls, 1.2 s",
+    "poll_fleetlog": "1815 calls, 1.3 s",
+    "poll_requests": "1815 calls, 11.5 s",
+    "process": "676 calls, 92.3 s",
+    "solve": "240 calls, 0.1 s"
+   }
+  },
+  "w1": {
+   "worker": "w1",
+   "run": "smoke_w10",
+   "decisions": 3558,
+   "matched": 3176,
+   "abandoned": 352,
+   "no_candidates": 30,
+   "redelivered": 0,
+   "cruises": 7430,
+   "stays": 4165,
+   "cruise_km": 31843.684900000033,
+   "cruise_h": 998.2352499999994,
+   "unroutable_candidates": 0,
+   "folds": 8,
+   "fold_ms_total": 3966,
+   "gated_polls": 4517,
+   "osrm_calls": 7674,
+   "osrm_retries": 0,
+   "wall_s": 112.384,
+   "decision_ms_median": 216.0,
+   "decision_ms_p99": 827.0,
+   "table_ms_median": 163.43025,
+   "window_s": 10.0,
+   "batches": 273,
+   "rolled_rounds": 20450,
+   "profile": {
+    "await_ack": "8297 calls, 9.5 s",
+    "cruise": "8622 calls, 21.7 s",
+    "osrm_route": "7430 calls, 14.7 s",
+    "osrm_table": "244 calls, 48.1 s",
+    "poll_clocks": "4961 calls, 1.6 s",
+    "poll_fleetlog": "4961 calls, 2.0 s",
+    "poll_requests": "4961 calls, 29.1 s",
+    "process": "8606 calls, 77.4 s",
+    "solve": "273 calls, 0.2 s"
+   }
+  },
+  "w2": {
+   "worker": "w2",
+   "run": "smoke_w10",
+   "decisions": 304,
+   "matched": 107,
+   "abandoned": 124,
+   "no_candidates": 73,
+   "redelivered": 0,
+   "cruises": 1441,
+   "stays": 1419,
+   "cruise_km": 7354.118299999983,
+   "cruise_h": 194.27802777777754,
+   "unroutable_candidates": 0,
+   "folds": 2,
+   "fold_ms_total": 728,
+   "gated_polls": 15831,
+   "osrm_calls": 1528,
+   "osrm_retries": 0,
+   "wall_s": 112.405,
+   "decision_ms_median": 27.0,
+   "decision_ms_p99": 263.0,
+   "table_ms_median": 19.316291,
+   "window_s": 10.0,
+   "batches": 221,
+   "rolled_rounds": 8108,
+   "profile": {
+    "await_ack": "1387 calls, 2.4 s",
+    "cruise": "6932 calls, 7.0 s",
+    "osrm_route": "1441 calls, 4.2 s",
+    "osrm_table": "87 calls, 2.6 s",
+    "poll_clocks": "16786 calls, 4.1 s",
+    "poll_fleetlog": "16786 calls, 3.1 s",
+    "poll_requests": "16786 calls, 91.8 s",
+    "process": "6905 calls, 11.0 s",
+    "solve": "221 calls, 0.0 s"
+   }
+  },
+  "w3": {
+   "worker": "w3",
+   "run": "smoke_w10",
+   "decisions": 51,
+   "matched": 51,
+   "abandoned": 0,
+   "no_candidates": 0,
+   "redelivered": 0,
+   "cruises": 880,
+   "stays": 2719,
+   "cruise_km": 3957.2620000000006,
+   "cruise_h": 106.29475000000008,
+   "unroutable_candidates": 0,
+   "folds": 2,
+   "fold_ms_total": 731,
+   "gated_polls": 16493,
+   "osrm_calls": 920,
+   "osrm_retries": 0,
+   "wall_s": 112.368,
+   "decision_ms_median": 19.0,
+   "decision_ms_p99": 325.0,
+   "table_ms_median": 6.610625,
+   "window_s": 10.0,
+   "batches": 79,
+   "rolled_rounds": 159,
+   "profile": {
+    "await_ack": "832 calls, 1.6 s",
+    "cruise": "8580 calls, 5.6 s",
+    "osrm_route": "880 calls, 3.3 s",
+    "osrm_table": "40 calls, 0.6 s",
+    "poll_clocks": "17483 calls, 4.4 s",
+    "poll_fleetlog": "17483 calls, 3.1 s",
+    "poll_requests": "17483 calls, 95.7 s",
+    "process": "8550 calls, 5.8 s",
+    "solve": "79 calls, 0.0 s"
+   }
+  }
+ },
+ "decisions_per_s_active": 98.2,
+ "decision_ms": {
+  "median": 255.0,
+  "p99": 1078.0
+ },
+ "counts": {
+  "status": [
+   "no_candidates",
+   "abandoned",
+   "matched"
+  ],
+  "len": [
+   103,
+   502,
+   8636
+  ]
+ },
+ "delay_s": {
+  "median": 7.0,
+  "p99": 593.0,
+  "max": 600.0,
+  "over_30s": 1399
+ }
+}

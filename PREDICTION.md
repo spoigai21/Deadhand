@@ -169,3 +169,33 @@ set will be reshuffled far more often than that. P2 stays as written; it is prob
 **What this changes for P3.** The boundary cost prediction (8% of decisions at 4 workers) was made
 with the 15% figure in mind. The candidate sets are denser than assumed, so a region edge will cut
 through more of them; P3 is probably also too low. It stays as written.
+
+## Phase 3 result, 2026-10-21 — against P3, P4 and P5
+
+*Appended after the runs. P3, P4 and P5 above are unchanged.* Numbers in `NUMBERS.md`, Phase 3 section.
+Weekday, 7,500 simulated drivers, five seeds for the oracle and the kill test, seed 0 for the service runs,
+Apple M5 with the broker, the router and the workers on one machine.
+
+| P3 said | Phase 3 found | Verdict |
+|---|---|---|
+| 8% of decisions at 4 workers, 12% at 8 | **8.7% slower pick, plus 4.0% with no visible driver at all, at 4 workers; 8.8% and 4.0% at 8** (resolution 6) | **Right on the rate at 4**, after the Phase 2 note said it was probably too low. Wrong at 8: more workers cost nothing more, because the three partitions that carry 96% of the day are already on three workers at N = 4. The prediction imagined workers as regions; they are hash buckets. |
+| Conditional cost: median 45 s, lower than Finding 1 because a region edge is a straight cut | **64 s at the median, 252 s at p90**; 85–116 s in the evening | Too low, and the wrong direction: higher than Finding 1's 40 s. The lost driver is often the only close one, not a slightly better one. |
+| Halo removes over 90% | **100% at resolution 6 and 7, 75% at resolution 8** | **Right.** |
+| (not predicted) | At resolution 8 the hash scatters neighbours and the shard picks a slower driver on 33% of decisions; at resolution 6 one partition holds 58% of the day. No resolution both balances and keeps the candidates. | The finding the prediction did not see coming. |
+
+| P4 said | Phase 3 found | Verdict |
+|---|---|---|
+| One worker, Java or Python, about 150 decisions/s against a 6 ms table | **Java 332/s, Python 235/s**; the 1-to-50 table call is 1.75 ms on a fresh connection, 2.67 ms kept-alive | Both faster than predicted and the table a third of the guess; the routing call is still the decision (56% of the worker's time). |
+| Java under 1.5× Python per worker | **1.41×**; the decision is 3 ms against 4 ms | **Right, just.** The language is not the point (G12); the service stays in Java because the consumer-group semantics are the subject, not the speed. |
+| Near-linear to 4 workers, flattening by 8 as OSRM saturates | **1.57× at 4, 1.62× at 8**, flat because of the key, not the router: partition 0 holds 58% of the day and the ceiling is 1.73× | Right shape, wrong cause. OSRM had capacity left: resolution 7 reached 1.97×. |
+| A full weekday at 8 workers in about 6 minutes | **12 minutes** at 8 and at 4; 10 at resolution 7 | Twice too optimistic, for the balance reason. |
+| ×1 median latency under 15 ms, p99 under 100 ms | **18 ms median, 63 ms p99, 134 ms max** (4 workers, 21:00–21:15) | p99 right; the median 3 ms over, the fleet-log acknowledgement round trip the prediction did not include. |
+
+| P5 said | Phase 3 found | Verdict |
+|---|---|---|
+| The first run will find a double-match bug, from the window between claim and offset commit | **No request matched twice and no driver claimed twice in any run, dry or real.** The first run found three other things (`BUGS.md` #5–#7): a lost tail of 8,724 requests, a 12–24 s stall from a too-short peer expiry, and a false positive in the double-claim check itself. | Wrong on the bug, right that the first run would find one. The claim-acknowledged-before-decide order held on the first try. |
+| Eager stalls the group 5–10 s per kill, cooperative under 2 s | **Takeover 6.0–7.2 s eager, 6.6–7.5 s cooperative**; the orphaned partitions pause 11–17 s and 10.5–15.6 s. Cooperative saves 5–6 s of refolding after the detection, not the detection. | Eager right; cooperative wrong by 3×. An assignor cannot beat the failure detector: a kill is a missed heartbeat, and the 6 s session timeout is the floor under both. |
+| Zero duplicates across 10 runs under the cooperative assignor | **Zero conflicting decisions and zero double claims in all 10 runs under both assignors**; 16–204 redelivered records per run, every one re-emitted identically | **Right.** |
+
+**What this changes for P6.** Nothing in the prediction. Batching runs inside a worker, so it inherits the
+shard's boundary: the batch sees the same region the single decision saw. The W = 10 s guess stays as written.

@@ -5,9 +5,10 @@ road network, sharded by map cell across a Java consumer group, and measured und
 **Deadhead** is the industry term for a vehicle driving empty between rides; it is the cost the
 two findings here are measured in.
 
-**Status: Phase 2 complete — the demand streams through Kafka, a single-process matcher replays a
-full day, and the straight-line shortcut is priced at the level of the decision.** The sharded Java
-service (Phase 3) is not built yet. `SPEC.md` is the plan; `PREDICTION.md` holds the guesses written before each
+**Status: Phase 3 complete — the matcher runs as a Java consumer group sharded by map cell, is
+measured against the single-process oracle, and the geographic shard is priced at the level of the
+decision; a worker is killed mid-day ten times and no rider or driver is ever matched twice.**
+`SPEC.md` is the plan; `PREDICTION.md` holds the guesses written before each
 measurement, with the outcome beside them; `NUMBERS.md` holds every figure with the file behind it;
 `ASSUMPTIONS.md` is the supply model.
 
@@ -115,6 +116,72 @@ claimed twice in 28 replays. All figures below are five-seed means; the spread i
 ![mode b](figures/phase2_mode_b.png)
 ![calibration](figures/phase2_calibration.png)
 
+## Phase 3 — the service, sharded by map cell, and Finding 2
+
+**What runs.** The matcher is a **Kafka consumer group in Java** (`consumer/`): N workers, each owning the
+partitions the group assigns it, and with them the map cells whose key hashes there. The stream is keyed by
+the pickup's coarse H3 cell (resolution 6, edge about 3 km), as the spec fixed, so that a worker owns
+contiguous regions rather than a scatter of fine cells. A worker sees the idle drivers in its own cells and
+no others. Driver state is a per-partition fold of a `fleet` log (versioned upserts and tombstones), so a
+driver lives in exactly one worker's region and a killed worker's successor rebuilds its region from the log.
+A match is durable in order (departure, decision, arrival and assignment, then the offset), consumption is
+at-least-once, and the decided-request set in the fold makes redelivery idempotent: a successor re-emits, it
+never re-decides. The workers carry no geospatial library: every cell table they need (parents, rings,
+demand points, the partition map) is precomputed in Python and exported as JSON. Across workers, event time
+is held together by a shared clock topic: at maximum replay speed no worker runs more than 30 s of event
+time ahead of the slowest live one; at ×1 the wall clock does it. Failure detection is set to a 6 s session
+timeout, stated with every number, because the client's 45 s default would be what the kill test measured.
+
+**The oracle is the judge.** The Phase 2 matcher, with its cruise point made deterministic so that a worker
+in another language draws the same one, is replayed again (five weekday seeds, one weekend) and the service
+is compared to it request by request. **At one worker the service is the oracle's mirror: the same status
+and the same driver on all 391,042 requests.** Every difference at more workers is the shard's.
+
+**Finding 2: what the geographic shard costs, decision by decision.** Paired, like Finding 1: at every
+decision the oracle records what a worker that could see only its own region would have picked.
+
+- With **4 workers at resolution 6**, the shard picks a slower driver on **8.7% of decisions** and has **no
+  visible driver at all on another 4.0%**, on a weekday with 7,500 drivers. On the slower picks the rider
+  waits **64 s longer at the median, 252 s at p90**; the day loses 923 rider-hours. The weekend is 7.9%
+  and 2.0%, 47 s. Eight workers cost the same as four: the three partitions that carry 96% of the day are
+  already apart.
+- **The cheap shard cannot balance.** Keyed at resolution 6, one Midtown cell is half the weekday and one
+  partition 58% of it; the busiest-partition ceiling is 1.73× one worker. Keyed finer, the hash scatters
+  neighbours: at resolution 8 the shard sees 5 of 50 candidates and picks a slower driver on **33%** of
+  decisions. There is no resolution at which the key both balances and keeps the candidates: that is the
+  finding.
+- A one-ring **halo** of neighbouring cells' drivers, built only as the upper line, removes all of the cost
+  at resolution 6 and 7 and three quarters of it at resolution 8.
+- End to end the service matches **89.3% of the weekday against the oracle's 93.3%** at 4 workers: the
+  riders it drops are the ones whose only close driver was across an edge. The survivors' median wait
+  *falls* (93 s against 103 s), by selection. A dashboard would show the shard as an improvement.
+- The cost is highest in the evening: 11–15% of decisions from 18:00, 85–116 s at the median.
+
+**Throughput, on this one machine** (Apple M5, broker, router and workers all local). One Java worker does
+**332 decisions/s** against the Python oracle's 235, **1.41×**, and the decision is 3 ms against 4 ms: the
+routing call is the decision, as predicted, and the compiled consumer is not the point. The group scales with
+the key's balance, not the worker count: 4 workers reach 523/s (1.57×, under the 1.73× ceiling), 8 add
+nothing, and the finer key that balances better (653/s at resolution 7) pays for it in Finding 2. A full
+weekday replays in 12.5 minutes at 4 workers against 28 for the oracle. At ×1, in the evening peak, a
+request is decided **18 ms after it is due at the median, 63 ms at p99**, end to end through the poll, the
+fleet log and the routing call.
+
+**The kill test.** The worker owning the Midtown partition is killed with SIGKILL at a stated minute of
+the morning, five seeds under the eager assignor and five under the cooperative one, and the result is
+checked against the oracle's request set and the fleet log. **In all ten runs no request was matched twice
+and no driver was claimed twice**; every request was decided exactly once, every driver was in exactly one
+region after the kill, and the 16–204 records redelivered after each kill were re-emitted identically. The
+successor takes over **6–7.5 s after the kill under both assignors**: the 6 s session timeout is the floor,
+and a kill is a missed heartbeat that no assignor detects sooner. Cooperative rebalancing saves the work
+after detection (2 s of refolding against 7–8 s, because the eager rebalance makes every worker rebuild),
+not the detection. Delayed requests number 54–91 per run and wait 10–18 s longer at the median, bounded by
+the 30 s event-time slack. **The prediction's bug did not happen**: the first kill run found three other
+things (`BUGS.md` #5–#7), and the claim-before-decide order held on the first try.
+
+![boundary cost](figures/phase3_boundary_cost.png)
+![throughput](figures/phase3_throughput.png)
+![kill test](figures/phase3_kill_test.png)
+
 ## Prior art, by name
 
 Road-network ride-sharing simulators exist and are good: **AMoD2**, a deep-RL taxi dispatcher,
@@ -149,6 +216,30 @@ docker compose up -d kafka
 scripts/phase2_runs.sh 7500                                              # all 28 replays, ~3 h on one laptop
 .venv/bin/python -m deadhead.phase2_metrics configs/phase2.yaml
 .venv/bin/python -m deadhead.figures results figures
+.venv/bin/python -m pytest -q
+```
+
+## Reproduce Phase 3
+
+```bash
+docker compose up -d                                          # the broker's listener list changed since Phase 2: a recreated broker is empty, and the next line refills it
+.venv/bin/python -m deadhead.phase3_data configs/phase3.yaml  # cell, demand, fleet and partition tables for the workers; re-produces the request topics, ~10 s
+(cd consumer && gradle jar)                                   # Java 21, Gradle 9 -> consumer/build/libs/deadhead-consumer.jar
+scripts/phase3_oracle_runs.sh                                 # the reference ledgers, six replays three at a time, ~70 min
+.venv/bin/python -m deadhead.phase3_service configs/phase3.yaml --day 2016-06-16 --workers 4   # one service run, ~13 min
+scripts/phase3_runs.sh                                        # every measurement run, ~3.5 h; kill runs: scripts/phase3_runs.sh kill
+.venv/bin/python -m deadhead.phase3_metrics configs/phase3.yaml
+.venv/bin/python -m pytest -q
+```
+
+## Reproduce Phase 4
+
+```bash
+scripts/phase4_runs.sh sweep                                  # the batched oracle over W, weekday, seed 0: six replays three at a time, ~2.5 h
+OP=10 scripts/phase4_runs.sh operating radius weekend service # the operating point over seeds and without rolling, the radius, the weekend, the service with the window
+.venv/bin/python -m deadhead.batch configs/phase4.yaml --day 2016-06-16 --window 10              # one batched replay, ~1 h
+.venv/bin/python -m deadhead.phase3_service configs/phase4.yaml --day 2016-06-16 --workers 4 --window 10   # the service with a 10 s window
+.venv/bin/python -m deadhead.phase4_metrics configs/phase4.yaml
 .venv/bin/python -m pytest -q
 ```
 

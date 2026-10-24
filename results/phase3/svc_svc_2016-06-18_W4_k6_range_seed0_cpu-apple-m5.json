@@ -1,0 +1,449 @@
+{
+ "run_id": "svc_2016-06-18_W4_k6_range_seed0",
+ "day": "2016-06-18",
+ "workers": 4,
+ "seed": 0,
+ "key_resolution": 6,
+ "assignor": "range",
+ "speed": "max",
+ "pace_from": null,
+ "until": null,
+ "watermark_slack_s": 30,
+ "session_timeout_ms": 6000,
+ "fleet_size": 7500,
+ "fleet_by_partition": {
+  "0": 3870,
+  "2": 1449,
+  "3": 1609,
+  "5": 152,
+  "7": 184,
+  "4": 117,
+  "1": 102,
+  "6": 17
+ },
+ "hardware": {
+  "cpu": "Apple M5",
+  "os": "macOS-26.6.2-arm64-arm-64bit",
+  "python": "3.12.14"
+ },
+ "jvm": "openjdk version \"21.0.11\" 2026-04-21",
+ "wall_s": 809.0,
+ "records": 362824,
+ "requests_decided": 362824,
+ "redelivered_records": 0,
+ "decisions_per_s_wall": 448.5,
+ "kill": null,
+ "events": [
+  {
+   "event": "assigned",
+   "wall_ms": 1792553181455,
+   "gen": 1,
+   "partitions": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553181802,
+   "gen": 1,
+   "partitions": [
+    0
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553182233,
+   "gen": 1,
+   "partitions": [
+    1
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553182744,
+   "gen": 1,
+   "partitions": [
+    2
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553183264,
+   "gen": 1,
+   "partitions": [
+    3
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553183772,
+   "gen": 1,
+   "partitions": [
+    4
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553184280,
+   "gen": 1,
+   "partitions": [
+    5
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553184788,
+   "gen": 1,
+   "partitions": [
+    6
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553185296,
+   "gen": 1,
+   "partitions": [
+    7
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "revoked",
+   "wall_ms": 1792553185300,
+   "gen": 1,
+   "partitions": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792553185351,
+   "gen": 2,
+   "partitions": [
+    0,
+    1
+   ],
+   "clock": 0,
+   "worker": "w0"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792553185377,
+   "gen": 2,
+   "partitions": [
+    4,
+    5
+   ],
+   "clock": 0,
+   "worker": "w2"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792553185378,
+   "gen": 2,
+   "partitions": [
+    2,
+    3
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "assigned",
+   "wall_ms": 1792553185378,
+   "gen": 2,
+   "partitions": [
+    6,
+    7
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553185931,
+   "gen": 2,
+   "partitions": [
+    6
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553185964,
+   "gen": 2,
+   "partitions": [
+    4
+   ],
+   "clock": 0,
+   "worker": "w2"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553186175,
+   "gen": 2,
+   "partitions": [
+    2
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553186368,
+   "gen": 2,
+   "partitions": [
+    5
+   ],
+   "clock": 0,
+   "worker": "w2"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553186460,
+   "gen": 2,
+   "partitions": [
+    7
+   ],
+   "clock": 0,
+   "worker": "w3"
+  },
+  {
+   "event": "folded",
+   "wall_ms": 1792553186628,
+   "gen": 2,
+   "partitions": [
+    3
+   ],
+   "clock": 0,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792553985928,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466294358,
+   "worker": "w2"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792553986243,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466294383,
+   "worker": "w3"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792553986364,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466294399,
+   "worker": "w1"
+  },
+  {
+   "event": "done",
+   "wall_ms": 1792553986704,
+   "gen": 2,
+   "partitions": [],
+   "clock": 1466294399,
+   "worker": "w0"
+  }
+ ],
+ "workers_summary": {
+  "w0": {
+   "worker": "w0",
+   "run": "svc_2016-06-18_W4_k6_range_seed0",
+   "decisions": 203211,
+   "matched": 202791,
+   "abandoned": 91,
+   "no_candidates": 329,
+   "redelivered": 0,
+   "cruises": 34159,
+   "stays": 534454,
+   "cruise_km": 137937.9873000021,
+   "cruise_h": 4242.458444444456,
+   "unroutable_candidates": 0,
+   "folds": 8,
+   "fold_ms_total": 3809,
+   "gated_polls": 6440,
+   "osrm_calls": 237041,
+   "osrm_retries": 0,
+   "wall_s": 806.468,
+   "decision_ms_median": 3.0,
+   "decision_ms_p99": 11.0,
+   "table_ms_median": 1.920833,
+   "profile": {
+    "await_ack": "215247 calls, 122.1 s",
+    "commit": "887 calls, 1.1 s",
+    "cruise": "203417 calls, 48.6 s",
+    "osrm_route": "34159 calls, 36.9 s",
+    "osrm_table": "202882 calls, 426.5 s",
+    "poll_clocks": "6477 calls, 1.6 s",
+    "poll_fleetlog": "6477 calls, 5.9 s",
+    "poll_requests": "6477 calls, 18.4 s",
+    "process": "203211 calls, 774.7 s"
+   }
+  },
+  "w1": {
+   "worker": "w1",
+   "run": "svc_2016-06-18_W4_k6_range_seed0",
+   "decisions": 149282,
+   "matched": 133736,
+   "abandoned": 863,
+   "no_candidates": 14683,
+   "redelivered": 0,
+   "cruises": 40660,
+   "stays": 155885,
+   "cruise_km": 194594.97679999997,
+   "cruise_h": 6076.428333333336,
+   "unroutable_candidates": 0,
+   "folds": 2,
+   "fold_ms_total": 1180,
+   "gated_polls": 64174,
+   "osrm_calls": 175259,
+   "osrm_retries": 0,
+   "wall_s": 806.46,
+   "decision_ms_median": 2.0,
+   "decision_ms_p99": 12.0,
+   "table_ms_median": 1.717416,
+   "profile": {
+    "await_ack": "172112 calls, 100.3 s",
+    "commit": "788 calls, 1.1 s",
+    "cruise": "150280 calls, 62.9 s",
+    "osrm_route": "40660 calls, 45.9 s",
+    "osrm_table": "134599 calls, 250.7 s",
+    "poll_clocks": "64826 calls, 7.1 s",
+    "poll_fleetlog": "64826 calls, 17.1 s",
+    "poll_requests": "64826 calls, 328.7 s",
+    "process": "149282 calls, 447.5 s"
+   }
+  },
+  "w2": {
+   "worker": "w2",
+   "run": "svc_2016-06-18_W4_k6_range_seed0",
+   "decisions": 6538,
+   "matched": 5297,
+   "abandoned": 126,
+   "no_candidates": 1115,
+   "redelivered": 0,
+   "cruises": 11567,
+   "stays": 28442,
+   "cruise_km": 62092.46219999969,
+   "cruise_h": 1644.0520555555513,
+   "unroutable_candidates": 0,
+   "folds": 2,
+   "fold_ms_total": 913,
+   "gated_polls": 133262,
+   "osrm_calls": 16990,
+   "osrm_retries": 0,
+   "wall_s": 806.455,
+   "decision_ms_median": 3.0,
+   "decision_ms_p99": 23.0,
+   "table_ms_median": 1.707291,
+   "profile": {
+    "await_ack": "15969 calls, 12.2 s",
+    "commit": "786 calls, 1.1 s",
+    "cruise": "11991 calls, 26.4 s",
+    "osrm_route": "11567 calls, 16.5 s",
+    "osrm_table": "5423 calls, 11.0 s",
+    "poll_clocks": "133968 calls, 15.7 s",
+    "poll_fleetlog": "133968 calls, 18.6 s",
+    "poll_requests": "133968 calls, 720.1 s",
+    "process": "6538 calls, 31.3 s"
+   }
+  },
+  "w3": {
+   "worker": "w3",
+   "run": "svc_2016-06-18_W4_k6_range_seed0",
+   "decisions": 3793,
+   "matched": 3215,
+   "abandoned": 19,
+   "no_candidates": 559,
+   "redelivered": 0,
+   "cruises": 10365,
+   "stays": 92200,
+   "cruise_km": 43512.6668000001,
+   "cruise_h": 1156.3375277777907,
+   "unroutable_candidates": 0,
+   "folds": 2,
+   "fold_ms_total": 998,
+   "gated_polls": 134173,
+   "osrm_calls": 13599,
+   "osrm_retries": 0,
+   "wall_s": 806.422,
+   "decision_ms_median": 3.0,
+   "decision_ms_p99": 29.0,
+   "table_ms_median": 1.811167,
+   "profile": {
+    "await_ack": "11161 calls, 9.0 s",
+    "commit": "778 calls, 1.5 s",
+    "cruise": "9528 calls, 23.5 s",
+    "osrm_route": "10365 calls, 14.6 s",
+    "osrm_table": "3234 calls, 7.2 s",
+    "poll_clocks": "134797 calls, 15.7 s",
+    "poll_fleetlog": "134797 calls, 17.7 s",
+    "poll_requests": "134797 calls, 730.4 s",
+    "process": "3793 calls, 19.2 s"
+   }
+  }
+ },
+ "decisions_per_s_active": 453.0,
+ "decision_ms": {
+  "median": 3.0,
+  "p99": 12.0
+ },
+ "counts": {
+  "status": [
+   "abandoned",
+   "matched",
+   "no_candidates"
+  ],
+  "len": [
+   1099,
+   345039,
+   16686
+  ]
+ },
+ "delay_s": {
+  "median": 0.0,
+  "p99": 0.0,
+  "max": 0.0,
+  "over_30s": 0
+ }
+}

@@ -1,0 +1,6037 @@
+{
+ "config": {
+  "partitions": 8,
+  "key_resolution": 6,
+  "shard_key_resolutions": [
+   5,
+   6,
+   7,
+   8
+  ],
+  "shard_workers": [
+   2,
+   4,
+   8
+  ],
+  "fleet_size": 7500,
+  "abandon_after_s": 600,
+  "watermark_slack_s": 30,
+  "session_timeout_ms": 6000,
+  "candidates_k": 50,
+  "ring_k": 3
+ },
+ "balance": {
+  "2016-06-16": {
+   "5": {
+    "distinct_cells": 11,
+    "partition_shares": [
+     0.0,
+     0.0,
+     0.0199,
+     0.0,
+     0.0017,
+     0.5338,
+     0.2271,
+     0.2176
+    ],
+    "busiest_partition_share": 0.5338,
+    "busiest_cell_share": 0.5337,
+    "top3_cell_shares": [
+     0.5337,
+     0.2271,
+     0.2175
+    ],
+    "ceiling_speedup": 1.87
+   },
+   "6": {
+    "distinct_cells": 40,
+    "partition_shares": [
+     0.578,
+     0.0015,
+     0.2344,
+     0.1507,
+     0.0016,
+     0.0183,
+     0.0123,
+     0.0032
+    ],
+    "busiest_partition_share": 0.578,
+    "busiest_cell_share": 0.4949,
+    "top3_cell_shares": [
+     0.4949,
+     0.2142,
+     0.1439
+    ],
+    "ceiling_speedup": 1.73
+   },
+   "7": {
+    "distinct_cells": 149,
+    "partition_shares": [
+     0.0096,
+     0.215,
+     0.4742,
+     0.0336,
+     0.0349,
+     0.027,
+     0.0428,
+     0.1628
+    ],
+    "busiest_partition_share": 0.4742,
+    "busiest_cell_share": 0.237,
+    "top3_cell_shares": [
+     0.237,
+     0.213,
+     0.1089
+    ],
+    "ceiling_speedup": 2.11
+   },
+   "8": {
+    "distinct_cells": 545,
+    "partition_shares": [
+     0.1521,
+     0.0273,
+     0.0854,
+     0.1743,
+     0.1064,
+     0.1541,
+     0.1946,
+     0.1059
+    ],
+    "busiest_partition_share": 0.1946,
+    "busiest_cell_share": 0.0518,
+    "top3_cell_shares": [
+     0.0518,
+     0.0514,
+     0.0439
+    ],
+    "ceiling_speedup": 5.14
+   }
+  },
+  "2016-06-18": {
+   "5": {
+    "distinct_cells": 12,
+    "partition_shares": [
+     0.0,
+     0.0,
+     0.0197,
+     0.0,
+     0.003,
+     0.4945,
+     0.2788,
+     0.2041
+    ],
+    "busiest_partition_share": 0.4945,
+    "busiest_cell_share": 0.4944,
+    "top3_cell_shares": [
+     0.4944,
+     0.2787,
+     0.2039
+    ],
+    "ceiling_speedup": 2.02
+   },
+   "6": {
+    "distinct_cells": 44,
+    "partition_shares": [
+     0.5572,
+     0.0029,
+     0.2185,
+     0.193,
+     0.003,
+     0.0151,
+     0.0051,
+     0.0054
+    ],
+    "busiest_partition_share": 0.5572,
+    "busiest_cell_share": 0.4577,
+    "top3_cell_shares": [
+     0.4577,
+     0.1982,
+     0.179
+    ],
+    "ceiling_speedup": 1.79
+   },
+   "7": {
+    "distinct_cells": 162,
+    "partition_shares": [
+     0.0152,
+     0.2171,
+     0.4342,
+     0.0327,
+     0.0484,
+     0.0443,
+     0.0437,
+     0.1645
+    ],
+    "busiest_partition_share": 0.4342,
+    "busiest_cell_share": 0.2154,
+    "top3_cell_shares": [
+     0.2154,
+     0.1879,
+     0.135
+    ],
+    "ceiling_speedup": 2.3
+   },
+   "8": {
+    "distinct_cells": 604,
+    "partition_shares": [
+     0.128,
+     0.0325,
+     0.1116,
+     0.1685,
+     0.1131,
+     0.1503,
+     0.1808,
+     0.1152
+    ],
+    "busiest_partition_share": 0.1808,
+    "busiest_cell_share": 0.0527,
+    "top3_cell_shares": [
+     0.0527,
+     0.0403,
+     0.0379
+    ],
+    "ceiling_speedup": 5.53
+   }
+  }
+ },
+ "mode_a": {
+  "by_day": {
+   "2016-06-16": {
+    "seeds": {
+     "0": {
+      "decisions_with_candidates": 368655,
+      "cells": {
+       "s5n2": {
+        "no_visible_candidate_rate": 0.0001,
+        "wrong_driver_rate": 0.0001,
+        "wrong_driver_rate_given_visible": 0.0001,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 43.4,
+         "p90": 139.9,
+         "mean": 79.7
+        },
+        "total_extra_wait_h": 0.5
+       },
+       "h5n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n4": {
+        "no_visible_candidate_rate": 0.0418,
+        "wrong_driver_rate": 0.1215,
+        "wrong_driver_rate_given_visible": 0.1268,
+        "visible_candidates_median": 22.0,
+        "conditional_extra_wait_s": {
+         "median": 58.3,
+         "p90": 231.5,
+         "mean": 95.3
+        },
+        "total_extra_wait_h": 1185.6
+       },
+       "h5n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n8": {
+        "no_visible_candidate_rate": 0.0498,
+        "wrong_driver_rate": 0.119,
+        "wrong_driver_rate_given_visible": 0.1252,
+        "visible_candidates_median": 21.0,
+        "conditional_extra_wait_s": {
+         "median": 58.4,
+         "p90": 236.4,
+         "mean": 96.3
+        },
+        "total_extra_wait_h": 1173.4
+       },
+       "h5n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n2": {
+        "no_visible_candidate_rate": 0.0029,
+        "wrong_driver_rate": 0.0038,
+        "wrong_driver_rate_given_visible": 0.0038,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 64.5,
+         "p90": 262.2,
+         "mean": 110.8
+        },
+        "total_extra_wait_h": 43.1
+       },
+       "h6n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n4": {
+        "no_visible_candidate_rate": 0.0397,
+        "wrong_driver_rate": 0.0872,
+        "wrong_driver_rate_given_visible": 0.0908,
+        "visible_candidates_median": 30.0,
+        "conditional_extra_wait_s": {
+         "median": 64.1,
+         "p90": 254.2,
+         "mean": 103.5
+        },
+        "total_extra_wait_h": 924.0
+       },
+       "h6n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n8": {
+        "no_visible_candidate_rate": 0.0398,
+        "wrong_driver_rate": 0.0876,
+        "wrong_driver_rate_given_visible": 0.0912,
+        "visible_candidates_median": 30.0,
+        "conditional_extra_wait_s": {
+         "median": 64.1,
+         "p90": 254.0,
+         "mean": 103.5
+        },
+        "total_extra_wait_h": 927.9
+       },
+       "h6n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s7n2": {
+        "no_visible_candidate_rate": 0.0559,
+        "wrong_driver_rate": 0.1271,
+        "wrong_driver_rate_given_visible": 0.1346,
+        "visible_candidates_median": 20.0,
+        "conditional_extra_wait_s": {
+         "median": 58.8,
+         "p90": 217.2,
+         "mean": 91.3
+        },
+        "total_extra_wait_h": 1188.7
+       },
+       "h7n2": {
+        "no_visible_candidate_rate": 0.003,
+        "wrong_driver_rate": 0.0026,
+        "wrong_driver_rate_given_visible": 0.0026,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 57.9,
+         "p90": 229.5,
+         "mean": 92.9
+        },
+        "total_extra_wait_h": 24.9
+       },
+       "s7n4": {
+        "no_visible_candidate_rate": 0.1082,
+        "wrong_driver_rate": 0.1501,
+        "wrong_driver_rate_given_visible": 0.1683,
+        "visible_candidates_median": 10.0,
+        "conditional_extra_wait_s": {
+         "median": 57.4,
+         "p90": 224.1,
+         "mean": 93.1
+        },
+        "total_extra_wait_h": 1430.3
+       },
+       "h7n4": {
+        "no_visible_candidate_rate": 0.0045,
+        "wrong_driver_rate": 0.0043,
+        "wrong_driver_rate_given_visible": 0.0043,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 60.0,
+         "p90": 200.9,
+         "mean": 86.5
+        },
+        "total_extra_wait_h": 37.7
+       },
+       "s7n8": {
+        "no_visible_candidate_rate": 0.1461,
+        "wrong_driver_rate": 0.1566,
+        "wrong_driver_rate_given_visible": 0.1834,
+        "visible_candidates_median": 8.0,
+        "conditional_extra_wait_s": {
+         "median": 53.2,
+         "p90": 203.3,
+         "mean": 85.2
+        },
+        "total_extra_wait_h": 1367.2
+       },
+       "h7n8": {
+        "no_visible_candidate_rate": 0.0051,
+        "wrong_driver_rate": 0.0048,
+        "wrong_driver_rate_given_visible": 0.0048,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 59.3,
+         "p90": 205.3,
+         "mean": 86.9
+        },
+        "total_extra_wait_h": 42.7
+       },
+       "s8n2": {
+        "no_visible_candidate_rate": 0.0559,
+        "wrong_driver_rate": 0.2385,
+        "wrong_driver_rate_given_visible": 0.2526,
+        "visible_candidates_median": 14.0,
+        "conditional_extra_wait_s": {
+         "median": 56.0,
+         "p90": 201.4,
+         "mean": 86.2
+        },
+        "total_extra_wait_h": 2104.2
+       },
+       "h8n2": {
+        "no_visible_candidate_rate": 0.0357,
+        "wrong_driver_rate": 0.0717,
+        "wrong_driver_rate_given_visible": 0.0744,
+        "visible_candidates_median": 25.0,
+        "conditional_extra_wait_s": {
+         "median": 61.3,
+         "p90": 214.8,
+         "mean": 93.2
+        },
+        "total_extra_wait_h": 684.5
+       },
+       "s8n4": {
+        "no_visible_candidate_rate": 0.1437,
+        "wrong_driver_rate": 0.3334,
+        "wrong_driver_rate_given_visible": 0.3893,
+        "visible_candidates_median": 6.0,
+        "conditional_extra_wait_s": {
+         "median": 64.8,
+         "p90": 226.6,
+         "mean": 97.6
+        },
+        "total_extra_wait_h": 3331.7
+       },
+       "h8n4": {
+        "no_visible_candidate_rate": 0.0701,
+        "wrong_driver_rate": 0.0826,
+        "wrong_driver_rate_given_visible": 0.0888,
+        "visible_candidates_median": 16.0,
+        "conditional_extra_wait_s": {
+         "median": 65.9,
+         "p90": 226.6,
+         "mean": 99.2
+        },
+        "total_extra_wait_h": 839.0
+       },
+       "s8n8": {
+        "no_visible_candidate_rate": 0.2544,
+        "wrong_driver_rate": 0.3146,
+        "wrong_driver_rate_given_visible": 0.422,
+        "visible_candidates_median": 2.0,
+        "conditional_extra_wait_s": {
+         "median": 69.1,
+         "p90": 244.3,
+         "mean": 105.5
+        },
+        "total_extra_wait_h": 3400.2
+       },
+       "h8n8": {
+        "no_visible_candidate_rate": 0.1074,
+        "wrong_driver_rate": 0.0723,
+        "wrong_driver_rate_given_visible": 0.081,
+        "visible_candidates_median": 11.0,
+        "conditional_extra_wait_s": {
+         "median": 59.9,
+         "p90": 232.0,
+         "mean": 98.2
+        },
+        "total_extra_wait_h": 727.7
+       }
+      }
+     },
+     "1": {
+      "decisions_with_candidates": 368968,
+      "cells": {
+       "s5n2": {
+        "no_visible_candidate_rate": 0.0001,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 39.9,
+         "p90": 232.4,
+         "mean": 92.6
+        },
+        "total_extra_wait_h": 0.4
+       },
+       "h5n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n4": {
+        "no_visible_candidate_rate": 0.0415,
+        "wrong_driver_rate": 0.1223,
+        "wrong_driver_rate_given_visible": 0.1276,
+        "visible_candidates_median": 22.0,
+        "conditional_extra_wait_s": {
+         "median": 58.3,
+         "p90": 233.1,
+         "mean": 95.8
+        },
+        "total_extra_wait_h": 1199.9
+       },
+       "h5n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n8": {
+        "no_visible_candidate_rate": 0.0494,
+        "wrong_driver_rate": 0.1201,
+        "wrong_driver_rate_given_visible": 0.1263,
+        "visible_candidates_median": 21.0,
+        "conditional_extra_wait_s": {
+         "median": 58.4,
+         "p90": 238.0,
+         "mean": 96.8
+        },
+        "total_extra_wait_h": 1191.6
+       },
+       "h5n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n2": {
+        "no_visible_candidate_rate": 0.0029,
+        "wrong_driver_rate": 0.0039,
+        "wrong_driver_rate_given_visible": 0.0039,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 66.8,
+         "p90": 268.6,
+         "mean": 111.8
+        },
+        "total_extra_wait_h": 44.8
+       },
+       "h6n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n4": {
+        "no_visible_candidate_rate": 0.0395,
+        "wrong_driver_rate": 0.0882,
+        "wrong_driver_rate_given_visible": 0.0918,
+        "visible_candidates_median": 29.0,
+        "conditional_extra_wait_s": {
+         "median": 64.1,
+         "p90": 255.1,
+         "mean": 103.7
+        },
+        "total_extra_wait_h": 937.2
+       },
+       "h6n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n8": {
+        "no_visible_candidate_rate": 0.0397,
+        "wrong_driver_rate": 0.0885,
+        "wrong_driver_rate_given_visible": 0.0922,
+        "visible_candidates_median": 29.0,
+        "conditional_extra_wait_s": {
+         "median": 64.1,
+         "p90": 255.0,
+         "mean": 103.7
+        },
+        "total_extra_wait_h": 940.9
+       },
+       "h6n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s7n2": {
+        "no_visible_candidate_rate": 0.056,
+        "wrong_driver_rate": 0.1276,
+        "wrong_driver_rate_given_visible": 0.1351,
+        "visible_candidates_median": 20.0,
+        "conditional_extra_wait_s": {
+         "median": 59.0,
+         "p90": 217.0,
+         "mean": 91.8
+        },
+        "total_extra_wait_h": 1199.8
+       },
+       "h7n2": {
+        "no_visible_candidate_rate": 0.003,
+        "wrong_driver_rate": 0.0027,
+        "wrong_driver_rate_given_visible": 0.0027,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 60.3,
+         "p90": 241.3,
+         "mean": 98.1
+        },
+        "total_extra_wait_h": 27.5
+       },
+       "s7n4": {
+        "no_visible_candidate_rate": 0.1087,
+        "wrong_driver_rate": 0.1506,
+        "wrong_driver_rate_given_visible": 0.169,
+        "visible_candidates_median": 11.0,
+        "conditional_extra_wait_s": {
+         "median": 57.4,
+         "p90": 224.2,
+         "mean": 93.5
+        },
+        "total_extra_wait_h": 1443.9
+       },
+       "h7n4": {
+        "no_visible_candidate_rate": 0.0046,
+        "wrong_driver_rate": 0.0044,
+        "wrong_driver_rate_given_visible": 0.0044,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 59.9,
+         "p90": 205.3,
+         "mean": 89.9
+        },
+        "total_extra_wait_h": 40.6
+       },
+       "s7n8": {
+        "no_visible_candidate_rate": 0.1477,
+        "wrong_driver_rate": 0.1567,
+        "wrong_driver_rate_given_visible": 0.1839,
+        "visible_candidates_median": 8.0,
+        "conditional_extra_wait_s": {
+         "median": 53.0,
+         "p90": 204.8,
+         "mean": 85.4
+        },
+        "total_extra_wait_h": 1371.6
+       },
+       "h7n8": {
+        "no_visible_candidate_rate": 0.0051,
+        "wrong_driver_rate": 0.005,
+        "wrong_driver_rate_given_visible": 0.005,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 57.9,
+         "p90": 208.8,
+         "mean": 89.4
+        },
+        "total_extra_wait_h": 45.6
+       },
+       "s8n2": {
+        "no_visible_candidate_rate": 0.0556,
+        "wrong_driver_rate": 0.24,
+        "wrong_driver_rate_given_visible": 0.2541,
+        "visible_candidates_median": 14.0,
+        "conditional_extra_wait_s": {
+         "median": 56.2,
+         "p90": 201.6,
+         "mean": 86.3
+        },
+        "total_extra_wait_h": 2122.3
+       },
+       "h8n2": {
+        "no_visible_candidate_rate": 0.0356,
+        "wrong_driver_rate": 0.072,
+        "wrong_driver_rate_given_visible": 0.0747,
+        "visible_candidates_median": 24.0,
+        "conditional_extra_wait_s": {
+         "median": 60.7,
+         "p90": 216.3,
+         "mean": 93.2
+        },
+        "total_extra_wait_h": 688.1
+       },
+       "s8n4": {
+        "no_visible_candidate_rate": 0.1443,
+        "wrong_driver_rate": 0.334,
+        "wrong_driver_rate_given_visible": 0.3904,
+        "visible_candidates_median": 5.0,
+        "conditional_extra_wait_s": {
+         "median": 64.7,
+         "p90": 227.3,
+         "mean": 98.1
+        },
+        "total_extra_wait_h": 3360.0
+       },
+       "h8n4": {
+        "no_visible_candidate_rate": 0.0706,
+        "wrong_driver_rate": 0.083,
+        "wrong_driver_rate_given_visible": 0.0893,
+        "visible_candidates_median": 16.0,
+        "conditional_extra_wait_s": {
+         "median": 65.1,
+         "p90": 232.5,
+         "mean": 100.1
+        },
+        "total_extra_wait_h": 851.3
+       },
+       "s8n8": {
+        "no_visible_candidate_rate": 0.2542,
+        "wrong_driver_rate": 0.3163,
+        "wrong_driver_rate_given_visible": 0.4241,
+        "visible_candidates_median": 2.0,
+        "conditional_extra_wait_s": {
+         "median": 69.4,
+         "p90": 245.9,
+         "mean": 106.2
+        },
+        "total_extra_wait_h": 3441.7
+       },
+       "h8n8": {
+        "no_visible_candidate_rate": 0.1078,
+        "wrong_driver_rate": 0.0732,
+        "wrong_driver_rate_given_visible": 0.0821,
+        "visible_candidates_median": 11.0,
+        "conditional_extra_wait_s": {
+         "median": 59.9,
+         "p90": 237.8,
+         "mean": 99.6
+        },
+        "total_extra_wait_h": 747.9
+       }
+      }
+     },
+     "2": {
+      "decisions_with_candidates": 368976,
+      "cells": {
+       "s5n2": {
+        "no_visible_candidate_rate": 0.0001,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 41.9,
+         "p90": 210.1,
+         "mean": 101.4
+        },
+        "total_extra_wait_h": 0.5
+       },
+       "h5n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n4": {
+        "no_visible_candidate_rate": 0.0418,
+        "wrong_driver_rate": 0.1215,
+        "wrong_driver_rate_given_visible": 0.1268,
+        "visible_candidates_median": 22.0,
+        "conditional_extra_wait_s": {
+         "median": 57.9,
+         "p90": 233.3,
+         "mean": 94.5
+        },
+        "total_extra_wait_h": 1177.3
+       },
+       "h5n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n8": {
+        "no_visible_candidate_rate": 0.0497,
+        "wrong_driver_rate": 0.1193,
+        "wrong_driver_rate_given_visible": 0.1255,
+        "visible_candidates_median": 21.0,
+        "conditional_extra_wait_s": {
+         "median": 57.9,
+         "p90": 236.5,
+         "mean": 95.4
+        },
+        "total_extra_wait_h": 1167.1
+       },
+       "h5n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n2": {
+        "no_visible_candidate_rate": 0.0031,
+        "wrong_driver_rate": 0.0037,
+        "wrong_driver_rate_given_visible": 0.0037,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 62.5,
+         "p90": 235.4,
+         "mean": 104.4
+        },
+        "total_extra_wait_h": 39.8
+       },
+       "h6n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n4": {
+        "no_visible_candidate_rate": 0.0397,
+        "wrong_driver_rate": 0.0876,
+        "wrong_driver_rate_given_visible": 0.0912,
+        "visible_candidates_median": 30.0,
+        "conditional_extra_wait_s": {
+         "median": 63.5,
+         "p90": 252.2,
+         "mean": 102.5
+        },
+        "total_extra_wait_h": 919.6
+       },
+       "h6n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n8": {
+        "no_visible_candidate_rate": 0.0398,
+        "wrong_driver_rate": 0.0879,
+        "wrong_driver_rate_given_visible": 0.0915,
+        "visible_candidates_median": 30.0,
+        "conditional_extra_wait_s": {
+         "median": 63.7,
+         "p90": 252.2,
+         "mean": 102.5
+        },
+        "total_extra_wait_h": 923.4
+       },
+       "h6n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s7n2": {
+        "no_visible_candidate_rate": 0.056,
+        "wrong_driver_rate": 0.1268,
+        "wrong_driver_rate_given_visible": 0.1343,
+        "visible_candidates_median": 20.0,
+        "conditional_extra_wait_s": {
+         "median": 59.1,
+         "p90": 217.6,
+         "mean": 91.8
+        },
+        "total_extra_wait_h": 1193.1
+       },
+       "h7n2": {
+        "no_visible_candidate_rate": 0.0029,
+        "wrong_driver_rate": 0.0027,
+        "wrong_driver_rate_given_visible": 0.0027,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 60.5,
+         "p90": 235.5,
+         "mean": 95.9
+        },
+        "total_extra_wait_h": 26.2
+       },
+       "s7n4": {
+        "no_visible_candidate_rate": 0.108,
+        "wrong_driver_rate": 0.1497,
+        "wrong_driver_rate_given_visible": 0.1678,
+        "visible_candidates_median": 10.0,
+        "conditional_extra_wait_s": {
+         "median": 57.6,
+         "p90": 224.4,
+         "mean": 93.4
+        },
+        "total_extra_wait_h": 1432.3
+       },
+       "h7n4": {
+        "no_visible_candidate_rate": 0.0045,
+        "wrong_driver_rate": 0.0042,
+        "wrong_driver_rate_given_visible": 0.0042,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 61.6,
+         "p90": 203.8,
+         "mean": 87.9
+        },
+        "total_extra_wait_h": 37.6
+       },
+       "s7n8": {
+        "no_visible_candidate_rate": 0.1465,
+        "wrong_driver_rate": 0.156,
+        "wrong_driver_rate_given_visible": 0.1827,
+        "visible_candidates_median": 8.0,
+        "conditional_extra_wait_s": {
+         "median": 53.1,
+         "p90": 205.5,
+         "mean": 85.4
+        },
+        "total_extra_wait_h": 1364.7
+       },
+       "h7n8": {
+        "no_visible_candidate_rate": 0.005,
+        "wrong_driver_rate": 0.0048,
+        "wrong_driver_rate_given_visible": 0.0048,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 62.6,
+         "p90": 216.2,
+         "mean": 91.4
+        },
+        "total_extra_wait_h": 44.7
+       },
+       "s8n2": {
+        "no_visible_candidate_rate": 0.0558,
+        "wrong_driver_rate": 0.2385,
+        "wrong_driver_rate_given_visible": 0.2526,
+        "visible_candidates_median": 14.0,
+        "conditional_extra_wait_s": {
+         "median": 56.0,
+         "p90": 202.5,
+         "mean": 86.3
+        },
+        "total_extra_wait_h": 2109.8
+       },
+       "h8n2": {
+        "no_visible_candidate_rate": 0.0362,
+        "wrong_driver_rate": 0.0705,
+        "wrong_driver_rate_given_visible": 0.0732,
+        "visible_candidates_median": 25.0,
+        "conditional_extra_wait_s": {
+         "median": 61.2,
+         "p90": 216.1,
+         "mean": 93.1
+        },
+        "total_extra_wait_h": 672.8
+       },
+       "s8n4": {
+        "no_visible_candidate_rate": 0.1437,
+        "wrong_driver_rate": 0.3322,
+        "wrong_driver_rate_given_visible": 0.3879,
+        "visible_candidates_median": 5.0,
+        "conditional_extra_wait_s": {
+         "median": 65.1,
+         "p90": 229.2,
+         "mean": 98.5
+        },
+        "total_extra_wait_h": 3354.4
+       },
+       "h8n4": {
+        "no_visible_candidate_rate": 0.0702,
+        "wrong_driver_rate": 0.0819,
+        "wrong_driver_rate_given_visible": 0.0881,
+        "visible_candidates_median": 16.0,
+        "conditional_extra_wait_s": {
+         "median": 65.9,
+         "p90": 234.5,
+         "mean": 101.0
+        },
+        "total_extra_wait_h": 848.1
+       },
+       "s8n8": {
+        "no_visible_candidate_rate": 0.2553,
+        "wrong_driver_rate": 0.3136,
+        "wrong_driver_rate_given_visible": 0.4211,
+        "visible_candidates_median": 2.0,
+        "conditional_extra_wait_s": {
+         "median": 69.2,
+         "p90": 246.0,
+         "mean": 106.0
+        },
+        "total_extra_wait_h": 3405.8
+       },
+       "h8n8": {
+        "no_visible_candidate_rate": 0.1074,
+        "wrong_driver_rate": 0.0725,
+        "wrong_driver_rate_given_visible": 0.0812,
+        "visible_candidates_median": 11.0,
+        "conditional_extra_wait_s": {
+         "median": 59.5,
+         "p90": 237.7,
+         "mean": 98.8
+        },
+        "total_extra_wait_h": 733.9
+       }
+      }
+     },
+     "3": {
+      "decisions_with_candidates": 368696,
+      "cells": {
+       "s5n2": {
+        "no_visible_candidate_rate": 0.0001,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 48.0,
+         "p90": 139.9,
+         "mean": 83.7
+        },
+        "total_extra_wait_h": 0.4
+       },
+       "h5n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n4": {
+        "no_visible_candidate_rate": 0.0412,
+        "wrong_driver_rate": 0.1212,
+        "wrong_driver_rate_given_visible": 0.1264,
+        "visible_candidates_median": 22.0,
+        "conditional_extra_wait_s": {
+         "median": 57.9,
+         "p90": 228.0,
+         "mean": 94.2
+        },
+        "total_extra_wait_h": 1169.7
+       },
+       "h5n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n8": {
+        "no_visible_candidate_rate": 0.0494,
+        "wrong_driver_rate": 0.1187,
+        "wrong_driver_rate_given_visible": 0.1249,
+        "visible_candidates_median": 21.0,
+        "conditional_extra_wait_s": {
+         "median": 57.9,
+         "p90": 231.3,
+         "mean": 95.0
+        },
+        "total_extra_wait_h": 1155.5
+       },
+       "h5n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n2": {
+        "no_visible_candidate_rate": 0.003,
+        "wrong_driver_rate": 0.0037,
+        "wrong_driver_rate_given_visible": 0.0037,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 63.1,
+         "p90": 248.9,
+         "mean": 104.9
+        },
+        "total_extra_wait_h": 40.1
+       },
+       "h6n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n4": {
+        "no_visible_candidate_rate": 0.0397,
+        "wrong_driver_rate": 0.087,
+        "wrong_driver_rate_given_visible": 0.0906,
+        "visible_candidates_median": 30.0,
+        "conditional_extra_wait_s": {
+         "median": 64.3,
+         "p90": 250.3,
+         "mean": 102.8
+        },
+        "total_extra_wait_h": 916.0
+       },
+       "h6n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n8": {
+        "no_visible_candidate_rate": 0.0399,
+        "wrong_driver_rate": 0.0873,
+        "wrong_driver_rate_given_visible": 0.091,
+        "visible_candidates_median": 30.0,
+        "conditional_extra_wait_s": {
+         "median": 64.5,
+         "p90": 250.0,
+         "mean": 102.8
+        },
+        "total_extra_wait_h": 919.5
+       },
+       "h6n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s7n2": {
+        "no_visible_candidate_rate": 0.0561,
+        "wrong_driver_rate": 0.1269,
+        "wrong_driver_rate_given_visible": 0.1345,
+        "visible_candidates_median": 20.0,
+        "conditional_extra_wait_s": {
+         "median": 59.1,
+         "p90": 217.8,
+         "mean": 92.0
+        },
+        "total_extra_wait_h": 1195.9
+       },
+       "h7n2": {
+        "no_visible_candidate_rate": 0.0031,
+        "wrong_driver_rate": 0.0026,
+        "wrong_driver_rate_given_visible": 0.0026,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 60.2,
+         "p90": 243.9,
+         "mean": 96.7
+        },
+        "total_extra_wait_h": 26.1
+       },
+       "s7n4": {
+        "no_visible_candidate_rate": 0.1084,
+        "wrong_driver_rate": 0.1502,
+        "wrong_driver_rate_given_visible": 0.1684,
+        "visible_candidates_median": 11.0,
+        "conditional_extra_wait_s": {
+         "median": 57.7,
+         "p90": 225.4,
+         "mean": 93.7
+        },
+        "total_extra_wait_h": 1440.8
+       },
+       "h7n4": {
+        "no_visible_candidate_rate": 0.0045,
+        "wrong_driver_rate": 0.0042,
+        "wrong_driver_rate_given_visible": 0.0043,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 60.2,
+         "p90": 200.9,
+         "mean": 87.9
+        },
+        "total_extra_wait_h": 38.2
+       },
+       "s7n8": {
+        "no_visible_candidate_rate": 0.1468,
+        "wrong_driver_rate": 0.1564,
+        "wrong_driver_rate_given_visible": 0.1833,
+        "visible_candidates_median": 8.0,
+        "conditional_extra_wait_s": {
+         "median": 53.3,
+         "p90": 204.2,
+         "mean": 85.4
+        },
+        "total_extra_wait_h": 1367.8
+       },
+       "h7n8": {
+        "no_visible_candidate_rate": 0.0051,
+        "wrong_driver_rate": 0.0048,
+        "wrong_driver_rate_given_visible": 0.0049,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 60.9,
+         "p90": 204.8,
+         "mean": 89.4
+        },
+        "total_extra_wait_h": 44.3
+       },
+       "s8n2": {
+        "no_visible_candidate_rate": 0.056,
+        "wrong_driver_rate": 0.2387,
+        "wrong_driver_rate_given_visible": 0.2529,
+        "visible_candidates_median": 14.0,
+        "conditional_extra_wait_s": {
+         "median": 56.1,
+         "p90": 201.7,
+         "mean": 86.3
+        },
+        "total_extra_wait_h": 2109.9
+       },
+       "h8n2": {
+        "no_visible_candidate_rate": 0.0364,
+        "wrong_driver_rate": 0.0716,
+        "wrong_driver_rate_given_visible": 0.0743,
+        "visible_candidates_median": 25.0,
+        "conditional_extra_wait_s": {
+         "median": 61.5,
+         "p90": 215.9,
+         "mean": 93.8
+        },
+        "total_extra_wait_h": 687.8
+       },
+       "s8n4": {
+        "no_visible_candidate_rate": 0.1438,
+        "wrong_driver_rate": 0.3333,
+        "wrong_driver_rate_given_visible": 0.3893,
+        "visible_candidates_median": 6.0,
+        "conditional_extra_wait_s": {
+         "median": 64.8,
+         "p90": 226.1,
+         "mean": 97.6
+        },
+        "total_extra_wait_h": 3332.1
+       },
+       "h8n4": {
+        "no_visible_candidate_rate": 0.0709,
+        "wrong_driver_rate": 0.0824,
+        "wrong_driver_rate_given_visible": 0.0887,
+        "visible_candidates_median": 16.0,
+        "conditional_extra_wait_s": {
+         "median": 66.6,
+         "p90": 231.2,
+         "mean": 100.5
+        },
+        "total_extra_wait_h": 847.7
+       },
+       "s8n8": {
+        "no_visible_candidate_rate": 0.2537,
+        "wrong_driver_rate": 0.3155,
+        "wrong_driver_rate_given_visible": 0.4227,
+        "visible_candidates_median": 2.0,
+        "conditional_extra_wait_s": {
+         "median": 69.0,
+         "p90": 245.0,
+         "mean": 105.2
+        },
+        "total_extra_wait_h": 3399.8
+       },
+       "h8n8": {
+        "no_visible_candidate_rate": 0.1081,
+        "wrong_driver_rate": 0.072,
+        "wrong_driver_rate_given_visible": 0.0807,
+        "visible_candidates_median": 11.0,
+        "conditional_extra_wait_s": {
+         "median": 59.9,
+         "p90": 235.3,
+         "mean": 98.8
+        },
+        "total_extra_wait_h": 728.4
+       }
+      }
+     },
+     "4": {
+      "decisions_with_candidates": 368527,
+      "cells": {
+       "s5n2": {
+        "no_visible_candidate_rate": 0.0001,
+        "wrong_driver_rate": 0.0001,
+        "wrong_driver_rate_given_visible": 0.0001,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 85.9,
+         "p90": 257.0,
+         "mean": 115.4
+        },
+        "total_extra_wait_h": 0.6
+       },
+       "h5n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n4": {
+        "no_visible_candidate_rate": 0.0423,
+        "wrong_driver_rate": 0.1212,
+        "wrong_driver_rate_given_visible": 0.1266,
+        "visible_candidates_median": 22.0,
+        "conditional_extra_wait_s": {
+         "median": 58.1,
+         "p90": 230.1,
+         "mean": 95.1
+        },
+        "total_extra_wait_h": 1179.8
+       },
+       "h5n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n8": {
+        "no_visible_candidate_rate": 0.0503,
+        "wrong_driver_rate": 0.1188,
+        "wrong_driver_rate_given_visible": 0.1251,
+        "visible_candidates_median": 21.0,
+        "conditional_extra_wait_s": {
+         "median": 58.0,
+         "p90": 234.4,
+         "mean": 96.0
+        },
+        "total_extra_wait_h": 1167.4
+       },
+       "h5n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n2": {
+        "no_visible_candidate_rate": 0.003,
+        "wrong_driver_rate": 0.0038,
+        "wrong_driver_rate_given_visible": 0.0038,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 62.8,
+         "p90": 252.8,
+         "mean": 106.5
+        },
+        "total_extra_wait_h": 41.2
+       },
+       "h6n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n4": {
+        "no_visible_candidate_rate": 0.0401,
+        "wrong_driver_rate": 0.0872,
+        "wrong_driver_rate_given_visible": 0.0909,
+        "visible_candidates_median": 30.0,
+        "conditional_extra_wait_s": {
+         "median": 64.4,
+         "p90": 248.7,
+         "mean": 102.8
+        },
+        "total_extra_wait_h": 917.7
+       },
+       "h6n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n8": {
+        "no_visible_candidate_rate": 0.0402,
+        "wrong_driver_rate": 0.0876,
+        "wrong_driver_rate_given_visible": 0.0912,
+        "visible_candidates_median": 30.0,
+        "conditional_extra_wait_s": {
+         "median": 64.5,
+         "p90": 248.4,
+         "mean": 102.8
+        },
+        "total_extra_wait_h": 921.4
+       },
+       "h6n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s7n2": {
+        "no_visible_candidate_rate": 0.0563,
+        "wrong_driver_rate": 0.127,
+        "wrong_driver_rate_given_visible": 0.1346,
+        "visible_candidates_median": 20.0,
+        "conditional_extra_wait_s": {
+         "median": 58.9,
+         "p90": 217.4,
+         "mean": 92.1
+        },
+        "total_extra_wait_h": 1197.7
+       },
+       "h7n2": {
+        "no_visible_candidate_rate": 0.0029,
+        "wrong_driver_rate": 0.0028,
+        "wrong_driver_rate_given_visible": 0.0028,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 63.7,
+         "p90": 245.9,
+         "mean": 99.3
+        },
+        "total_extra_wait_h": 28.1
+       },
+       "s7n4": {
+        "no_visible_candidate_rate": 0.1099,
+        "wrong_driver_rate": 0.1491,
+        "wrong_driver_rate_given_visible": 0.1675,
+        "visible_candidates_median": 10.0,
+        "conditional_extra_wait_s": {
+         "median": 57.1,
+         "p90": 223.9,
+         "mean": 93.5
+        },
+        "total_extra_wait_h": 1426.8
+       },
+       "h7n4": {
+        "no_visible_candidate_rate": 0.0044,
+        "wrong_driver_rate": 0.0045,
+        "wrong_driver_rate_given_visible": 0.0045,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 61.9,
+         "p90": 203.4,
+         "mean": 88.3
+        },
+        "total_extra_wait_h": 40.4
+       },
+       "s7n8": {
+        "no_visible_candidate_rate": 0.1478,
+        "wrong_driver_rate": 0.1552,
+        "wrong_driver_rate_given_visible": 0.1821,
+        "visible_candidates_median": 8.0,
+        "conditional_extra_wait_s": {
+         "median": 52.7,
+         "p90": 203.1,
+         "mean": 85.3
+        },
+        "total_extra_wait_h": 1355.0
+       },
+       "h7n8": {
+        "no_visible_candidate_rate": 0.0049,
+        "wrong_driver_rate": 0.0051,
+        "wrong_driver_rate_given_visible": 0.0051,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 61.9,
+         "p90": 213.7,
+         "mean": 89.9
+        },
+        "total_extra_wait_h": 47.0
+       },
+       "s8n2": {
+        "no_visible_candidate_rate": 0.0569,
+        "wrong_driver_rate": 0.2385,
+        "wrong_driver_rate_given_visible": 0.2529,
+        "visible_candidates_median": 14.0,
+        "conditional_extra_wait_s": {
+         "median": 56.1,
+         "p90": 202.6,
+         "mean": 86.6
+        },
+        "total_extra_wait_h": 2115.7
+       },
+       "h8n2": {
+        "no_visible_candidate_rate": 0.037,
+        "wrong_driver_rate": 0.0709,
+        "wrong_driver_rate_given_visible": 0.0736,
+        "visible_candidates_median": 25.0,
+        "conditional_extra_wait_s": {
+         "median": 61.4,
+         "p90": 217.4,
+         "mean": 94.3
+        },
+        "total_extra_wait_h": 684.2
+       },
+       "s8n4": {
+        "no_visible_candidate_rate": 0.1453,
+        "wrong_driver_rate": 0.3324,
+        "wrong_driver_rate_given_visible": 0.3889,
+        "visible_candidates_median": 5.0,
+        "conditional_extra_wait_s": {
+         "median": 64.8,
+         "p90": 226.2,
+         "mean": 98.1
+        },
+        "total_extra_wait_h": 3339.2
+       },
+       "h8n4": {
+        "no_visible_candidate_rate": 0.0714,
+        "wrong_driver_rate": 0.0819,
+        "wrong_driver_rate_given_visible": 0.0882,
+        "visible_candidates_median": 16.0,
+        "conditional_extra_wait_s": {
+         "median": 66.4,
+         "p90": 233.4,
+         "mean": 101.4
+        },
+        "total_extra_wait_h": 850.4
+       },
+       "s8n8": {
+        "no_visible_candidate_rate": 0.2554,
+        "wrong_driver_rate": 0.3152,
+        "wrong_driver_rate_given_visible": 0.4233,
+        "visible_candidates_median": 2.0,
+        "conditional_extra_wait_s": {
+         "median": 69.6,
+         "p90": 244.9,
+         "mean": 106.2
+        },
+        "total_extra_wait_h": 3427.5
+       },
+       "h8n8": {
+        "no_visible_candidate_rate": 0.1079,
+        "wrong_driver_rate": 0.0728,
+        "wrong_driver_rate_given_visible": 0.0816,
+        "visible_candidates_median": 11.0,
+        "conditional_extra_wait_s": {
+         "median": 61.3,
+         "p90": 241.7,
+         "mean": 101.2
+        },
+        "total_extra_wait_h": 754.6
+       }
+      }
+     }
+    },
+    "by_hour": [
+     {
+      "hour": 0,
+      "rate": 0.07322847962117368,
+      "no_visible": 0.020801623541349568,
+      "cond_median_s": 47.85000000000001,
+      "n": 11826
+     },
+     {
+      "hour": 1,
+      "rate": 0.07360687551982256,
+      "no_visible": 0.0019406709176601053,
+      "cond_median_s": 37.500000000000014,
+      "n": 7214
+     },
+     {
+      "hour": 2,
+      "rate": 0.04768211920529802,
+      "no_visible": 0.024282560706401765,
+      "cond_median_s": 30.29999999999999,
+      "n": 4530
+     },
+     {
+      "hour": 3,
+      "rate": 0.058823529411764705,
+      "no_visible": 0.01804812834224599,
+      "cond_median_s": 36.15,
+      "n": 2992
+     },
+     {
+      "hour": 4,
+      "rate": 0.06733885487936622,
+      "no_visible": 0.01764494058336334,
+      "cond_median_s": 50.0,
+      "n": 2777
+     },
+     {
+      "hour": 5,
+      "rate": 0.0858380030565461,
+      "no_visible": 0.07870606214977076,
+      "cond_median_s": 69.60000000000002,
+      "n": 3926
+     },
+     {
+      "hour": 6,
+      "rate": 0.06941632928475033,
+      "no_visible": 0.09969635627530364,
+      "cond_median_s": 89.2,
+      "n": 11856
+     },
+     {
+      "hour": 7,
+      "rate": 0.08154164675903806,
+      "no_visible": 0.08467378032595424,
+      "cond_median_s": 87.1,
+      "n": 18837
+     },
+     {
+      "hour": 8,
+      "rate": 0.09520390580126364,
+      "no_visible": 0.04863105494926288,
+      "cond_median_s": 77.39999999999998,
+      "n": 20892
+     },
+     {
+      "hour": 9,
+      "rate": 0.09338715303732496,
+      "no_visible": 0.030996162854437632,
+      "cond_median_s": 66.4,
+      "n": 20067
+     },
+     {
+      "hour": 10,
+      "rate": 0.07729415026337677,
+      "no_visible": 0.015137233157748821,
+      "cond_median_s": 47.0,
+      "n": 18035
+     },
+     {
+      "hour": 11,
+      "rate": 0.0676595269968764,
+      "no_visible": 0.012550200803212851,
+      "cond_median_s": 40.5,
+      "n": 17928
+     },
+     {
+      "hour": 12,
+      "rate": 0.052373333333333334,
+      "no_visible": 0.008746666666666666,
+      "cond_median_s": 29.549999999999997,
+      "n": 18750
+     },
+     {
+      "hour": 13,
+      "rate": 0.05928729107537055,
+      "no_visible": 0.01434878587196468,
+      "cond_median_s": 36.95,
+      "n": 19026
+     },
+     {
+      "hour": 14,
+      "rate": 0.0614766920429659,
+      "no_visible": 0.006830743560329544,
+      "cond_median_s": 30.700000000000003,
+      "n": 19178
+     },
+     {
+      "hour": 15,
+      "rate": 0.047186070006537115,
+      "no_visible": 0.006121114874903429,
+      "cond_median_s": 24.900000000000002,
+      "n": 16827
+     },
+     {
+      "hour": 16,
+      "rate": 0.048305642977384176,
+      "no_visible": 0.006806704237722316,
+      "cond_median_s": 32.300000000000004,
+      "n": 13663
+     },
+     {
+      "hour": 17,
+      "rate": 0.08347785871198983,
+      "no_visible": 0.02850040467106024,
+      "cond_median_s": 50.70000000000002,
+      "n": 17298
+     },
+     {
+      "hour": 18,
+      "rate": 0.10898785425101215,
+      "no_visible": 0.10423751686909581,
+      "cond_median_s": 93.30000000000001,
+      "n": 18525
+     },
+     {
+      "hour": 19,
+      "rate": 0.12398422278192273,
+      "no_visible": 0.07788813382122321,
+      "cond_median_s": 91.5,
+      "n": 21043
+     },
+     {
+      "hour": 20,
+      "rate": 0.08033807002879167,
+      "no_visible": 0.012352558744311322,
+      "cond_median_s": 45.599999999999994,
+      "n": 21534
+     },
+     {
+      "hour": 21,
+      "rate": 0.1255460924054543,
+      "no_visible": 0.04810026035920745,
+      "cond_median_s": 84.6,
+      "n": 22661
+     },
+     {
+      "hour": 22,
+      "rate": 0.1345020477474778,
+      "no_visible": 0.07891319548496653,
+      "cond_median_s": 116.10000000000002,
+      "n": 20022
+     },
+     {
+      "hour": 23,
+      "rate": 0.1517040731504572,
+      "no_visible": 0.06198046550290939,
+      "cond_median_s": 100.94999999999997,
+      "n": 19248
+     }
+    ],
+    "by_partition": [
+     {
+      "partition": 0,
+      "rate": 0.07628760412918939,
+      "no_visible": 0.020230813937397948,
+      "n": 216798
+     },
+     {
+      "partition": 1,
+      "rate": 0.07155322862129145,
+      "no_visible": 0.03664921465968586,
+      "n": 573
+     },
+     {
+      "partition": 2,
+      "rate": 0.1055519314104655,
+      "no_visible": 0.06411630399329016,
+      "n": 85844
+     },
+     {
+      "partition": 3,
+      "rate": 0.0979325939485302,
+      "no_visible": 0.05313879616668461,
+      "n": 55722
+     },
+     {
+      "partition": 4,
+      "rate": 0.11844331641285956,
+      "no_visible": 0.06937394247038917,
+      "n": 591
+     },
+     {
+      "partition": 5,
+      "rate": 0.11122264605500903,
+      "no_visible": 0.1445492872917085,
+      "n": 4981
+     },
+     {
+      "partition": 6,
+      "rate": 0.0987444859178826,
+      "no_visible": 0.332541567695962,
+      "n": 2947
+     },
+     {
+      "partition": 7,
+      "rate": 0.11009174311926606,
+      "no_visible": 0.0316930775646372,
+      "n": 1199
+     }
+    ],
+    "spread": {
+     "s5n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0001,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0001,
+       "min": 0.0001,
+       "max": 0.0001,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 51.8,
+       "min": 39.9,
+       "max": 85.9,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 195.9,
+       "min": 139.9,
+       "max": 257.0,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 0.5,
+       "min": 0.4,
+       "max": 0.6,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "h5n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "s5n4": {
+      "wrong_driver_rate": {
+       "mean": 0.1215,
+       "min": 0.1212,
+       "max": 0.1223,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0417,
+       "min": 0.0412,
+       "max": 0.0423,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 58.1,
+       "min": 57.9,
+       "max": 58.3,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 231.2,
+       "min": 228.0,
+       "max": 233.3,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 1182.5,
+       "min": 1169.7,
+       "max": 1199.9,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 22.0,
+       "min": 22.0,
+       "max": 22.0,
+       "n": 5
+      }
+     },
+     "h5n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "s5n8": {
+      "wrong_driver_rate": {
+       "mean": 0.1192,
+       "min": 0.1187,
+       "max": 0.1201,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0497,
+       "min": 0.0494,
+       "max": 0.0503,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 58.1,
+       "min": 57.9,
+       "max": 58.4,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 235.3,
+       "min": 231.3,
+       "max": 238.0,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 1171.0,
+       "min": 1155.5,
+       "max": 1191.6,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 21.0,
+       "min": 21.0,
+       "max": 21.0,
+       "n": 5
+      }
+     },
+     "h5n8": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "s6n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0038,
+       "min": 0.0037,
+       "max": 0.0039,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.003,
+       "min": 0.0029,
+       "max": 0.0031,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 63.9,
+       "min": 62.5,
+       "max": 66.8,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 253.6,
+       "min": 235.4,
+       "max": 268.6,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 41.8,
+       "min": 39.8,
+       "max": 44.8,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "h6n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "s6n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0874,
+       "min": 0.087,
+       "max": 0.0882,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0397,
+       "min": 0.0395,
+       "max": 0.0401,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 64.1,
+       "min": 63.5,
+       "max": 64.4,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 252.1,
+       "min": 248.7,
+       "max": 255.1,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 922.9,
+       "min": 916.0,
+       "max": 937.2,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 29.8,
+       "min": 29.0,
+       "max": 30.0,
+       "n": 5
+      }
+     },
+     "h6n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "s6n8": {
+      "wrong_driver_rate": {
+       "mean": 0.0878,
+       "min": 0.0873,
+       "max": 0.0885,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0399,
+       "min": 0.0397,
+       "max": 0.0402,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 64.2,
+       "min": 63.7,
+       "max": 64.5,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 251.9,
+       "min": 248.4,
+       "max": 255.0,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 926.6,
+       "min": 919.5,
+       "max": 940.9,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 29.8,
+       "min": 29.0,
+       "max": 30.0,
+       "n": 5
+      }
+     },
+     "h6n8": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "s7n2": {
+      "wrong_driver_rate": {
+       "mean": 0.1271,
+       "min": 0.1268,
+       "max": 0.1276,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0561,
+       "min": 0.0559,
+       "max": 0.0563,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 59.0,
+       "min": 58.8,
+       "max": 59.1,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 217.4,
+       "min": 217.0,
+       "max": 217.8,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 1195.0,
+       "min": 1188.7,
+       "max": 1199.8,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 20.0,
+       "min": 20.0,
+       "max": 20.0,
+       "n": 5
+      }
+     },
+     "h7n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0027,
+       "min": 0.0026,
+       "max": 0.0028,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.003,
+       "min": 0.0029,
+       "max": 0.0031,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 60.5,
+       "min": 57.9,
+       "max": 63.7,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 239.2,
+       "min": 229.5,
+       "max": 245.9,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 26.6,
+       "min": 24.9,
+       "max": 28.1,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "s7n4": {
+      "wrong_driver_rate": {
+       "mean": 0.1499,
+       "min": 0.1491,
+       "max": 0.1506,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.1086,
+       "min": 0.108,
+       "max": 0.1099,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 57.4,
+       "min": 57.1,
+       "max": 57.7,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 224.4,
+       "min": 223.9,
+       "max": 225.4,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 1434.8,
+       "min": 1426.8,
+       "max": 1443.9,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 10.4,
+       "min": 10.0,
+       "max": 11.0,
+       "n": 5
+      }
+     },
+     "h7n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0043,
+       "min": 0.0042,
+       "max": 0.0045,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0045,
+       "min": 0.0044,
+       "max": 0.0046,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 60.7,
+       "min": 59.9,
+       "max": 61.9,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 202.9,
+       "min": 200.9,
+       "max": 205.3,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 38.9,
+       "min": 37.6,
+       "max": 40.6,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "s7n8": {
+      "wrong_driver_rate": {
+       "mean": 0.1562,
+       "min": 0.1552,
+       "max": 0.1567,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.147,
+       "min": 0.1461,
+       "max": 0.1478,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 53.1,
+       "min": 52.7,
+       "max": 53.3,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 204.2,
+       "min": 203.1,
+       "max": 205.5,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 1365.3,
+       "min": 1355.0,
+       "max": 1371.6,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 8.0,
+       "min": 8.0,
+       "max": 8.0,
+       "n": 5
+      }
+     },
+     "h7n8": {
+      "wrong_driver_rate": {
+       "mean": 0.0049,
+       "min": 0.0048,
+       "max": 0.0051,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.005,
+       "min": 0.0049,
+       "max": 0.0051,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 60.5,
+       "min": 57.9,
+       "max": 62.6,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 209.8,
+       "min": 204.8,
+       "max": 216.2,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 44.9,
+       "min": 42.7,
+       "max": 47.0,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 5
+      }
+     },
+     "s8n2": {
+      "wrong_driver_rate": {
+       "mean": 0.2388,
+       "min": 0.2385,
+       "max": 0.24,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.056,
+       "min": 0.0556,
+       "max": 0.0569,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 56.1,
+       "min": 56.0,
+       "max": 56.2,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 202.0,
+       "min": 201.4,
+       "max": 202.6,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 2112.4,
+       "min": 2104.2,
+       "max": 2122.3,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 14.0,
+       "min": 14.0,
+       "max": 14.0,
+       "n": 5
+      }
+     },
+     "h8n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0713,
+       "min": 0.0705,
+       "max": 0.072,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0362,
+       "min": 0.0356,
+       "max": 0.037,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 61.2,
+       "min": 60.7,
+       "max": 61.5,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 216.1,
+       "min": 214.8,
+       "max": 217.4,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 683.5,
+       "min": 672.8,
+       "max": 688.1,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 24.8,
+       "min": 24.0,
+       "max": 25.0,
+       "n": 5
+      }
+     },
+     "s8n4": {
+      "wrong_driver_rate": {
+       "mean": 0.3331,
+       "min": 0.3322,
+       "max": 0.334,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.1442,
+       "min": 0.1437,
+       "max": 0.1453,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 64.8,
+       "min": 64.7,
+       "max": 65.1,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 227.1,
+       "min": 226.1,
+       "max": 229.2,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 3343.5,
+       "min": 3331.7,
+       "max": 3360.0,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 5.4,
+       "min": 5.0,
+       "max": 6.0,
+       "n": 5
+      }
+     },
+     "h8n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0824,
+       "min": 0.0819,
+       "max": 0.083,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0706,
+       "min": 0.0701,
+       "max": 0.0714,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 66.0,
+       "min": 65.1,
+       "max": 66.6,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 231.6,
+       "min": 226.6,
+       "max": 234.5,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 847.3,
+       "min": 839.0,
+       "max": 851.3,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 16.0,
+       "min": 16.0,
+       "max": 16.0,
+       "n": 5
+      }
+     },
+     "s8n8": {
+      "wrong_driver_rate": {
+       "mean": 0.315,
+       "min": 0.3136,
+       "max": 0.3163,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.2546,
+       "min": 0.2537,
+       "max": 0.2554,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 69.3,
+       "min": 69.0,
+       "max": 69.6,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 245.2,
+       "min": 244.3,
+       "max": 246.0,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 3415.0,
+       "min": 3399.8,
+       "max": 3441.7,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 2.0,
+       "min": 2.0,
+       "max": 2.0,
+       "n": 5
+      }
+     },
+     "h8n8": {
+      "wrong_driver_rate": {
+       "mean": 0.0726,
+       "min": 0.072,
+       "max": 0.0732,
+       "n": 5
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.1077,
+       "min": 0.1074,
+       "max": 0.1081,
+       "n": 5
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 60.1,
+       "min": 59.5,
+       "max": 61.3,
+       "n": 5
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 236.9,
+       "min": 232.0,
+       "max": 241.7,
+       "n": 5
+      },
+      "total_extra_wait_h": {
+       "mean": 738.5,
+       "min": 727.7,
+       "max": 754.6,
+       "n": 5
+      },
+      "visible_candidates_median": {
+       "mean": 11.0,
+       "min": 11.0,
+       "max": 11.0,
+       "n": 5
+      }
+     }
+    }
+   },
+   "2016-06-18": {
+    "seeds": {
+     "0": {
+      "decisions_with_candidates": 355779,
+      "cells": {
+       "s5n2": {
+        "no_visible_candidate_rate": 0.0001,
+        "wrong_driver_rate": 0.0001,
+        "wrong_driver_rate_given_visible": 0.0001,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 100.1,
+         "p90": 361.3,
+         "mean": 130.2
+        },
+        "total_extra_wait_h": 0.8
+       },
+       "h5n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n4": {
+        "no_visible_candidate_rate": 0.0198,
+        "wrong_driver_rate": 0.1103,
+        "wrong_driver_rate_given_visible": 0.1125,
+        "visible_candidates_median": 40.0,
+        "conditional_extra_wait_s": {
+         "median": 42.1,
+         "p90": 148.6,
+         "mean": 63.8
+        },
+        "total_extra_wait_h": 695.8
+       },
+       "h5n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s5n8": {
+        "no_visible_candidate_rate": 0.0242,
+        "wrong_driver_rate": 0.1105,
+        "wrong_driver_rate_given_visible": 0.1133,
+        "visible_candidates_median": 40.0,
+        "conditional_extra_wait_s": {
+         "median": 42.4,
+         "p90": 150.7,
+         "mean": 64.4
+        },
+        "total_extra_wait_h": 703.9
+       },
+       "h5n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n2": {
+        "no_visible_candidate_rate": 0.0019,
+        "wrong_driver_rate": 0.0052,
+        "wrong_driver_rate_given_visible": 0.0052,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 49.2,
+         "p90": 206.7,
+         "mean": 89.2
+        },
+        "total_extra_wait_h": 46.1
+       },
+       "h6n2": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n4": {
+        "no_visible_candidate_rate": 0.0198,
+        "wrong_driver_rate": 0.0789,
+        "wrong_driver_rate_given_visible": 0.0805,
+        "visible_candidates_median": 47.0,
+        "conditional_extra_wait_s": {
+         "median": 47.1,
+         "p90": 170.5,
+         "mean": 72.1
+        },
+        "total_extra_wait_h": 562.0
+       },
+       "h6n4": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s6n8": {
+        "no_visible_candidate_rate": 0.0199,
+        "wrong_driver_rate": 0.0793,
+        "wrong_driver_rate_given_visible": 0.0809,
+        "visible_candidates_median": 47.0,
+        "conditional_extra_wait_s": {
+         "median": 47.2,
+         "p90": 170.6,
+         "mean": 72.2
+        },
+        "total_extra_wait_h": 566.2
+       },
+       "h6n8": {
+        "no_visible_candidate_rate": 0.0,
+        "wrong_driver_rate": 0.0,
+        "wrong_driver_rate_given_visible": 0.0,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": null,
+         "p90": null,
+         "mean": null
+        },
+        "total_extra_wait_h": 0.0
+       },
+       "s7n2": {
+        "no_visible_candidate_rate": 0.0291,
+        "wrong_driver_rate": 0.1291,
+        "wrong_driver_rate_given_visible": 0.133,
+        "visible_candidates_median": 39.0,
+        "conditional_extra_wait_s": {
+         "median": 46.7,
+         "p90": 174.1,
+         "mean": 74.1
+        },
+        "total_extra_wait_h": 945.5
+       },
+       "h7n2": {
+        "no_visible_candidate_rate": 0.0006,
+        "wrong_driver_rate": 0.0011,
+        "wrong_driver_rate_given_visible": 0.0011,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 37.7,
+         "p90": 186.0,
+         "mean": 66.0
+        },
+        "total_extra_wait_h": 7.0
+       },
+       "s7n4": {
+        "no_visible_candidate_rate": 0.0662,
+        "wrong_driver_rate": 0.1538,
+        "wrong_driver_rate_given_visible": 0.1647,
+        "visible_candidates_median": 18.0,
+        "conditional_extra_wait_s": {
+         "median": 46.0,
+         "p90": 172.4,
+         "mean": 73.7
+        },
+        "total_extra_wait_h": 1119.4
+       },
+       "h7n4": {
+        "no_visible_candidate_rate": 0.001,
+        "wrong_driver_rate": 0.0029,
+        "wrong_driver_rate_given_visible": 0.0029,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 53.5,
+         "p90": 176.1,
+         "mean": 74.8
+        },
+        "total_extra_wait_h": 21.1
+       },
+       "s7n8": {
+        "no_visible_candidate_rate": 0.0826,
+        "wrong_driver_rate": 0.1658,
+        "wrong_driver_rate_given_visible": 0.1808,
+        "visible_candidates_median": 15.0,
+        "conditional_extra_wait_s": {
+         "median": 45.1,
+         "p90": 177.1,
+         "mean": 75.3
+        },
+        "total_extra_wait_h": 1234.5
+       },
+       "h7n8": {
+        "no_visible_candidate_rate": 0.0011,
+        "wrong_driver_rate": 0.0032,
+        "wrong_driver_rate_given_visible": 0.0032,
+        "visible_candidates_median": 50.0,
+        "conditional_extra_wait_s": {
+         "median": 53.3,
+         "p90": 180.1,
+         "mean": 76.3
+        },
+        "total_extra_wait_h": 23.8
+       },
+       "s8n2": {
+        "no_visible_candidate_rate": 0.0398,
+        "wrong_driver_rate": 0.2111,
+        "wrong_driver_rate_given_visible": 0.2199,
+        "visible_candidates_median": 26.0,
+        "conditional_extra_wait_s": {
+         "median": 45.8,
+         "p90": 167.5,
+         "mean": 70.9
+        },
+        "total_extra_wait_h": 1480.2
+       },
+       "h8n2": {
+        "no_visible_candidate_rate": 0.0159,
+        "wrong_driver_rate": 0.044,
+        "wrong_driver_rate_given_visible": 0.0447,
+        "visible_candidates_median": 41.0,
+        "conditional_extra_wait_s": {
+         "median": 49.1,
+         "p90": 189.3,
+         "mean": 78.3
+        },
+        "total_extra_wait_h": 340.5
+       },
+       "s8n4": {
+        "no_visible_candidate_rate": 0.1007,
+        "wrong_driver_rate": 0.3182,
+        "wrong_driver_rate_given_visible": 0.3538,
+        "visible_candidates_median": 9.0,
+        "conditional_extra_wait_s": {
+         "median": 53.5,
+         "p90": 192.1,
+         "mean": 81.9
+        },
+        "total_extra_wait_h": 2575.4
+       },
+       "h8n4": {
+        "no_visible_candidate_rate": 0.0307,
+        "wrong_driver_rate": 0.0517,
+        "wrong_driver_rate_given_visible": 0.0534,
+        "visible_candidates_median": 31.0,
+        "conditional_extra_wait_s": {
+         "median": 52.5,
+         "p90": 209.6,
+         "mean": 86.4
+        },
+        "total_extra_wait_h": 441.8
+       },
+       "s8n8": {
+        "no_visible_candidate_rate": 0.1924,
+        "wrong_driver_rate": 0.3176,
+        "wrong_driver_rate_given_visible": 0.3933,
+        "visible_candidates_median": 4.0,
+        "conditional_extra_wait_s": {
+         "median": 58.6,
+         "p90": 225.3,
+         "mean": 93.9
+        },
+        "total_extra_wait_h": 2948.7
+       },
+       "h8n8": {
+        "no_visible_candidate_rate": 0.0484,
+        "wrong_driver_rate": 0.051,
+        "wrong_driver_rate_given_visible": 0.0536,
+        "visible_candidates_median": 22.0,
+        "conditional_extra_wait_s": {
+         "median": 48.0,
+         "p90": 229.4,
+         "mean": 88.0
+        },
+        "total_extra_wait_h": 443.5
+       }
+      }
+     }
+    },
+    "by_hour": [
+     {
+      "hour": 0,
+      "rate": 0.08446571957998765,
+      "no_visible": 0.05167799052913321,
+      "cond_median_s": 60.30000000000001,
+      "n": 19428
+     },
+     {
+      "hour": 1,
+      "rate": 0.0812492862852575,
+      "no_visible": 0.002969053328765559,
+      "cond_median_s": 39.400000000000006,
+      "n": 17514
+     },
+     {
+      "hour": 2,
+      "rate": 0.07286700348679997,
+      "no_visible": 0.01344908560449726,
+      "cond_median_s": 36.150000000000006,
+      "n": 14053
+     },
+     {
+      "hour": 3,
+      "rate": 0.05904334828101644,
+      "no_visible": 0.01821748878923767,
+      "cond_median_s": 31.400000000000006,
+      "n": 10704
+     },
+     {
+      "hour": 4,
+      "rate": 0.05706598697252903,
+      "no_visible": 0.021098838855848203,
+      "cond_median_s": 32.39999999999999,
+      "n": 7062
+     },
+     {
+      "hour": 5,
+      "rate": 0.059214326978625074,
+      "no_visible": 0.019641825534373193,
+      "cond_median_s": 37.900000000000006,
+      "n": 3462
+     },
+     {
+      "hour": 6,
+      "rate": 0.0870127073013138,
+      "no_visible": 0.04522937755761361,
+      "cond_median_s": 66.50000000000001,
+      "n": 4643
+     },
+     {
+      "hour": 7,
+      "rate": 0.09557038834951456,
+      "no_visible": 0.06462378640776699,
+      "cond_median_s": 80.85000000000001,
+      "n": 6592
+     },
+     {
+      "hour": 8,
+      "rate": 0.08474943175668362,
+      "no_visible": 0.06580798787747592,
+      "cond_median_s": 81.89999999999998,
+      "n": 9239
+     },
+     {
+      "hour": 9,
+      "rate": 0.09376904326630103,
+      "no_visible": 0.057663010359536866,
+      "cond_median_s": 77.8,
+      "n": 13128
+     },
+     {
+      "hour": 10,
+      "rate": 0.09492898001156887,
+      "no_visible": 0.029950510958287806,
+      "cond_median_s": 60.900000000000006,
+      "n": 15559
+     },
+     {
+      "hour": 11,
+      "rate": 0.08815882770030725,
+      "no_visible": 0.021685180808319545,
+      "cond_median_s": 54.70000000000002,
+      "n": 16924
+     },
+     {
+      "hour": 12,
+      "rate": 0.07770994885332454,
+      "no_visible": 0.018478798878072925,
+      "cond_median_s": 46.99999999999999,
+      "n": 18183
+     },
+     {
+      "hour": 13,
+      "rate": 0.0760519595869879,
+      "no_visible": 0.00804929499278339,
+      "cond_median_s": 42.29999999999998,
+      "n": 18014
+     },
+     {
+      "hour": 14,
+      "rate": 0.06275492366857009,
+      "no_visible": 0.01002214194149866,
+      "cond_median_s": 35.7,
+      "n": 17162
+     },
+     {
+      "hour": 15,
+      "rate": 0.07258445546893456,
+      "no_visible": 0.008327427356484762,
+      "cond_median_s": 42.30000000000001,
+      "n": 16932
+     },
+     {
+      "hour": 16,
+      "rate": 0.06423567675756818,
+      "no_visible": 0.00869402051538654,
+      "cond_median_s": 39.0,
+      "n": 15988
+     },
+     {
+      "hour": 17,
+      "rate": 0.07107084575994597,
+      "no_visible": 0.010860390523887231,
+      "cond_median_s": 43.20000000000002,
+      "n": 17771
+     },
+     {
+      "hour": 18,
+      "rate": 0.054881185063265094,
+      "no_visible": 0.010544182697253369,
+      "cond_median_s": 33.2,
+      "n": 19442
+     },
+     {
+      "hour": 19,
+      "rate": 0.06619264412501918,
+      "no_visible": 0.00971916722082971,
+      "cond_median_s": 36.35,
+      "n": 19549
+     },
+     {
+      "hour": 20,
+      "rate": 0.058787432498772704,
+      "no_visible": 0.004602356406480118,
+      "cond_median_s": 27.200000000000003,
+      "n": 16296
+     },
+     {
+      "hour": 21,
+      "rate": 0.08543393672813399,
+      "no_visible": 0.011785935825861389,
+      "cond_median_s": 44.10000000000002,
+      "n": 17733
+     },
+     {
+      "hour": 22,
+      "rate": 0.10196700193231928,
+      "no_visible": 0.015309914284298667,
+      "cond_median_s": 55.599999999999994,
+      "n": 20183
+     },
+     {
+      "hour": 23,
+      "rate": 0.12132752992383025,
+      "no_visible": 0.02102087248986052,
+      "cond_median_s": 63.400000000000034,
+      "n": 20218
+     }
+    ],
+    "by_partition": [
+     {
+      "partition": 0,
+      "rate": 0.06517074427755175,
+      "no_visible": 0.0037910135634040823,
+      "n": 201793
+     },
+     {
+      "partition": 1,
+      "rate": 0.07038123167155426,
+      "no_visible": 0.02932551319648094,
+      "n": 1023
+     },
+     {
+      "partition": 2,
+      "rate": 0.09008864465925956,
+      "no_visible": 0.040792587541614855,
+      "n": 74793
+     },
+     {
+      "partition": 3,
+      "rate": 0.10225418417594478,
+      "no_visible": 0.032043784025762106,
+      "n": 69249
+     },
+     {
+      "partition": 4,
+      "rate": 0.12098298676748583,
+      "no_visible": 0.02835538752362949,
+      "n": 1058
+     },
+     {
+      "partition": 5,
+      "rate": 0.11395759717314488,
+      "no_visible": 0.10644876325088339,
+      "n": 4528
+     },
+     {
+      "partition": 6,
+      "rate": 0.12200282087447109,
+      "no_visible": 0.3039492242595205,
+      "n": 1418
+     },
+     {
+      "partition": 7,
+      "rate": 0.10954616588419405,
+      "no_visible": 0.011476264997391758,
+      "n": 1917
+     }
+    ],
+    "spread": {
+     "s5n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0001,
+       "min": 0.0001,
+       "max": 0.0001,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0001,
+       "min": 0.0001,
+       "max": 0.0001,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 100.1,
+       "min": 100.1,
+       "max": 100.1,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 361.3,
+       "min": 361.3,
+       "max": 361.3,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 0.8,
+       "min": 0.8,
+       "max": 0.8,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "h5n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "s5n4": {
+      "wrong_driver_rate": {
+       "mean": 0.1103,
+       "min": 0.1103,
+       "max": 0.1103,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0198,
+       "min": 0.0198,
+       "max": 0.0198,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 42.1,
+       "min": 42.1,
+       "max": 42.1,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 148.6,
+       "min": 148.6,
+       "max": 148.6,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 695.8,
+       "min": 695.8,
+       "max": 695.8,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 40.0,
+       "min": 40.0,
+       "max": 40.0,
+       "n": 1
+      }
+     },
+     "h5n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "s5n8": {
+      "wrong_driver_rate": {
+       "mean": 0.1105,
+       "min": 0.1105,
+       "max": 0.1105,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0242,
+       "min": 0.0242,
+       "max": 0.0242,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 42.4,
+       "min": 42.4,
+       "max": 42.4,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 150.7,
+       "min": 150.7,
+       "max": 150.7,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 703.9,
+       "min": 703.9,
+       "max": 703.9,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 40.0,
+       "min": 40.0,
+       "max": 40.0,
+       "n": 1
+      }
+     },
+     "h5n8": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "s6n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0052,
+       "min": 0.0052,
+       "max": 0.0052,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0019,
+       "min": 0.0019,
+       "max": 0.0019,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 49.2,
+       "min": 49.2,
+       "max": 49.2,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 206.7,
+       "min": 206.7,
+       "max": 206.7,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 46.1,
+       "min": 46.1,
+       "max": 46.1,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "h6n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "s6n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0789,
+       "min": 0.0789,
+       "max": 0.0789,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0198,
+       "min": 0.0198,
+       "max": 0.0198,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 47.1,
+       "min": 47.1,
+       "max": 47.1,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 170.5,
+       "min": 170.5,
+       "max": 170.5,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 562.0,
+       "min": 562.0,
+       "max": 562.0,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 47.0,
+       "min": 47.0,
+       "max": 47.0,
+       "n": 1
+      }
+     },
+     "h6n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "s6n8": {
+      "wrong_driver_rate": {
+       "mean": 0.0793,
+       "min": 0.0793,
+       "max": 0.0793,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0199,
+       "min": 0.0199,
+       "max": 0.0199,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 47.2,
+       "min": 47.2,
+       "max": 47.2,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 170.6,
+       "min": 170.6,
+       "max": 170.6,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 566.2,
+       "min": 566.2,
+       "max": 566.2,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 47.0,
+       "min": 47.0,
+       "max": 47.0,
+       "n": 1
+      }
+     },
+     "h6n8": {
+      "wrong_driver_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": null,
+      "conditional_extra_wait_s_p90": null,
+      "total_extra_wait_h": {
+       "mean": 0.0,
+       "min": 0.0,
+       "max": 0.0,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "s7n2": {
+      "wrong_driver_rate": {
+       "mean": 0.1291,
+       "min": 0.1291,
+       "max": 0.1291,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0291,
+       "min": 0.0291,
+       "max": 0.0291,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 46.7,
+       "min": 46.7,
+       "max": 46.7,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 174.1,
+       "min": 174.1,
+       "max": 174.1,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 945.5,
+       "min": 945.5,
+       "max": 945.5,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 39.0,
+       "min": 39.0,
+       "max": 39.0,
+       "n": 1
+      }
+     },
+     "h7n2": {
+      "wrong_driver_rate": {
+       "mean": 0.0011,
+       "min": 0.0011,
+       "max": 0.0011,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0006,
+       "min": 0.0006,
+       "max": 0.0006,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 37.7,
+       "min": 37.7,
+       "max": 37.7,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 186.0,
+       "min": 186.0,
+       "max": 186.0,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 7.0,
+       "min": 7.0,
+       "max": 7.0,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "s7n4": {
+      "wrong_driver_rate": {
+       "mean": 0.1538,
+       "min": 0.1538,
+       "max": 0.1538,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0662,
+       "min": 0.0662,
+       "max": 0.0662,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 46.0,
+       "min": 46.0,
+       "max": 46.0,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 172.4,
+       "min": 172.4,
+       "max": 172.4,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 1119.4,
+       "min": 1119.4,
+       "max": 1119.4,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 18.0,
+       "min": 18.0,
+       "max": 18.0,
+       "n": 1
+      }
+     },
+     "h7n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0029,
+       "min": 0.0029,
+       "max": 0.0029,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.001,
+       "min": 0.001,
+       "max": 0.001,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 53.5,
+       "min": 53.5,
+       "max": 53.5,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 176.1,
+       "min": 176.1,
+       "max": 176.1,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 21.1,
+       "min": 21.1,
+       "max": 21.1,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "s7n8": {
+      "wrong_driver_rate": {
+       "mean": 0.1658,
+       "min": 0.1658,
+       "max": 0.1658,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0826,
+       "min": 0.0826,
+       "max": 0.0826,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 45.1,
+       "min": 45.1,
+       "max": 45.1,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 177.1,
+       "min": 177.1,
+       "max": 177.1,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 1234.5,
+       "min": 1234.5,
+       "max": 1234.5,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 15.0,
+       "min": 15.0,
+       "max": 15.0,
+       "n": 1
+      }
+     },
+     "h7n8": {
+      "wrong_driver_rate": {
+       "mean": 0.0032,
+       "min": 0.0032,
+       "max": 0.0032,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0011,
+       "min": 0.0011,
+       "max": 0.0011,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 53.3,
+       "min": 53.3,
+       "max": 53.3,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 180.1,
+       "min": 180.1,
+       "max": 180.1,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 23.8,
+       "min": 23.8,
+       "max": 23.8,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 50.0,
+       "min": 50.0,
+       "max": 50.0,
+       "n": 1
+      }
+     },
+     "s8n2": {
+      "wrong_driver_rate": {
+       "mean": 0.2111,
+       "min": 0.2111,
+       "max": 0.2111,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0398,
+       "min": 0.0398,
+       "max": 0.0398,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 45.8,
+       "min": 45.8,
+       "max": 45.8,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 167.5,
+       "min": 167.5,
+       "max": 167.5,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 1480.2,
+       "min": 1480.2,
+       "max": 1480.2,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 26.0,
+       "min": 26.0,
+       "max": 26.0,
+       "n": 1
+      }
+     },
+     "h8n2": {
+      "wrong_driver_rate": {
+       "mean": 0.044,
+       "min": 0.044,
+       "max": 0.044,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0159,
+       "min": 0.0159,
+       "max": 0.0159,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 49.1,
+       "min": 49.1,
+       "max": 49.1,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 189.3,
+       "min": 189.3,
+       "max": 189.3,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 340.5,
+       "min": 340.5,
+       "max": 340.5,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 41.0,
+       "min": 41.0,
+       "max": 41.0,
+       "n": 1
+      }
+     },
+     "s8n4": {
+      "wrong_driver_rate": {
+       "mean": 0.3182,
+       "min": 0.3182,
+       "max": 0.3182,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.1007,
+       "min": 0.1007,
+       "max": 0.1007,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 53.5,
+       "min": 53.5,
+       "max": 53.5,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 192.1,
+       "min": 192.1,
+       "max": 192.1,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 2575.4,
+       "min": 2575.4,
+       "max": 2575.4,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 9.0,
+       "min": 9.0,
+       "max": 9.0,
+       "n": 1
+      }
+     },
+     "h8n4": {
+      "wrong_driver_rate": {
+       "mean": 0.0517,
+       "min": 0.0517,
+       "max": 0.0517,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0307,
+       "min": 0.0307,
+       "max": 0.0307,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 52.5,
+       "min": 52.5,
+       "max": 52.5,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 209.6,
+       "min": 209.6,
+       "max": 209.6,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 441.8,
+       "min": 441.8,
+       "max": 441.8,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 31.0,
+       "min": 31.0,
+       "max": 31.0,
+       "n": 1
+      }
+     },
+     "s8n8": {
+      "wrong_driver_rate": {
+       "mean": 0.3176,
+       "min": 0.3176,
+       "max": 0.3176,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.1924,
+       "min": 0.1924,
+       "max": 0.1924,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 58.6,
+       "min": 58.6,
+       "max": 58.6,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 225.3,
+       "min": 225.3,
+       "max": 225.3,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 2948.7,
+       "min": 2948.7,
+       "max": 2948.7,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 4.0,
+       "min": 4.0,
+       "max": 4.0,
+       "n": 1
+      }
+     },
+     "h8n8": {
+      "wrong_driver_rate": {
+       "mean": 0.051,
+       "min": 0.051,
+       "max": 0.051,
+       "n": 1
+      },
+      "no_visible_candidate_rate": {
+       "mean": 0.0484,
+       "min": 0.0484,
+       "max": 0.0484,
+       "n": 1
+      },
+      "conditional_extra_wait_s_median": {
+       "mean": 48.0,
+       "min": 48.0,
+       "max": 48.0,
+       "n": 1
+      },
+      "conditional_extra_wait_s_p90": {
+       "mean": 229.4,
+       "min": 229.4,
+       "max": 229.4,
+       "n": 1
+      },
+      "total_extra_wait_h": {
+       "mean": 443.5,
+       "min": 443.5,
+       "max": 443.5,
+       "n": 1
+      },
+      "visible_candidates_median": {
+       "mean": 22.0,
+       "min": 22.0,
+       "max": 22.0,
+       "n": 1
+      }
+     }
+    }
+   }
+  },
+  "headline_config": {
+   "key_resolution": 6,
+   "workers": 4,
+   "assignor": "range (contiguous partition ranges)"
+  }
+ },
+ "mode_b": [
+  {
+   "run_id": "svc_2016-06-16_W1_k6_range_seed0",
+   "day": "2016-06-16",
+   "workers": 1,
+   "seed": 0,
+   "key_resolution": 6,
+   "assignor": "range",
+   "requests": 391042,
+   "decided_by_service": 391042,
+   "missing_in_service": 0,
+   "same_status_rate": 1.0,
+   "same_driver_rate_when_both_matched": 1.0,
+   "disagreement_rate": 0.0,
+   "wait_delta_when_different_driver_s": {
+    "median": null,
+    "p90": null,
+    "mean": null,
+    "n": 0
+   },
+   "service": {
+    "match_rate": 0.9328,
+    "wait_s": {
+     "median": 102.9,
+     "p90": 304.8
+    },
+    "deadhead_m_per_ride": {
+     "median": 759.9,
+     "mean": 1070.7
+    },
+    "deadhead_km_total": 390541.5,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0573
+   },
+   "oracle": {
+    "match_rate": 0.9328,
+    "wait_s": {
+     "median": 102.9,
+     "p90": 304.8
+    },
+    "deadhead_m_per_ride": {
+     "median": 759.9,
+     "mean": 1070.7
+    },
+    "deadhead_km_total": 390541.5,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0573
+   },
+   "delay_s": {
+    "median": 0.0,
+    "p99": 0.0,
+    "max": 0.0
+   },
+   "by_partition": [
+    {
+     "partition": 0,
+     "n": 226025,
+     "disagreement": 0.0
+    },
+    {
+     "partition": 1,
+     "n": 605,
+     "disagreement": 0.0
+    },
+    {
+     "partition": 2,
+     "n": 91642,
+     "disagreement": 0.0
+    },
+    {
+     "partition": 3,
+     "n": 58932,
+     "disagreement": 0.0
+    },
+    {
+     "partition": 4,
+     "n": 627,
+     "disagreement": 0.0
+    },
+    {
+     "partition": 5,
+     "n": 7138,
+     "disagreement": 0.0
+    },
+    {
+     "partition": 6,
+     "n": 4813,
+     "disagreement": 0.0
+    },
+    {
+     "partition": 7,
+     "n": 1260,
+     "disagreement": 0.0
+    }
+   ]
+  },
+  {
+   "run_id": "svc_2016-06-16_W2_k6_range_seed0",
+   "day": "2016-06-16",
+   "workers": 2,
+   "seed": 0,
+   "key_resolution": 6,
+   "assignor": "range",
+   "requests": 391042,
+   "decided_by_service": 391042,
+   "missing_in_service": 0,
+   "same_status_rate": 0.9329,
+   "same_driver_rate_when_both_matched": 0.0314,
+   "disagreement_rate": 0.9389,
+   "wait_delta_when_different_driver_s": {
+    "median": 0.0,
+    "p90": 91.8,
+    "mean": 0.2,
+    "n": 340909
+   },
+   "service": {
+    "match_rate": 0.931,
+    "wait_s": {
+     "median": 103.0,
+     "p90": 305.5
+    },
+    "deadhead_m_per_ride": {
+     "median": 759.9,
+     "mean": 1068.7
+    },
+    "deadhead_km_total": 389064.1,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0596
+   },
+   "oracle": {
+    "match_rate": 0.9328,
+    "wait_s": {
+     "median": 102.9,
+     "p90": 304.8
+    },
+    "deadhead_m_per_ride": {
+     "median": 759.9,
+     "mean": 1070.7
+    },
+    "deadhead_km_total": 390541.5,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0573
+   },
+   "delay_s": {
+    "median": 0.0,
+    "p99": 0.0,
+    "max": 0.0
+   },
+   "by_partition": [
+    {
+     "partition": 0,
+     "n": 226025,
+     "disagreement": 0.9498418316557903
+    },
+    {
+     "partition": 1,
+     "n": 605,
+     "disagreement": 0.9090909090909091
+    },
+    {
+     "partition": 2,
+     "n": 91642,
+     "disagreement": 0.9402239147988913
+    },
+    {
+     "partition": 3,
+     "n": 58932,
+     "disagreement": 0.9383526776623905
+    },
+    {
+     "partition": 4,
+     "n": 627,
+     "disagreement": 0.8883572567783095
+    },
+    {
+     "partition": 5,
+     "n": 7138,
+     "disagreement": 0.7496497618380499
+    },
+    {
+     "partition": 6,
+     "n": 4813,
+     "disagreement": 0.6985248285892375
+    },
+    {
+     "partition": 7,
+     "n": 1260,
+     "disagreement": 0.9452380952380952
+    }
+   ]
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_range_seed0",
+   "day": "2016-06-16",
+   "workers": 4,
+   "seed": 0,
+   "key_resolution": 6,
+   "assignor": "range",
+   "requests": 391042,
+   "decided_by_service": 391042,
+   "missing_in_service": 0,
+   "same_status_rate": 0.8916,
+   "same_driver_rate_when_both_matched": 0.0179,
+   "disagreement_rate": 0.9535,
+   "wait_delta_when_different_driver_s": {
+    "median": 0.0,
+    "p90": 98.0,
+    "mean": -5.1,
+    "n": 330465
+   },
+   "service": {
+    "match_rate": 0.8925,
+    "wait_s": {
+     "median": 93.2,
+     "p90": 287.8
+    },
+    "deadhead_m_per_ride": {
+     "median": 682.0,
+     "mean": 980.3
+    },
+    "deadhead_km_total": 342150.6,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0979
+   },
+   "oracle": {
+    "match_rate": 0.9328,
+    "wait_s": {
+     "median": 102.9,
+     "p90": 304.8
+    },
+    "deadhead_m_per_ride": {
+     "median": 759.9,
+     "mean": 1070.7
+    },
+    "deadhead_km_total": 390541.5,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0573
+   },
+   "delay_s": {
+    "median": 0.0,
+    "p99": 0.0,
+    "max": 0.0
+   },
+   "by_partition": [
+    {
+     "partition": 0,
+     "n": 226025,
+     "disagreement": 0.9641278619621724
+    },
+    {
+     "partition": 1,
+     "n": 605,
+     "disagreement": 0.9239669421487603
+    },
+    {
+     "partition": 2,
+     "n": 91642,
+     "disagreement": 0.9493791056502477
+    },
+    {
+     "partition": 3,
+     "n": 58932,
+     "disagreement": 0.957747912848707
+    },
+    {
+     "partition": 4,
+     "n": 627,
+     "disagreement": 0.9011164274322169
+    },
+    {
+     "partition": 5,
+     "n": 7138,
+     "disagreement": 0.7709442420846175
+    },
+    {
+     "partition": 6,
+     "n": 4813,
+     "disagreement": 0.7598171618533139
+    },
+    {
+     "partition": 7,
+     "n": 1260,
+     "disagreement": 0.95
+    }
+   ]
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_range_seed0_x1_until2115",
+   "day": "2016-06-16",
+   "workers": 4,
+   "seed": 0,
+   "key_resolution": 6,
+   "assignor": "range",
+   "requests": 326335,
+   "decided_by_service": 326335,
+   "missing_in_service": 0,
+   "same_status_rate": 0.9081,
+   "same_driver_rate_when_both_matched": 0.021,
+   "disagreement_rate": 0.9584,
+   "wait_delta_when_different_driver_s": {
+    "median": 0.0,
+    "p90": 91.7,
+    "mean": 0.2,
+    "n": 282776
+   },
+   "service": {
+    "match_rate": 0.9074,
+    "wait_s": {
+     "median": 85.3,
+     "p90": 261.7
+    },
+    "deadhead_m_per_ride": {
+     "median": 621.4,
+     "mean": 891.2
+    },
+    "deadhead_km_total": 263910.8,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0865
+   },
+   "oracle": {
+    "match_rate": 0.9524,
+    "wait_s": {
+     "median": 91.2,
+     "p90": 272.1
+    },
+    "deadhead_m_per_ride": {
+     "median": 667.8,
+     "mean": 945.0
+    },
+    "deadhead_km_total": 293696.3,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0419
+   },
+   "delay_s": {
+    "median": 0.0,
+    "p99": 0.0,
+    "max": 0.0
+   },
+   "by_partition": [
+    {
+     "partition": 0,
+     "n": 188378,
+     "disagreement": 0.9682181571096412
+    },
+    {
+     "partition": 1,
+     "n": 513,
+     "disagreement": 0.9200779727095516
+    },
+    {
+     "partition": 2,
+     "n": 80409,
+     "disagreement": 0.9534629208173214
+    },
+    {
+     "partition": 3,
+     "n": 45887,
+     "disagreement": 0.958092705995162
+    },
+    {
+     "partition": 4,
+     "n": 448,
+     "disagreement": 0.859375
+    },
+    {
+     "partition": 5,
+     "n": 5814,
+     "disagreement": 0.827485380116959
+    },
+    {
+     "partition": 6,
+     "n": 3774,
+     "disagreement": 0.8063063063063063
+    },
+    {
+     "partition": 7,
+     "n": 1112,
+     "disagreement": 0.9361510791366906
+    }
+   ]
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k7_range_seed0",
+   "day": "2016-06-16",
+   "workers": 4,
+   "seed": 0,
+   "key_resolution": 7,
+   "assignor": "range",
+   "requests": 391042,
+   "decided_by_service": 391042,
+   "missing_in_service": 0,
+   "same_status_rate": 0.8646,
+   "same_driver_rate_when_both_matched": 0.0123,
+   "disagreement_rate": 0.9635,
+   "wait_delta_when_different_driver_s": {
+    "median": 0.0,
+    "p90": 103.3,
+    "mean": -10.6,
+    "n": 323812
+   },
+   "service": {
+    "match_rate": 0.8755,
+    "wait_s": {
+     "median": 91.5,
+     "p90": 259.1
+    },
+    "deadhead_m_per_ride": {
+     "median": 666.2,
+     "mean": 914.7
+    },
+    "deadhead_km_total": 313146.1,
+    "candidates_median": 20.0,
+    "no_candidates_rate": 0.1178
+   },
+   "oracle": {
+    "match_rate": 0.9328,
+    "wait_s": {
+     "median": 102.9,
+     "p90": 304.8
+    },
+    "deadhead_m_per_ride": {
+     "median": 759.9,
+     "mean": 1070.7
+    },
+    "deadhead_km_total": 390541.5,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0573
+   },
+   "delay_s": {
+    "median": 0.0,
+    "p99": 0.0,
+    "max": 0.0
+   },
+   "by_partition": [
+    {
+     "partition": 0,
+     "n": 3759,
+     "disagreement": 0.9664804469273743
+    },
+    {
+     "partition": 1,
+     "n": 84087,
+     "disagreement": 0.9744431362755241
+    },
+    {
+     "partition": 2,
+     "n": 185442,
+     "disagreement": 0.9630666192124762
+    },
+    {
+     "partition": 3,
+     "n": 13125,
+     "disagreement": 0.9680761904761904
+    },
+    {
+     "partition": 4,
+     "n": 13648,
+     "disagreement": 0.9665152403282532
+    },
+    {
+     "partition": 5,
+     "n": 10556,
+     "disagreement": 0.9820954907161804
+    },
+    {
+     "partition": 6,
+     "n": 16747,
+     "disagreement": 0.8870842538962203
+    },
+    {
+     "partition": 7,
+     "n": 63678,
+     "disagreement": 0.9653412481547787
+    }
+   ]
+  },
+  {
+   "run_id": "svc_2016-06-16_W8_k6_range_seed0",
+   "day": "2016-06-16",
+   "workers": 8,
+   "seed": 0,
+   "key_resolution": 6,
+   "assignor": "range",
+   "requests": 391042,
+   "decided_by_service": 391042,
+   "missing_in_service": 0,
+   "same_status_rate": 0.8914,
+   "same_driver_rate_when_both_matched": 0.0172,
+   "disagreement_rate": 0.9537,
+   "wait_delta_when_different_driver_s": {
+    "median": 0.0,
+    "p90": 97.7,
+    "mean": -5.3,
+    "n": 330490
+   },
+   "service": {
+    "match_rate": 0.8919,
+    "wait_s": {
+     "median": 92.9,
+     "p90": 287.4
+    },
+    "deadhead_m_per_ride": {
+     "median": 679.9,
+     "mean": 978.4
+    },
+    "deadhead_km_total": 341242.7,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0978
+   },
+   "oracle": {
+    "match_rate": 0.9328,
+    "wait_s": {
+     "median": 102.9,
+     "p90": 304.8
+    },
+    "deadhead_m_per_ride": {
+     "median": 759.9,
+     "mean": 1070.7
+    },
+    "deadhead_km_total": 390541.5,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0573
+   },
+   "delay_s": {
+    "median": 0.0,
+    "p99": 0.0,
+    "max": 0.0
+   },
+   "by_partition": [
+    {
+     "partition": 0,
+     "n": 226025,
+     "disagreement": 0.9639818604136711
+    },
+    {
+     "partition": 1,
+     "n": 605,
+     "disagreement": 0.9239669421487603
+    },
+    {
+     "partition": 2,
+     "n": 91642,
+     "disagreement": 0.9493136334868292
+    },
+    {
+     "partition": 3,
+     "n": 58932,
+     "disagreement": 0.9592241905925474
+    },
+    {
+     "partition": 4,
+     "n": 627,
+     "disagreement": 0.9059011164274322
+    },
+    {
+     "partition": 5,
+     "n": 7138,
+     "disagreement": 0.7726253852619781
+    },
+    {
+     "partition": 6,
+     "n": 4813,
+     "disagreement": 0.7681279867026802
+    },
+    {
+     "partition": 7,
+     "n": 1260,
+     "disagreement": 0.9523809523809523
+    }
+   ]
+  },
+  {
+   "run_id": "svc_2016-06-16_W8_k7_range_seed0",
+   "day": "2016-06-16",
+   "workers": 8,
+   "seed": 0,
+   "key_resolution": 7,
+   "assignor": "range",
+   "requests": 391042,
+   "decided_by_service": 391042,
+   "missing_in_service": 0,
+   "same_status_rate": 0.8513,
+   "same_driver_rate_when_both_matched": 0.0113,
+   "disagreement_rate": 0.9641,
+   "wait_delta_when_different_driver_s": {
+    "median": 0.0,
+    "p90": 95.9,
+    "mean": -16.1,
+    "n": 318842
+   },
+   "service": {
+    "match_rate": 0.8613,
+    "wait_s": {
+     "median": 87.5,
+     "p90": 240.5
+    },
+    "deadhead_m_per_ride": {
+     "median": 635.6,
+     "mean": 853.7
+    },
+    "deadhead_km_total": 287510.6,
+    "candidates_median": 17.0,
+    "no_candidates_rate": 0.135
+   },
+   "oracle": {
+    "match_rate": 0.9328,
+    "wait_s": {
+     "median": 102.9,
+     "p90": 304.8
+    },
+    "deadhead_m_per_ride": {
+     "median": 759.9,
+     "mean": 1070.7
+    },
+    "deadhead_km_total": 390541.5,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0573
+   },
+   "delay_s": {
+    "median": 0.0,
+    "p99": 0.0,
+    "max": 0.0
+   },
+   "by_partition": [
+    {
+     "partition": 0,
+     "n": 3759,
+     "disagreement": 0.9664804469273743
+    },
+    {
+     "partition": 1,
+     "n": 84087,
+     "disagreement": 0.9726830544555044
+    },
+    {
+     "partition": 2,
+     "n": 185442,
+     "disagreement": 0.9658815155142848
+    },
+    {
+     "partition": 3,
+     "n": 13125,
+     "disagreement": 0.9699809523809524
+    },
+    {
+     "partition": 4,
+     "n": 13648,
+     "disagreement": 0.9588218053927315
+    },
+    {
+     "partition": 5,
+     "n": 10556,
+     "disagreement": 0.9839901477832512
+    },
+    {
+     "partition": 6,
+     "n": 16747,
+     "disagreement": 0.8892338926374873
+    },
+    {
+     "partition": 7,
+     "n": 63678,
+     "disagreement": 0.9638336631175602
+    }
+   ]
+  },
+  {
+   "run_id": "svc_2016-06-18_W4_k6_range_seed0",
+   "day": "2016-06-18",
+   "workers": 4,
+   "seed": 0,
+   "key_resolution": 6,
+   "assignor": "range",
+   "requests": 362824,
+   "decided_by_service": 362824,
+   "missing_in_service": 0,
+   "same_status_rate": 0.9577,
+   "same_driver_rate_when_both_matched": 0.0171,
+   "disagreement_rate": 0.97,
+   "wait_delta_when_different_driver_s": {
+    "median": 0.0,
+    "p90": 90.3,
+    "mean": 6.5,
+    "n": 336600
+   },
+   "service": {
+    "match_rate": 0.951,
+    "wait_s": {
+     "median": 86.2,
+     "p90": 235.9
+    },
+    "deadhead_m_per_ride": {
+     "median": 622.6,
+     "mean": 840.3
+    },
+    "deadhead_km_total": 289943.8,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.046
+   },
+   "oracle": {
+    "match_rate": 0.9774,
+    "wait_s": {
+     "median": 85.1,
+     "p90": 226.4
+    },
+    "deadhead_m_per_ride": {
+     "median": 614.6,
+     "mean": 817.4
+    },
+    "deadhead_km_total": 289876.7,
+    "candidates_median": 50.0,
+    "no_candidates_rate": 0.0194
+   },
+   "delay_s": {
+    "median": 0.0,
+    "p99": 0.0,
+    "max": 0.0
+   },
+   "by_partition": [
+    {
+     "partition": 0,
+     "n": 202165,
+     "disagreement": 0.9822372814285361
+    },
+    {
+     "partition": 1,
+     "n": 1046,
+     "disagreement": 0.9550669216061185
+    },
+    {
+     "partition": 2,
+     "n": 79265,
+     "disagreement": 0.9440484450892576
+    },
+    {
+     "partition": 3,
+     "n": 70017,
+     "disagreement": 0.9741062884727995
+    },
+    {
+     "partition": 4,
+     "n": 1073,
+     "disagreement": 0.9543336439888164
+    },
+    {
+     "partition": 5,
+     "n": 5465,
+     "disagreement": 0.8733760292772187
+    },
+    {
+     "partition": 6,
+     "n": 1843,
+     "disagreement": 0.8974498100922409
+    },
+    {
+     "partition": 7,
+     "n": 1950,
+     "disagreement": 0.9723076923076923
+    }
+   ]
+  }
+ ],
+ "throughput": {
+  "service": [
+   {
+    "day": "2016-06-16",
+    "workers": 1,
+    "key_resolution": 6,
+    "seed": 0,
+    "requests": 391042,
+    "wall_s": 1176.9,
+    "decisions_per_s_wall": 332.3,
+    "decisions_per_s_active": 334.3,
+    "decision_ms": {
+     "median": 3.0,
+     "p99": 10.0
+    },
+    "per_worker_decisions": {
+     "w0": 391042
+    },
+    "busiest_worker_share": 1.0,
+    "table_ms_median": 1.75,
+    "gated_polls": 2400,
+    "osrm_calls": 451894,
+    "cruises": 83239
+   },
+   {
+    "day": "2016-06-16",
+    "workers": 2,
+    "key_resolution": 6,
+    "seed": 0,
+    "requests": 391042,
+    "wall_s": 1137.7,
+    "decisions_per_s_wall": 343.7,
+    "decisions_per_s_active": 345.8,
+    "decision_ms": {
+     "median": 3.0,
+     "p99": 10.0
+    },
+    "per_worker_decisions": {
+     "w0": 377204,
+     "w1": 13838
+    },
+    "busiest_worker_share": 0.965,
+    "table_ms_median": 1.52,
+    "gated_polls": 193005,
+    "osrm_calls": 451735,
+    "cruises": 83993
+   },
+   {
+    "day": "2016-06-16",
+    "workers": 4,
+    "key_resolution": 6,
+    "seed": 0,
+    "requests": 391042,
+    "wall_s": 747.8,
+    "decisions_per_s_wall": 522.9,
+    "decisions_per_s_active": 528.6,
+    "decision_ms": {
+     "median": 3.0,
+     "p99": 10.0
+    },
+    "per_worker_decisions": {
+     "w0": 226630,
+     "w1": 150574,
+     "w2": 7765,
+     "w3": 6073
+    },
+    "busiest_worker_share": 0.58,
+    "table_ms_median": 1.63,
+    "gated_polls": 319806,
+    "osrm_calls": 442028,
+    "cruises": 89270
+   },
+   {
+    "day": "2016-06-16",
+    "workers": 8,
+    "key_resolution": 6,
+    "seed": 0,
+    "requests": 391042,
+    "wall_s": 724.7,
+    "decisions_per_s_wall": 539.6,
+    "decisions_per_s_active": 546.6,
+    "decision_ms": {
+     "median": 3.0,
+     "p99": 12.0
+    },
+    "per_worker_decisions": {
+     "w0": 226025,
+     "w1": 605,
+     "w2": 91642,
+     "w3": 58932,
+     "w4": 627,
+     "w5": 7138,
+     "w6": 4813,
+     "w7": 1260
+    },
+    "busiest_worker_share": 0.578,
+    "table_ms_median": 2.01,
+    "gated_polls": 788349,
+    "osrm_calls": 442351,
+    "cruises": 89556
+   },
+   {
+    "day": "2016-06-16",
+    "workers": 4,
+    "key_resolution": 7,
+    "seed": 0,
+    "requests": 391042,
+    "wall_s": 598.5,
+    "decisions_per_s_wall": 653.3,
+    "decisions_per_s_active": 661.5,
+    "decision_ms": {
+     "median": 2.0,
+     "p99": 10.0
+    },
+    "per_worker_decisions": {
+     "w0": 87846,
+     "w1": 198567,
+     "w2": 24204,
+     "w3": 80425
+    },
+    "busiest_worker_share": 0.508,
+    "table_ms_median": 1.61,
+    "gated_polls": 217024,
+    "osrm_calls": 434703,
+    "cruises": 89701
+   },
+   {
+    "day": "2016-06-16",
+    "workers": 8,
+    "key_resolution": 7,
+    "seed": 0,
+    "requests": 391042,
+    "wall_s": 607.7,
+    "decisions_per_s_wall": 643.5,
+    "decisions_per_s_active": 654.2,
+    "decision_ms": {
+     "median": 3.0,
+     "p99": 15.0
+    },
+    "per_worker_decisions": {
+     "w0": 3759,
+     "w1": 84087,
+     "w2": 185442,
+     "w3": 13125,
+     "w4": 13648,
+     "w5": 10556,
+     "w6": 16747,
+     "w7": 63678
+    },
+    "busiest_worker_share": 0.474,
+    "table_ms_median": 1.97,
+    "gated_polls": 614623,
+    "osrm_calls": 430843,
+    "cruises": 92581
+   },
+   {
+    "day": "2016-06-18",
+    "workers": 4,
+    "key_resolution": 6,
+    "seed": 0,
+    "requests": 362824,
+    "wall_s": 809.0,
+    "decisions_per_s_wall": 448.5,
+    "decisions_per_s_active": 453.0,
+    "decision_ms": {
+     "median": 3.0,
+     "p99": 12.0
+    },
+    "per_worker_decisions": {
+     "w0": 203211,
+     "w1": 149282,
+     "w2": 6538,
+     "w3": 3793
+    },
+    "busiest_worker_share": 0.56,
+    "table_ms_median": 1.76,
+    "gated_polls": 338049,
+    "osrm_calls": 442889,
+    "cruises": 96751
+   }
+  ],
+  "oracle_python": {
+   "2016-06-18_road_N7500_T600_seed0_cruise": {
+    "decisions_per_s": 201.6,
+    "seconds": 1800.1,
+    "decision_ms_median": 4.82,
+    "decision_ms_p99": 13.34,
+    "table_ms_median": 2.82,
+    "concurrent_replays": 1
+   },
+   "2016-06-16_road_N7500_T600_seed0_cruise": {
+    "decisions_per_s": 235.1,
+    "seconds": 1663.2,
+    "decision_ms_median": 3.95,
+    "decision_ms_p99": 11.57,
+    "table_ms_median": 2.67,
+    "concurrent_replays": 1
+   },
+   "ref_2016-06-16_seed3": {
+    "decisions_per_s": 183.8,
+    "seconds": 2127.0,
+    "decision_ms_median": 4.61,
+    "decision_ms_p99": 18.13,
+    "table_ms_median": 2.9,
+    "concurrent_replays": 3
+   },
+   "ref_2016-06-16_seed2": {
+    "decisions_per_s": 183.4,
+    "seconds": 2131.9,
+    "decision_ms_median": 4.62,
+    "decision_ms_p99": 18.14,
+    "table_ms_median": 2.9,
+    "concurrent_replays": 3
+   },
+   "ref_2016-06-16_seed1": {
+    "decisions_per_s": 216.0,
+    "seconds": 1810.3,
+    "decision_ms_median": 4.01,
+    "decision_ms_p99": 15.18,
+    "table_ms_median": 2.52,
+    "concurrent_replays": 3
+   },
+   "ref_2016-06-16_seed4": {
+    "decisions_per_s": 184.1,
+    "seconds": 2124.1,
+    "decision_ms_median": 4.6,
+    "decision_ms_p99": 18.18,
+    "table_ms_median": 2.89,
+    "concurrent_replays": 3
+   },
+   "ref_2016-06-16_seed0": {
+    "decisions_per_s": 216.2,
+    "seconds": 1809.0,
+    "decision_ms_median": 3.98,
+    "decision_ms_p99": 15.24,
+    "table_ms_median": 2.52,
+    "concurrent_replays": 3
+   },
+   "ref_2016-06-18_seed0": {
+    "decisions_per_s": 180.6,
+    "seconds": 2009.2,
+    "decision_ms_median": 5.11,
+    "decision_ms_p99": 17.0,
+    "table_ms_median": 2.74,
+    "concurrent_replays": 3
+   }
+  },
+  "latency_at_speed": [
+   {
+    "run_id": "svc_2016-06-16_W4_k6_range_seed0_x1_until2115",
+    "speed": 1.0,
+    "window": [
+     "21:00",
+     "21:15"
+    ],
+    "workers": 4,
+    "median": 18.0,
+    "p99": 63.0,
+    "max": 134.0,
+    "n": 6213
+   }
+  ]
+ },
+ "kill": [
+  {
+   "run_id": "svc_2016-06-16_W4_k6_cooperative_seed0_until1200_kill0900",
+   "assignor": "cooperative",
+   "seed": 0,
+   "killed": "w2",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 9.0,
+   "records": 144633,
+   "requests": 144596,
+   "redelivered_records": 37,
+   "duplicate_request_ids": 37,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 22,
+   "takeover_s_after_kill": 7.5,
+   "stall_orphaned_partitions_s": {
+    "max": 10.51,
+    "min": 8.39
+   },
+   "stall_other_partitions_s": {
+    "max": 11.38,
+    "min": 7.71
+   },
+   "delayed_requests": 91,
+   "delay_s": {
+    "median": 14.0,
+    "p90": 28.0,
+    "max": 30.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 8.39,
+     "gap_starts_s_after_kill": -0.01,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 10.51,
+     "gap_starts_s_after_kill": -0.58,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 8.65,
+     "gap_starts_s_after_kill": 0.02,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 7.71,
+     "gap_starts_s_after_kill": 0.02,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 11.38,
+     "gap_starts_s_after_kill": 74.09,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 8.82,
+     "gap_starts_s_after_kill": 0.01,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 7.74,
+     "gap_starts_s_after_kill": 0.02,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 7.71,
+     "gap_starts_s_after_kill": 7.7,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 414293,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 1764,
+   "vs_oracle": {
+    "disagreement_rate": 0.9405,
+    "same_driver_rate_when_both_matched": 0.0449,
+    "missing_in_service": 0,
+    "before_kill": 0.9066,
+    "after_kill": 0.9987
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_cooperative_seed1_until1200_kill0930",
+   "assignor": "cooperative",
+   "seed": 1,
+   "killed": "w2",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 9.5,
+   "records": 144712,
+   "requests": 144596,
+   "redelivered_records": 116,
+   "duplicate_request_ids": 116,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 20,
+   "takeover_s_after_kill": 6.6,
+   "stall_orphaned_partitions_s": {
+    "max": 10.91,
+    "min": 7.58
+   },
+   "stall_other_partitions_s": {
+    "max": 22.77,
+    "min": 6.79
+   },
+   "delayed_requests": 66,
+   "delay_s": {
+    "median": 15.0,
+    "p90": 23.0,
+    "max": 25.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 7.58,
+     "gap_starts_s_after_kill": 0.0,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 10.91,
+     "gap_starts_s_after_kill": -3.48,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 7.81,
+     "gap_starts_s_after_kill": -0.03,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 6.79,
+     "gap_starts_s_after_kill": 0.0,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 22.77,
+     "gap_starts_s_after_kill": 71.59,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 7.89,
+     "gap_starts_s_after_kill": -0.04,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 6.84,
+     "gap_starts_s_after_kill": -0.04,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 7.26,
+     "gap_starts_s_after_kill": -0.64,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 413586,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 1825,
+   "vs_oracle": {
+    "disagreement_rate": 0.9415,
+    "same_driver_rate_when_both_matched": 0.0445,
+    "missing_in_service": 0,
+    "before_kill": 0.9176,
+    "after_kill": 0.9987
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_cooperative_seed2_until1200_kill1000",
+   "assignor": "cooperative",
+   "seed": 2,
+   "killed": "w3",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 10.0,
+   "records": 144800,
+   "requests": 144596,
+   "redelivered_records": 204,
+   "duplicate_request_ids": 204,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 20,
+   "takeover_s_after_kill": 6.57,
+   "stall_orphaned_partitions_s": {
+    "max": 11.45,
+    "min": 7.53
+   },
+   "stall_other_partitions_s": {
+    "max": 23.59,
+    "min": 6.75
+   },
+   "delayed_requests": 88,
+   "delay_s": {
+    "median": 13.0,
+    "p90": 26.0,
+    "max": 28.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 7.53,
+     "gap_starts_s_after_kill": -0.0,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 11.45,
+     "gap_starts_s_after_kill": -0.77,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 7.78,
+     "gap_starts_s_after_kill": 0.01,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 6.75,
+     "gap_starts_s_after_kill": 0.02,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 23.59,
+     "gap_starts_s_after_kill": 52.51,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 8.61,
+     "gap_starts_s_after_kill": -0.02,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 8.08,
+     "gap_starts_s_after_kill": 0.01,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 12.24,
+     "gap_starts_s_after_kill": -1.25,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 412273,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 1813,
+   "vs_oracle": {
+    "disagreement_rate": 0.941,
+    "same_driver_rate_when_both_matched": 0.0452,
+    "missing_in_service": 0,
+    "before_kill": 0.9237,
+    "after_kill": 0.999
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_cooperative_seed3_until1200_kill1030",
+   "assignor": "cooperative",
+   "seed": 3,
+   "killed": "w3",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 10.5,
+   "records": 144645,
+   "requests": 144596,
+   "redelivered_records": 49,
+   "duplicate_request_ids": 49,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 19,
+   "takeover_s_after_kill": 7.38,
+   "stall_orphaned_partitions_s": {
+    "max": 11.7,
+    "min": 8.57
+   },
+   "stall_other_partitions_s": {
+    "max": 25.17,
+    "min": 7.65
+   },
+   "delayed_requests": 66,
+   "delay_s": {
+    "median": 18.0,
+    "p90": 27.0,
+    "max": 28.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 8.57,
+     "gap_starts_s_after_kill": 0.0,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 11.7,
+     "gap_starts_s_after_kill": -3.43,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 8.78,
+     "gap_starts_s_after_kill": 0.0,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 7.65,
+     "gap_starts_s_after_kill": -0.0,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 25.17,
+     "gap_starts_s_after_kill": 28.58,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 8.93,
+     "gap_starts_s_after_kill": 0.01,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 7.77,
+     "gap_starts_s_after_kill": -0.1,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 7.73,
+     "gap_starts_s_after_kill": -0.22,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 411038,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 2079,
+   "vs_oracle": {
+    "disagreement_rate": 0.9408,
+    "same_driver_rate_when_both_matched": 0.0458,
+    "missing_in_service": 0,
+    "before_kill": 0.929,
+    "after_kill": 0.9991
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_cooperative_seed4_until1200_kill1100",
+   "assignor": "cooperative",
+   "seed": 4,
+   "killed": "w2",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 11.0,
+   "records": 144674,
+   "requests": 144596,
+   "redelivered_records": 78,
+   "duplicate_request_ids": 78,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 17,
+   "takeover_s_after_kill": 7.51,
+   "stall_orphaned_partitions_s": {
+    "max": 15.6,
+    "min": 8.64
+   },
+   "stall_other_partitions_s": {
+    "max": 28.47,
+    "min": 7.78
+   },
+   "delayed_requests": 61,
+   "delay_s": {
+    "median": 10.0,
+    "p90": 18.0,
+    "max": 20.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 8.64,
+     "gap_starts_s_after_kill": -0.0,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 15.6,
+     "gap_starts_s_after_kill": -3.34,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 8.93,
+     "gap_starts_s_after_kill": -0.05,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 7.78,
+     "gap_starts_s_after_kill": -0.06,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 28.47,
+     "gap_starts_s_after_kill": -1.46,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 9.15,
+     "gap_starts_s_after_kill": -0.19,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 8.03,
+     "gap_starts_s_after_kill": -0.29,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 13.58,
+     "gap_starts_s_after_kill": -1.83,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 410297,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 2127,
+   "vs_oracle": {
+    "disagreement_rate": 0.9389,
+    "same_driver_rate_when_both_matched": 0.0472,
+    "missing_in_service": 0,
+    "before_kill": 0.9314,
+    "after_kill": 0.9994
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_range_seed0_until1200_kill0900",
+   "assignor": "range",
+   "seed": 0,
+   "killed": "w0",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 9.0,
+   "records": 144612,
+   "requests": 144596,
+   "redelivered_records": 16,
+   "duplicate_request_ids": 16,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 18,
+   "takeover_s_after_kill": 6.35,
+   "stall_orphaned_partitions_s": {
+    "max": 11.08,
+    "min": 7.73
+   },
+   "stall_other_partitions_s": {
+    "max": 25.68,
+    "min": 7.38
+   },
+   "delayed_requests": 73,
+   "delay_s": {
+    "median": 14.0,
+    "p90": 24.0,
+    "max": 25.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 7.73,
+     "gap_starts_s_after_kill": -0.0,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 11.08,
+     "gap_starts_s_after_kill": -0.48,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 8.1,
+     "gap_starts_s_after_kill": -0.02,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 7.38,
+     "gap_starts_s_after_kill": -0.02,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 14.33,
+     "gap_starts_s_after_kill": 97.44,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 7.47,
+     "gap_starts_s_after_kill": -0.07,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 24.35,
+     "gap_starts_s_after_kill": 7.32,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 25.68,
+     "gap_starts_s_after_kill": 7.3,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 414539,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 6925,
+   "vs_oracle": {
+    "disagreement_rate": 0.94,
+    "same_driver_rate_when_both_matched": 0.0457,
+    "missing_in_service": 0,
+    "before_kill": 0.9061,
+    "after_kill": 0.9986
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_range_seed1_until1200_kill0930",
+   "assignor": "range",
+   "seed": 1,
+   "killed": "w0",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 9.5,
+   "records": 144615,
+   "requests": 144596,
+   "redelivered_records": 19,
+   "duplicate_request_ids": 19,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 23,
+   "takeover_s_after_kill": 7.15,
+   "stall_orphaned_partitions_s": {
+    "max": 16.28,
+    "min": 8.79
+   },
+   "stall_other_partitions_s": {
+    "max": 17.38,
+    "min": 8.51
+   },
+   "delayed_requests": 73,
+   "delay_s": {
+    "median": 13.0,
+    "p90": 23.0,
+    "max": 24.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 8.79,
+     "gap_starts_s_after_kill": -0.0,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 16.28,
+     "gap_starts_s_after_kill": -4.3,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 9.24,
+     "gap_starts_s_after_kill": -0.01,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 8.51,
+     "gap_starts_s_after_kill": -0.01,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 16.49,
+     "gap_starts_s_after_kill": -5.82,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 8.86,
+     "gap_starts_s_after_kill": -0.31,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 17.32,
+     "gap_starts_s_after_kill": 8.46,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 17.38,
+     "gap_starts_s_after_kill": 8.41,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 414145,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 7354,
+   "vs_oracle": {
+    "disagreement_rate": 0.9397,
+    "same_driver_rate_when_both_matched": 0.0467,
+    "missing_in_service": 0,
+    "before_kill": 0.915,
+    "after_kill": 0.9987
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_range_seed2_until1200_kill1000",
+   "assignor": "range",
+   "seed": 2,
+   "killed": "w0",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 10.0,
+   "records": 144633,
+   "requests": 144596,
+   "redelivered_records": 37,
+   "duplicate_request_ids": 37,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 14,
+   "takeover_s_after_kill": 7.02,
+   "stall_orphaned_partitions_s": {
+    "max": 14.15,
+    "min": 8.64
+   },
+   "stall_other_partitions_s": {
+    "max": 27.67,
+    "min": 7.93
+   },
+   "delayed_requests": 79,
+   "delay_s": {
+    "median": 11.0,
+    "p90": 22.0,
+    "max": 26.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 8.64,
+     "gap_starts_s_after_kill": -0.04,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 14.15,
+     "gap_starts_s_after_kill": -1.06,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 8.9,
+     "gap_starts_s_after_kill": 0.07,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 7.93,
+     "gap_starts_s_after_kill": 0.03,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 27.67,
+     "gap_starts_s_after_kill": 63.02,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 8.44,
+     "gap_starts_s_after_kill": -0.24,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 20.14,
+     "gap_starts_s_after_kill": 7.89,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 22.4,
+     "gap_starts_s_after_kill": 7.86,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 412541,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 8054,
+   "vs_oracle": {
+    "disagreement_rate": 0.9402,
+    "same_driver_rate_when_both_matched": 0.0462,
+    "missing_in_service": 0,
+    "before_kill": 0.9225,
+    "after_kill": 0.999
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_range_seed3_until1200_kill1030",
+   "assignor": "range",
+   "seed": 3,
+   "killed": "w0",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 10.5,
+   "records": 144795,
+   "requests": 144596,
+   "redelivered_records": 199,
+   "duplicate_request_ids": 199,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 13,
+   "takeover_s_after_kill": 6.88,
+   "stall_orphaned_partitions_s": {
+    "max": 17.42,
+    "min": 9.26
+   },
+   "stall_other_partitions_s": {
+    "max": 35.03,
+    "min": 8.54
+   },
+   "delayed_requests": 54,
+   "delay_s": {
+    "median": 14.0,
+    "p90": 22.0,
+    "max": 24.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 9.26,
+     "gap_starts_s_after_kill": -0.0,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 17.42,
+     "gap_starts_s_after_kill": -4.39,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 9.59,
+     "gap_starts_s_after_kill": 0.05,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 8.54,
+     "gap_starts_s_after_kill": 0.02,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 30.32,
+     "gap_starts_s_after_kill": 36.21,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 8.79,
+     "gap_starts_s_after_kill": -0.2,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 31.53,
+     "gap_starts_s_after_kill": 8.41,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 35.03,
+     "gap_starts_s_after_kill": 8.33,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 411110,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 8193,
+   "vs_oracle": {
+    "disagreement_rate": 0.9409,
+    "same_driver_rate_when_both_matched": 0.0462,
+    "missing_in_service": 0,
+    "before_kill": 0.9292,
+    "after_kill": 0.9991
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_range_seed4_until1200_kill1100",
+   "assignor": "range",
+   "seed": 4,
+   "killed": "w0",
+   "killed_owned": [
+    0,
+    1
+   ],
+   "kill_event_time_h": 11.0,
+   "records": 144794,
+   "requests": 144596,
+   "redelivered_records": 198,
+   "duplicate_request_ids": 198,
+   "conflicting_assignments": 0,
+   "double_claims": 0,
+   "overlaps_by_request_time_explained_by_delay": 13,
+   "takeover_s_after_kill": 5.97,
+   "stall_orphaned_partitions_s": {
+    "max": 15.06,
+    "min": 7.68
+   },
+   "stall_other_partitions_s": {
+    "max": 31.05,
+    "min": 6.84
+   },
+   "delayed_requests": 72,
+   "delay_s": {
+    "median": 13.0,
+    "p90": 24.0,
+    "max": 28.0
+   },
+   "stalls": {
+    "0": {
+     "max_gap_s": 7.68,
+     "gap_starts_s_after_kill": -0.0,
+     "orphaned": true
+    },
+    "1": {
+     "max_gap_s": 15.06,
+     "gap_starts_s_after_kill": -3.38,
+     "orphaned": true
+    },
+    "2": {
+     "max_gap_s": 7.92,
+     "gap_starts_s_after_kill": 0.03,
+     "orphaned": false
+    },
+    "3": {
+     "max_gap_s": 6.84,
+     "gap_starts_s_after_kill": 0.02,
+     "orphaned": false
+    },
+    "4": {
+     "max_gap_s": 31.05,
+     "gap_starts_s_after_kill": -1.52,
+     "orphaned": false
+    },
+    "5": {
+     "max_gap_s": 7.17,
+     "gap_starts_s_after_kill": -0.14,
+     "orphaned": false
+    },
+    "6": {
+     "max_gap_s": 27.09,
+     "gap_starts_s_after_kill": 6.82,
+     "orphaned": false
+    },
+    "7": {
+     "max_gap_s": 30.49,
+     "gap_starts_s_after_kill": 6.81,
+     "orphaned": false
+    }
+   },
+   "fleet_audit": {
+    "records": 410251,
+    "drivers_present": 7500,
+    "in_two_regions": 0,
+    "missing": 0
+   },
+   "fold_ms_after_kill_total": 7643,
+   "vs_oracle": {
+    "disagreement_rate": 0.9377,
+    "same_driver_rate_when_both_matched": 0.0486,
+    "missing_in_service": 0,
+    "before_kill": 0.93,
+    "after_kill": 0.9994
+   }
+  }
+ ]
+}

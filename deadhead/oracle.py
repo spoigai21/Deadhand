@@ -10,7 +10,8 @@ Usage: python -m deadhead.oracle configs/phase2.yaml --day 2016-06-16 --rule roa
 Writes assignments to Kafka topic assignments-<run_id> (keyed by request_id), a parquet cache under
 data/phase2/, and a run summary under results/phase2/.
 """
-import argparse, json, time, collections
+import argparse, json, time, collections, zlib
+import h3
 from pathlib import Path
 import numpy as np, polars as pl, yaml
 from confluent_kafka import Consumer, Producer, TopicPartition
@@ -44,14 +45,25 @@ class Oracle:
         self.fleet, self.pool_rows = Fleet.from_dropoffs(week, day, fleet_size, cfg["initial_positions_window_s"], seed, cfg["h3_resolution"], cfg["ring_k"], cruise_after, day_start)
         # the demand map a cruising driver uses: real pickups of the previous clock hour, by resolution-8 cell (ASSUMPTIONS.md).
         # Hour 0 reads the previous day's hour 23, which the window includes. No lookahead: at time t only hour(t)-1 is read.
-        start = pl.lit(day).str.to_datetime() - pl.duration(hours=1); end = pl.lit(day).str.to_datetime() + pl.duration(days=1)
+        # The window ends at 23:00 of the day so that hour 23 holds the previous day's pickups only (BUGS.md #3).
+        start = pl.lit(day).str.to_datetime() - pl.duration(hours=1); end = pl.lit(day).str.to_datetime() + pl.duration(hours=23)
         pk = week.filter((pl.col(PU_DT) >= start) & (pl.col(PU_DT) < end))
         pk_cell = cells(pk["pickup_longitude"].to_numpy(), pk["pickup_latitude"].to_numpy(), cfg["h3_resolution"])
         pk = pk.with_columns(pl.Series("cell", pk_cell), pl.col(PU_DT).dt.hour().alias("hour"))
+        # cruise_point "random": a pickup drawn with the seeded RNG (Phase 2). "hash": index from (driver, cruise count) over the
+        # points sorted by (lon, lat), so a worker written in another language (Phase 3) draws the identical point.
+        self.cruise_point = cfg.get("cruise_point", "random")
+        if self.cruise_point == "hash":
+            pk = pk.sort("pickup_longitude", "pickup_latitude")
         self.demand = {}      # (hour, cell) -> (lons, lats)
         for (h, c), g in pk.group_by("hour", "cell"):
             self.demand[(int(h), int(c))] = (g["pickup_longitude"].to_numpy(), g["pickup_latitude"].to_numpy())
         self.rng = np.random.default_rng(seed + 1000)
+        # Phase 3, Mode A for the geographic shard: at every decision, which candidates a worker owning the request's
+        # region could see, for each key resolution and worker count (RangeAssignor over the fixed partition count)
+        self.shard_res = cfg.get("shard_key_resolutions", []); self.shard_workers = cfg.get("shard_workers", [])
+        self._parent_cache = {}; self._part_cache = {}; self._disk1_cache = {}
+        self.phase_dir = cfg.get("phase_dir", "phase2")
         self.cruise_k = cfg["cruise_ring_k"]
         self._cruise_disk = {}
         self.records = []
@@ -60,7 +72,42 @@ class Oracle:
         self.counts = collections.Counter()
         self.table_ms = []
 
-    def sample_target(self, t, cell):
+    def _parent(self, cell8, r):
+        k = (cell8, r)
+        if k not in self._parent_cache:
+            self._parent_cache[k] = h3.cell_to_parent(h3.int_to_str(cell8), r)
+        return self._parent_cache[k]
+
+    def _partition(self, key):
+        """The partition the producer's default partitioner gives a key: CRC32 modulo the partition count."""
+        if key not in self._part_cache:
+            self._part_cache[key] = zlib.crc32(key.encode()) % self.cfg["partitions"]
+        return self._part_cache[key]
+
+    def _disk1(self, key):
+        if key not in self._disk1_cache:
+            self._disk1_cache[key] = set(h3.grid_disk(key, 1))
+        return self._disk1_cache[key]
+
+    def shard_columns(self, ids, road_s, i_rd, pu_cell, out):
+        """For each (key resolution r, worker count n): the road pick among the candidates visible to the worker that owns the
+        request's partition, and its road-time gap to the oracle's pick. s<r>n<n>: own regions only; h<r>n<n>: plus a
+        one-ring halo of neighbouring key cells. _x = extra seconds (None if no candidate is visible), _v = visible count."""
+        P = self.cfg["partitions"]
+        for r in self.shard_res:
+            req_key = self._parent(int(pu_cell), r); req_part = self._partition(req_key); halo = self._disk1(req_key)
+            keys = [self._parent(int(self.fleet.cell[d]), r) for d in ids]
+            parts = np.array([self._partition(k) for k in keys]); in_halo = np.array([k in halo for k in keys])
+            for n in self.shard_workers:
+                own = (parts * n // P) == (req_part * n // P)
+                for tag, mask in ((f"s{r}n{n}", own), (f"h{r}n{n}", own | in_halo)):
+                    if mask.any():
+                        j = int(np.argmin(np.where(mask, road_s, np.inf)))
+                        out[f"{tag}_x"] = float(road_s[j] - road_s[i_rd]); out[f"{tag}_v"] = int(mask.sum())
+                    else:
+                        out[f"{tag}_x"] = None; out[f"{tag}_v"] = 0
+
+    def sample_target(self, t, cell, d):
         """The busiest cell of the previous hour within cruise_ring_k of the driver; a real pickup from it. None = stay."""
         h = ((t // 3600) % 24 - 1) % 24
         if cell not in self._cruise_disk:
@@ -73,7 +120,10 @@ class Oracle:
         if best is None or best == cell:
             return None
         lons, lats = self.demand[(h, best)]
-        j = int(self.rng.integers(len(lons)))
+        if self.cruise_point == "hash":
+            j = ((int(d) * 2654435761 + int(self.fleet.cruise_n[d]) * 40503) & 0xFFFFFFFF) % len(lons)
+        else:
+            j = int(self.rng.integers(len(lons)))
         return float(lons[j]), float(lats[j])
 
     def _route_mt(self, a, b):
@@ -119,6 +169,8 @@ class Oracle:
             for key, d in (("sl_crosses_water", ids[i_sl]), ("road_crosses_water", ids[i_rd])):
                 rt = self.osrm.route((self.fleet.lon[d], self.fleet.lat[d]), (rec["pu_lon"], rec["pu_lat"]), geometry=True)
                 out[key] = bool(self.crossings.on_route(rt["geometry"])) if rt else None
+        if self.shard_res:
+            self.shard_columns(ids, road_s, i_rd, pu_cell, out)
         out.update(promised_eta_s=float(promised), actual_eta_s=float(road_s[i]), leg_m=float(road_m[i]), driver=int(ids[i]),
                    driver_lon=float(self.fleet.lon[ids[i]]), driver_lat=float(self.fleet.lat[ids[i]]))
         if promised > self.T:
@@ -204,9 +256,10 @@ class Oracle:
                                 "share_sl_pick_crosses_water": round(float(w["sl_crosses_water"].fill_null(False).mean()), 4),
                                 "extra_wait_share_from_water_crossing_picks": round(float(w.filter(pl.col("sl_crosses_water") == True)["extra_s"].sum() / w["extra_s"].sum()), 4),
                                 "total_extra_wait_s_if_straight_line_everywhere": round(float(dec["extra_s"].sum()), 0)})
-        Path("data/phase2").mkdir(parents=True, exist_ok=True); Path("results/phase2").mkdir(parents=True, exist_ok=True)
-        df.write_parquet(f"data/phase2/assignments_{self.run_id}.parquet")
-        Path(f"results/phase2/run_{self.run_id}_{self.cfg['hardware_lane']}.json").write_text(json.dumps(s, indent=1))
+        s["cruise_point"] = self.cruise_point
+        Path(f"data/{self.phase_dir}").mkdir(parents=True, exist_ok=True); Path(f"results/{self.phase_dir}").mkdir(parents=True, exist_ok=True)
+        df.write_parquet(f"data/{self.phase_dir}/assignments_{self.run_id}.parquet")
+        Path(f"results/{self.phase_dir}/run_{self.run_id}_{self.cfg['hardware_lane']}.json").write_text(json.dumps(s, indent=1))
         return s
 
 def run_id_for(day, rule, fleet, abandon, seed, repositioning):
@@ -216,9 +269,11 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("config"); ap.add_argument("--day", required=True); ap.add_argument("--rule", required=True, choices=RULES)
     ap.add_argument("--fleet", type=int); ap.add_argument("--seed", type=int); ap.add_argument("--abandon", type=int); ap.add_argument("--limit", type=int); ap.add_argument("--run-id")
-    ap.add_argument("--repositioning", choices=("cruise", "none"))
+    ap.add_argument("--repositioning", choices=("cruise", "none")); ap.add_argument("--ring", type=int, help="candidate ring (ring_k), the matching radius; Phase 4 sensitivity")
     a = ap.parse_args()
     cfg = yaml.safe_load(open(a.config))
+    if a.ring:
+        cfg["ring_k"] = a.ring
     if a.repositioning:
         cfg["repositioning"] = a.repositioning
     fleet = a.fleet or cfg["fleet_size"]; seed = cfg["seed"] if a.seed is None else a.seed; T = a.abandon or cfg["abandon_after_s"]
