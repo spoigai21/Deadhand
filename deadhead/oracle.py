@@ -66,6 +66,14 @@ class Oracle:
         self.phase_dir = cfg.get("phase_dir", "phase2")
         self.cruise_k = cfg["cruise_ring_k"]
         self._cruise_disk = {}
+        # Phase 5: time-of-day speeds, an hourly multiplier on every OSRM duration (legs and cruises); None = free flow
+        self.mult = None
+        if cfg.get("speed_multipliers"):
+            self.mult = [float(json.load(open(cfg["speed_multipliers"]))["hourly"][str(h)]) for h in range(24)]
+        self._now = 0.0
+        # Phase 5: the matching radius by hour. The model keeps ring_k and candidates_k; a wider superset is scored beside it (Mode A)
+        self.radius_rings = list(cfg.get("radius_rings_mode_a", [])); self.radius_k = cfg.get("radius_superset_k", 100); self.radius_ring = cfg.get("radius_superset_ring", 5)
+        self._gd_cache = {}
         self.records = []
         self.topic = ensure_topic(cfg["kafka"], f"assignments-{run_id}", cfg["partitions"], recreate=True)
         self.producer = Producer({"bootstrap.servers": cfg["kafka"], "enable.idempotence": True, "linger.ms": 50, "compression.type": "lz4", "queue.buffering.max.messages": 500000})
@@ -126,20 +134,40 @@ class Oracle:
             j = int(self.rng.integers(len(lons)))
         return float(lons[j]), float(lats[j])
 
+    def mult_at(self, t):
+        return self.mult[int((t // 3600) % 24)] if self.mult else 1.0
+
+    def _grid_distance(self, a, b):
+        k = (int(a), int(b))
+        if k not in self._gd_cache:
+            self._gd_cache[k] = h3.grid_distance(h3.int_to_str(k[0]), h3.int_to_str(k[1]))
+        return self._gd_cache[k]
+
     def _route_mt(self, a, b):
         r = self.osrm.route(a, b)
-        return (r["road_m"], r["road_s"]) if r else None
+        return (r["road_m"], r["road_s"] * self.mult_at(self._now)) if r else None
 
     def decide(self, rec):
-        t = rec["t"]; t_wall = time.perf_counter()
+        t = rec["t"]; t_wall = time.perf_counter(); self._now = t
         self.fleet.release(t)
         if self.fleet.cruise_after_s is not None:
             self.fleet.cruise(t, self.sample_target, self._route_mt)
         pu_cell = cells([rec["pu_lon"]], [rec["pu_lat"]], self.cfg["h3_resolution"])[0]
-        ids, hav = self.fleet.candidates(rec["pu_lon"], rec["pu_lat"], pu_cell, self.cfg["candidates_k"])
+        K = self.cfg["candidates_k"]; m_h = self.mult_at(t)
+        if self.radius_rings:     # the superset for the radius question; the model's own set is the nearest K within ring_k, as always
+            ids, hav = self.fleet.candidates(rec["pu_lon"], rec["pu_lat"], pu_cell, self.radius_k, ring=self.radius_ring)
+            gd = np.array([self._grid_distance(pu_cell, self.fleet.cell[d]) for d in ids], dtype=int)
+            keep = np.zeros(len(ids), dtype=bool); keep[np.flatnonzero(gd <= self.cfg["ring_k"])[:K]] = True
+        else:
+            ids, hav = self.fleet.candidates(rec["pu_lon"], rec["pu_lat"], pu_cell, K)
+            gd = np.zeros(len(ids), dtype=int); keep = np.ones(len(ids), dtype=bool)
         out = {"request_id": rec["request_id"], "t": t, "hour": rec["hour"], "rule": self.rule, "pu_lon": rec["pu_lon"], "pu_lat": rec["pu_lat"],
-               "pu_cell": f"{int(pu_cell):x}", "key_cell": rec["key_cell"], "n_candidates": int(len(ids)), "trip_s": rec["trip_s"]}
+               "pu_cell": f"{int(pu_cell):x}", "key_cell": rec["key_cell"], "n_candidates": int(keep.sum()), "trip_s": rec["trip_s"]}
+        if self.mult:
+            out["speed_multiplier"] = m_h
         if len(ids) == 0:
+            for r in self.radius_rings:
+                out[f"ring{r}_x"] = None; out[f"ring{r}_v"] = 0
             out.update(status="no_candidates", driver=-1)
             self.counts["no_candidates"] += 1
             return self._finish(out, t_wall)
@@ -151,33 +179,45 @@ class Oracle:
         ok = np.isfinite(road_s)
         if not ok.all():  # an unroutable candidate is dropped from the set before either rule sees it; counted
             self.counts["unroutable_candidates"] += int((~ok).sum())
-            ids, hav, road_s, road_m = ids[ok], hav[ok], road_s[ok], road_m[ok]
-            if len(ids) == 0:
-                out.update(status="no_candidates", driver=-1); self.counts["no_candidates"] += 1
-                return self._finish(out, t_wall)
-        i_sl, i_rd = rank("straight", hav, road_s), rank("road", hav, road_s)
+            ids, hav, road_s, road_m, gd, keep = ids[ok], hav[ok], road_s[ok], road_m[ok], gd[ok], keep[ok]
+        road_s = road_s * m_h                                  # the calibrated leg time (1.0 under free flow)
+        b = np.flatnonzero(keep)
+        if len(b) == 0:
+            for r in self.radius_rings:
+                mask = gd <= r; out[f"ring{r}_x"] = None; out[f"ring{r}_v"] = int(mask.sum())
+            out.update(status="no_candidates", driver=-1, n_candidates=0); self.counts["no_candidates"] += 1
+            return self._finish(out, t_wall)
+        ids_b, hav_b, road_s_b, road_m_b = ids[b], hav[b], road_s[b], road_m[b]
+        i_sl, i_rd = rank("straight", hav_b, road_s_b), rank("road", hav_b, road_s_b)
         i = i_sl if self.rule == "straight" else i_rd
-        promised = hav[i] / self.v_sl if self.rule == "straight" else road_s[i]
+        promised = hav_b[i] / self.v_sl if self.rule == "straight" else road_s_b[i]
         # Mode A, paired one-step: what the other rule would have taken from the same candidates
-        differs = bool(ids[i_sl] != ids[i_rd] and road_s[i_sl] > road_s[i_rd])
-        tie = bool(ids[i_sl] != ids[i_rd] and road_s[i_sl] == road_s[i_rd])
-        out.update(sl_driver=int(ids[i_sl]), road_driver=int(ids[i_rd]), differs=differs, tie=tie,
-                   extra_s=float(road_s[i_sl] - road_s[i_rd]), extra_m=float(road_m[i_sl] - road_m[i_rd]),
-                   sl_hav_m=float(hav[i_sl]), road_hav_m=float(hav[i_rd]), sl_road_s=float(road_s[i_sl]), road_road_s=float(road_s[i_rd]),
+        differs = bool(ids_b[i_sl] != ids_b[i_rd] and road_s_b[i_sl] > road_s_b[i_rd])
+        tie = bool(ids_b[i_sl] != ids_b[i_rd] and road_s_b[i_sl] == road_s_b[i_rd])
+        out.update(sl_driver=int(ids_b[i_sl]), road_driver=int(ids_b[i_rd]), differs=differs, tie=tie,
+                   extra_s=float(road_s_b[i_sl] - road_s_b[i_rd]), extra_m=float(road_m_b[i_sl] - road_m_b[i_rd]),
+                   sl_hav_m=float(hav_b[i_sl]), road_hav_m=float(hav_b[i_rd]), sl_road_s=float(road_s_b[i_sl]), road_road_s=float(road_s_b[i_rd]),
                    sl_crosses_water=None, road_crosses_water=None)
         if differs:
-            for key, d in (("sl_crosses_water", ids[i_sl]), ("road_crosses_water", ids[i_rd])):
+            for key, d in (("sl_crosses_water", ids_b[i_sl]), ("road_crosses_water", ids_b[i_rd])):
                 rt = self.osrm.route((self.fleet.lon[d], self.fleet.lat[d]), (rec["pu_lon"], rec["pu_lat"]), geometry=True)
                 out[key] = bool(self.crossings.on_route(rt["geometry"])) if rt else None
         if self.shard_res:
-            self.shard_columns(ids, road_s, i_rd, pu_cell, out)
-        out.update(promised_eta_s=float(promised), actual_eta_s=float(road_s[i]), leg_m=float(road_m[i]), driver=int(ids[i]),
-                   driver_lon=float(self.fleet.lon[ids[i]]), driver_lat=float(self.fleet.lat[ids[i]]))
+            self.shard_columns(ids_b, road_s_b, i_rd, pu_cell, out)
+        # Mode A for the radius: the road-best within r rings against the model's pick (negative = a wider ring would have done better)
+        for r in self.radius_rings:
+            mask = (gd <= r) & keep if r <= self.cfg["ring_k"] else (gd <= r)
+            if mask.any():
+                j = int(np.argmin(np.where(mask, road_s, np.inf))); out[f"ring{r}_x"] = float(road_s[j] - road_s_b[i_rd]); out[f"ring{r}_v"] = int(mask.sum())
+            else:
+                out[f"ring{r}_x"] = None; out[f"ring{r}_v"] = 0
+        out.update(promised_eta_s=float(promised), actual_eta_s=float(road_s_b[i]), leg_m=float(road_m_b[i]), driver=int(ids_b[i]),
+                   driver_lon=float(self.fleet.lon[ids_b[i]]), driver_lat=float(self.fleet.lat[ids_b[i]]))
         if promised > self.T:
             out.update(status="abandoned"); self.counts["abandoned"] += 1
             return self._finish(out, t_wall)
-        busy_until = t + road_s[i] + rec["trip_s"]
-        self.fleet.claim(ids[i], busy_until, rec["do_lon"], rec["do_lat"])
+        busy_until = t + road_s_b[i] + rec["trip_s"]
+        self.fleet.claim(ids_b[i], busy_until, rec["do_lon"], rec["do_lat"])
         out.update(status="matched", busy_until=float(busy_until)); self.counts["matched"] += 1
         return self._finish(out, t_wall)
 
@@ -256,7 +296,7 @@ class Oracle:
                                 "share_sl_pick_crosses_water": round(float(w["sl_crosses_water"].fill_null(False).mean()), 4),
                                 "extra_wait_share_from_water_crossing_picks": round(float(w.filter(pl.col("sl_crosses_water") == True)["extra_s"].sum() / w["extra_s"].sum()), 4),
                                 "total_extra_wait_s_if_straight_line_everywhere": round(float(dec["extra_s"].sum()), 0)})
-        s["cruise_point"] = self.cruise_point
+        s["cruise_point"] = self.cruise_point; s["speed_calibration"] = "hourly multiplier" if self.mult else "free flow"
         Path(f"data/{self.phase_dir}").mkdir(parents=True, exist_ok=True); Path(f"results/{self.phase_dir}").mkdir(parents=True, exist_ok=True)
         df.write_parquet(f"data/{self.phase_dir}/assignments_{self.run_id}.parquet")
         Path(f"results/{self.phase_dir}/run_{self.run_id}_{self.cfg['hardware_lane']}.json").write_text(json.dumps(s, indent=1))
@@ -270,10 +310,13 @@ def main():
     ap.add_argument("config"); ap.add_argument("--day", required=True); ap.add_argument("--rule", required=True, choices=RULES)
     ap.add_argument("--fleet", type=int); ap.add_argument("--seed", type=int); ap.add_argument("--abandon", type=int); ap.add_argument("--limit", type=int); ap.add_argument("--run-id")
     ap.add_argument("--repositioning", choices=("cruise", "none")); ap.add_argument("--ring", type=int, help="candidate ring (ring_k), the matching radius; Phase 4 sensitivity")
+    ap.add_argument("--free-flow", action="store_true", help="Phase 5: ignore speed_multipliers (the free-flow comparison replay)")
     a = ap.parse_args()
     cfg = yaml.safe_load(open(a.config))
     if a.ring:
         cfg["ring_k"] = a.ring
+    if a.free_flow:
+        cfg["speed_multipliers"] = None
     if a.repositioning:
         cfg["repositioning"] = a.repositioning
     fleet = a.fleet or cfg["fleet_size"]; seed = cfg["seed"] if a.seed is None else a.seed; T = a.abandon or cfg["abandon_after_s"]

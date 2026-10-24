@@ -199,3 +199,26 @@ Apple M5 with the broker, the router and the workers on one machine.
 
 **What this changes for P6.** Nothing in the prediction. Batching runs inside a worker, so it inherits the
 shard's boundary: the batch sees the same region the single decision saw. The W = 10 s guess stays as written.
+
+## Prediction P7, 2026-10-23 — committed before the Phase 5 calibration is computed
+
+*The plan's predictions ran to P6. This one is written before `deadhead/phase5_speeds.py` has been run, so no calibration
+number was known when it was written. Appended, as the rule says; it is not edited afterwards.*
+
+### P7. When the map changes under you (Phase 5)
+
+- Observed taxi speed from the odometer and the timestamps will be **about 5 m/s at the evening peak and about 9 m/s at
+  04:00**, against OSRM's free-flow median of about 8 m/s (the straight-line speed constant came from it). As a multiplier
+  on free-flow durations: **about 1.8× at 17:00–19:00, under 1.2× between 02:00 and 05:00**, measured as the median of
+  recorded over free-flow duration on the Phase 1 routed trips.
+- Zone speeds will differ: Midtown about 1.3× slower than the hourly city figure at midday, the outer boroughs faster.
+  But a zone multiplier will change the road-best driver in **under 3% of decisions**, because the candidates of one
+  decision sit in one or two zones. The per-segment update (`osrm-customize`) will therefore not be built, and the
+  hourly multiplier stays the calibration.
+- **Finding 1's rate does not move with a uniform hourly multiplier** (it scales every candidate alike); its cost in
+  seconds grows with it: the conditional median goes from 40 s to **about 60 s at the peak hours**, and the day's total
+  extra wait rises by about a third. The same for Finding 2's cost. The rates by hour change only through the fleet:
+  slower legs mean fewer idle drivers at peak, so the rates fall a little in the evening, as they already do.
+- The right matching radius changes by hour. At 18:00, when the nearest driver is a kilometre away, ring 3 leaves
+  **over 5% of riders** a better driver in rings 4–5; at 13:00 ring 2 loses under 1% and the fifty-candidate cap, not
+  the ring, is what binds. Recommended: **ring 2 by day in the core, ring 5 at night and in the evening peak**.

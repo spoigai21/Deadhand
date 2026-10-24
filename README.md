@@ -243,6 +243,15 @@ OP=10 scripts/phase4_runs.sh operating radius weekend service # the operating po
 .venv/bin/python -m pytest -q
 ```
 
+## Reproduce Phase 5
+
+```bash
+.venv/bin/python -m deadhead.phase5_speeds configs/phase5.yaml    # the calibration from the trip data and the Phase 1 routed trips, ~2 s
+scripts/phase5_runs.sh                                            # the calibrated replays (weekday seeds 0-4, weekend) and one free-flow replay, ~1.5 h
+.venv/bin/python -m deadhead.phase5_metrics configs/phase5.yaml
+.venv/bin/python -m pytest -q
+```
+
 ## Reproduce Phase 1
 
 ```bash

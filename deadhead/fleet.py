@@ -16,7 +16,7 @@ class Fleet:
         for d in range(self.n):
             self.idle_by_cell.setdefault(int(self.cell[d]), set()).add(d)
         self.heap = []            # (busy_until, driver, dropoff lon, dropoff lat)
-        self._disk_cache = {}
+        self._disk_cache = {}; self._disk_cache_r = {}
         self.claims = 0
         # repositioning (ASSUMPTIONS.md): a driver idle for cruise_after_s drives toward demand; None = idle at the dropoff forever
         self.cruise_after_s = cruise_after_s
@@ -78,10 +78,16 @@ class Fleet:
             self._disk_cache[c] = disk(c, self.ring_k)
         return self._disk_cache[c]
 
-    def candidates(self, pu_lon, pu_lat, pu_cell, k):
-        """Idle drivers inside the ring, the nearest k by straight line, sorted by (distance, id). Returns (ids, hav_m)."""
+    def ring_r(self, cell, k):
+        key = (int(cell), k)
+        if key not in self._disk_cache_r:
+            self._disk_cache_r[key] = disk(cell, k)
+        return self._disk_cache_r[key]
+
+    def candidates(self, pu_lon, pu_lat, pu_cell, k, ring=None):
+        """Idle drivers inside the ring (ring_k, or `ring` rings), the nearest k by straight line, sorted by (distance, id). Returns (ids, hav_m)."""
         ids = []
-        for c in self.ring(pu_cell):
+        for c in (self.ring(pu_cell) if ring is None else self.ring_r(pu_cell, ring)):
             s = self.idle_by_cell.get(c)
             if s:
                 ids.extend(s)

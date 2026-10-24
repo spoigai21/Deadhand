@@ -43,11 +43,11 @@ class BatchOracle(Oracle):
         self._shard_cfg = [(tag, int(tag[1]), int(tag[3:])) for tag in self.shards]   # "s6n4" -> (tag, key resolution 6, 4 workers)
 
     # ------------------------------------------------------------ one window
-    def shard_solve(self, r, n, reqs, dl, cost_rd):
+    def shard_solve(self, r, n, items, dl, cost_rd):
         """The batch as N workers would solve it, each over the drivers of its own regions (key resolution r, contiguous
         partition ranges): a block-diagonal mask on the same costs. Returns ({row: column}, visible feasible count per row)."""
         P = self.cfg["partitions"]
-        w_req = np.array([self._partition(self._parent(q["pu_cell_int"], r)) * n // P for q in reqs])
+        w_req = np.array([self._partition(self._parent(q["pu_cell_int"], r)) * n // P for q in items])
         w_drv = np.array([self._partition(self._parent(int(self.fleet.cell[d]), r)) * n // P for d in dl])
         visible = w_req[:, None] == w_drv[None, :]
         cost = np.where(visible, cost_rd, BIG)
@@ -58,13 +58,13 @@ class BatchOracle(Oracle):
         self.fleet.release(t_c)
         if self.fleet.cruise_after_s is not None:
             self.fleet.cruise(t_c, self.sample_target, self._route_mt)
-        reqs, self.pending = self.pending, []
-        if not reqs:
+        items, self.pending = self.pending, []
+        if not items:
             return
         t_wall = time.perf_counter()
-        self.batch_id += 1; R = len(reqs); self.batch_sizes.append(R)
+        self.batch_id += 1; R = len(items); self.batch_sizes.append(R)
         cand, drivers = [], {}
-        for q in reqs:
+        for q in items:
             rec = q["rec"]
             ids, hav = self.fleet.candidates(rec["pu_lon"], rec["pu_lat"], q["pu_cell_int"], self.cfg["candidates_k"])
             cand.append((ids, hav))
@@ -74,7 +74,7 @@ class BatchOracle(Oracle):
         road_s = np.full((R, D), np.inf); road_m = np.full((R, D), np.inf); hav_m = np.full((R, D), np.inf)
         if D:
             t_tab = time.perf_counter()
-            tb = self.osrm.table_many_to_many([(self.fleet.lon[d], self.fleet.lat[d]) for d in dl], [(q["rec"]["pu_lon"], q["rec"]["pu_lat"]) for q in reqs])
+            tb = self.osrm.table_many_to_many([(self.fleet.lon[d], self.fleet.lat[d]) for d in dl], [(q["rec"]["pu_lon"], q["rec"]["pu_lat"]) for q in items])
             self.table_ms.append((time.perf_counter() - t_tab) * 1000); self.table_calls += tb["calls"]
             for i, (ids, hav) in enumerate(cand):
                 for d, h in zip(ids, hav):
@@ -82,7 +82,7 @@ class BatchOracle(Oracle):
                     if s is None:                               # unroutable: dropped from the set, counted (as in the oracle)
                         self.counts["unroutable_candidates"] += 1; continue
                     road_s[i, j] = max(s, 0.0); road_m[i, j] = max(m, 0.0); hav_m[i, j] = h   # BUGS.md #1: clamp
-        waited = np.array([t_c - q["rec"]["t"] for q in reqs])
+        waited = np.array([t_c - q["rec"]["t"] for q in items])
         # the road rule: cost is road time; a pair is on offer only if its promise (time waited + road time) is within T
         feas_rd = np.isfinite(road_s) & (waited[:, None] + road_s <= self.T)
         cost_rd = np.where(feas_rd, road_s, BIG)
@@ -90,9 +90,9 @@ class BatchOracle(Oracle):
         # the straight-line mirror: the same candidates, cost and promise from the straight line at the constant speed
         feas_sl = np.isfinite(hav_m) & (waited[:, None] + hav_m / self.v_sl <= self.T)
         A_sl = solve(np.where(feas_sl, hav_m / self.v_sl, BIG))
-        shard = {tag: self.shard_solve(r, n, reqs, dl, cost_rd) for tag, r, n in self._shard_cfg}
+        shard = {tag: self.shard_solve(r, n, items, dl, cost_rd) for tag, r, n in self._shard_cfg}
         outs = []
-        for i, q in enumerate(reqs):
+        for i, q in enumerate(items):
             rec = q["rec"]; ids = cand[i][0]
             has_cand = bool(np.isfinite(road_s[i]).any()); q["had_candidates"] = q["had_candidates"] or has_cand
             q["rounds"] += 1

@@ -1,0 +1,35 @@
+# Phase 5 — when the map changes under you: time-of-day speeds calibrated from the trip data, applied as an hourly multiplier
+# on every OSRM duration, and the matching radius by hour. Inherits the Phase 3 model otherwise; nothing tunable lives in code.
+seed: 0
+seeds: [0, 1, 2, 3, 4]
+osrm: http://localhost:5001
+kafka: localhost:9092
+hardware_lane: cpu-apple-m5
+trips_dir: data/tlc/opendata
+crossings_geojson: results/phase0/water_crossings.geojson
+days: ["2016-06-16", "2016-06-18"]
+partitions: 8
+key_resolution: 6
+h3_resolution: 8
+ring_k: 3
+candidates_k: 50
+fleet_size: 7500
+abandon_after_s: 600
+initial_positions_window_s: 3600
+repositioning: cruise
+cruise_after_s: 300
+cruise_ring_k: 5
+straight_line_speed_mps: 8.243
+replay_speed: max
+phase_dir: phase5
+cruise_point: hash
+shard_key_resolutions: [6]              # Finding 2 by hour: the Phase 3 headline configuration (resolution 6, 4 workers)
+shard_workers: [4]
+# the calibration (deadhead/phase5_speeds.py)
+speed_zone_resolution: 6                # zone = the pickup's resolution-6 cell; zone-hour multipliers need this many trips
+speed_zone_min_trips: 30
+speed_multipliers: data/phase5/speed_multipliers.json   # set by the run script: the calibrated replays read it, the free-flow replay does not
+# the matching radius by hour (Mode A): the model keeps ring_k; a wider superset is scored beside it
+radius_rings_mode_a: [1, 2, 3, 4, 5]
+radius_superset_ring: 5
+radius_superset_k: 100
