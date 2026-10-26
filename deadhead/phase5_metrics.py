@@ -121,7 +121,7 @@ def figures(res, speeds, out="figures"):
         H = [r["hour"] for r in rad]
         for r_, col in zip(RINGS, ("#9ecae1", "#6baed6", "#3182bd", "#08519c", "#08306b")):
             ax[0].plot(H, [r["rings"][r_]["loss_share"] * 100 for r in rad], "-o", ms=3, color=col, label=f"ring {r_}")
-        ax[0].axhline(1, ls=":", color="gray"); ax[0].set_ylabel("decisions a wider ring would improve by 30 s or serve, %"); ax[0].set_yscale("symlog", linthresh=1); ax[0].legend(frameon=False, fontsize=7, ncol=2)
+        ax[0].axhline(1, ls=":", color="gray"); ax[0].set_ylabel("decisions a wider ring improves, %"); ax[0].set_yscale("symlog", linthresh=1); ax[0].set_ylim(bottom=0); ax[0].set_yticks([0, 1, 3, 10, 30]); ax[0].set_yticklabels(["0", "1", "3", "10", "30"]); ax[0].legend(frameon=False, fontsize=7, ncol=2)
         ax[1].step(H, [r["recommended_ring"] for r in rad], where="mid", color="#1f5fbf"); ax[1].set_ylabel("smallest ring with under 1% loss"); ax[1].set_yticks(RINGS)
         for a in ax: a.set_xlabel("hour of day"); a.grid(alpha=.3)
         fig.suptitle("The matching radius by hour (calibrated speeds, weekday, seed 0)"); fig.tight_layout(); fig.savefig(f"{out}/phase5_radius.png", dpi=150); plt.close(fig)

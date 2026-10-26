@@ -77,12 +77,26 @@ def ledger_metrics(df, T=T_DEFAULT, shards=("s6n4", "s8n4")):
                               "conditional_extra_wait_s": {"median": q(slow[f"{tag}_x"], 0.5), "p90": q(slow[f"{tag}_x"], 0.9)},
                               "extra_wait_h": round(float(slow[f"{tag}_x"].sum()) / 3600, 1),          # gross: the slower picks' extra wait
                               "extra_wait_h_net": round(float(x.fill_null(0).sum()) / 3600, 1)}       # net: a batch solve also hands some riders a faster driver than the global one
-    # by hour: match rate, wait, queue
-    byh = m.group_by("hour").agg(pl.len().alias("served"), pl.col("wait_s").median().alias("wait_median"), pl.col("queue_s").mean().alias("queue_mean"), pl.col("leg_m").mean().alias("leg_m_mean")).sort("hour")
+    # by hour: match rate, wait, queue, leg
+    byh = m.group_by("hour").agg(pl.len().alias("served"), pl.col("wait_s").median().alias("wait_median"), pl.col("wait_s").mean().alias("wait_mean"), pl.col("queue_s").mean().alias("queue_mean"),
+                                 pl.col("actual_eta_s").mean().alias("leg_mean"), pl.col("leg_m").mean().alias("leg_m_mean")).sort("hour")
     tot = df.group_by("hour").agg(pl.len().alias("n")).sort("hour")
-    r["by_hour"] = [{"hour": int(h), "match_rate": round(s / nn, 4), "wait_median_s": round(float(w), 1), "queue_mean_s": round(float(qu), 1), "leg_m_mean": round(float(lm), 1)}
-                    for (h, s, w, qu, lm), nn in zip(byh.iter_rows(), tot["n"].to_list())]
+    r["by_hour"] = [{"hour": int(h), "requests": int(nn), "match_rate": round(s / nn, 4), "wait_median_s": round(float(w), 1), "wait_mean_s": round(float(wm), 1), "queue_mean_s": round(float(qu), 1),
+                     "leg_mean_s": round(float(lg), 1), "leg_m_mean": round(float(lm), 1)}
+                    for (h, s, w, wm, qu, lg, lm), nn in zip(byh.iter_rows(), tot["n"].to_list())]
+    # by band of the day (the same fields the curve needs), so the operating rule can be applied per band
+    r["by_band"] = {}
+    for name, hours in BANDS.items():
+        d = df.filter(pl.col("hour").is_in(hours)); mb = d.filter(pl.col("status") == "matched")
+        if mb.height:
+            r["by_band"][name] = {"hours": hours, "requests": d.height, "match_rate": round(mb.height / d.height, 4),
+                                  "queue_s": {"mean": round(float(mb["queue_s"].mean()), 1)}, "leg_s": {"mean": round(float(mb["actual_eta_s"].mean()), 1)},
+                                  "wait_s": {"median": q(mb["wait_s"], 0.5), "mean": round(float(mb["wait_s"].mean()), 1)},
+                                  "wait_all_riders_mean_s": round((float(mb["wait_s"].sum()) + T * (d.height - mb.height)) / d.height, 1),
+                                  "deadhead_m_per_ride": {"mean": round(float(mb["leg_m"].mean()), 1)}, "deadhead_km_total": round(float(mb["leg_m"].sum()) / 1000, 1)}
     return r
+
+BANDS = {"night_01_05": [1, 2, 3, 4, 5], "day_10_16": [10, 11, 12, 13, 14, 15, 16], "evening_18_19": [18, 19], "late_21_23": [21, 22, 23]}
 
 def curve(points):
     """The marginal trade along W: seconds of rider wait per minute of deadhead (leg time) removed, step to step and from W = 0."""
@@ -98,6 +112,8 @@ def curve(points):
             row["step_deadhead_removed_min_per_ride"] = round(d_leg_min, 3)
             row["step_extra_wait_s_per_ride"] = round(p["wait_s"]["mean"] - a["wait_s"]["mean"], 1)
             row["step_wait_s_per_deadhead_min_removed"] = round((p["wait_s"]["mean"] - a["wait_s"]["mean"]) / d_leg_min, 1) if abs(d_leg_min) > 1e-9 else None
+            # the same price with every rider counted (an unserved rider charged T): immune to the survivors' selection
+            row["step_wait_all_riders_s_per_deadhead_min_removed"] = round((p["wait_all_riders_mean_s"] - a["wait_all_riders_mean_s"]) / d_leg_min, 1) if abs(d_leg_min) > 1e-9 else None
         if i > 0:
             z = pts[0]
             d0 = (z["leg_s"]["mean"] - p["leg_s"]["mean"]) / 60
@@ -106,16 +122,23 @@ def curve(points):
         out.append(row)
     return out
 
-def operating_point(rows, parity_s_per_min=60.0):
+def operating_point(rows, parity_s_per_min=60.0, price_key="step_wait_s_per_deadhead_min_removed"):
     """The stated rule: the largest W whose step from the previous W still buys a minute of deadhead for under a minute of
-    rider wait (60 s per minute: parity between a rider's second and a driver's second), and whose deadhead still falls."""
-    best = rows[0]["W"]
+    rider wait (60 s per minute: parity between a rider's second and a driver's second), and whose deadhead still falls.
+    The wait is the served riders' mean; `price_key` switches it to the every-rider mean (unserved charged T)."""
+    best = rows[0]["W"]; stopped_by = None
     for r in rows[1:]:
-        price = r.get("step_wait_s_per_deadhead_min_removed"); removed = r.get("step_deadhead_removed_min_per_ride")
+        price = r.get(price_key); removed = r.get("step_deadhead_removed_min_per_ride")
         if price is None or removed is None or removed <= 0 or price > parity_s_per_min:
+            stopped_by = {"W": r["W"], price_key: price, "step_deadhead_removed_min_per_ride": removed}
             break
         best = r["W"]
-    return {"W": best, "rule": f"largest W whose step still removes deadhead at under {parity_s_per_min:.0f} s of rider wait per minute removed"}
+    out = {"W": best, "rule": f"largest W whose step still removes deadhead at under {parity_s_per_min:.0f} s of rider wait per minute removed",
+           "wait": "served riders' mean" if price_key == "step_wait_s_per_deadhead_min_removed" else "every rider's mean, unserved charged T",
+           "stopped_by": stopped_by, "reached_grid_edge": stopped_by is None, "grid": [r["W"] for r in rows]}
+    if price_key == "step_wait_s_per_deadhead_min_removed":
+        out["all_riders_variant"] = operating_point(rows, parity_s_per_min, "step_wait_all_riders_s_per_deadhead_min_removed")
+    return out
 
 def service_runs(cfg):
     out = []
@@ -160,6 +183,23 @@ def figures(res, out="figures"):
         axes[1].set_xlabel("window W, s"); axes[1].set_ylabel("rider-hours over the day"); axes[1].legend(frameon=False, fontsize=8); axes[1].grid(alpha=.3)
         fig.suptitle("Do the two approximations shrink under batching? (weekday, Mode A inside every batch)")
         fig.tight_layout(); fig.savefig(f"{out}/phase4_interaction.png", dpi=150); plt.close(fig)
+    # by hour: where the window pays and where it only costs
+    op = res["operating_point"]["W"]
+    series = [(0, "W = 0 (one request at a time)", "#8a8f98"), (10, "W = 10 s", "#1f5fbf"), (op, f"W = {op:g} s (operating point)", "#d1495b")]
+    series = [(W, lab, col) for W, lab, col in series if f"2016-06-16_W{W}_R3_seed0" in res["runs"] and not (W == 10 and op == 10 and "operating" not in lab)]
+    if len(series) >= 2:
+        fig, axes = plt.subplots(1, 3, figsize=(13, 3.6))
+        for W, lab, col in series:
+            bh = res["runs"][f"2016-06-16_W{W}_R3_seed0"]["by_hour"]; h = [r["hour"] for r in bh]
+            axes[0].plot(h, [r["match_rate"] * 100 for r in bh], "-", color=col, label=lab, lw=2)
+            axes[1].plot(h, [r["wait_median_s"] for r in bh], "-", color=col, label=lab, lw=2)
+            axes[2].plot(h, [r["leg_m_mean"] for r in bh], "-", color=col, label=lab, lw=2)
+        axes[0].set_ylabel("riders served, %"); axes[1].set_ylabel("served riders' wait, median s (queue + leg)"); axes[2].set_ylabel("empty metres per ride, mean")
+        for ax in axes:
+            ax.set_xlabel("hour of the weekday"); ax.set_xticks(range(0, 24, 3)); ax.grid(alpha=.3)
+        axes[1].legend(frameon=False, fontsize=8)
+        fig.suptitle("The window by hour: the gain is the supply-starved evening, the cost is everywhere (weekday, seed 0)")
+        fig.tight_layout(); fig.savefig(f"{out}/phase4_by_hour.png", dpi=150); plt.close(fig)
 
 def main(config_path):
     cfg = yaml.safe_load(open(config_path)); T = cfg["abandon_after_s"]
@@ -174,10 +214,18 @@ def main(config_path):
         per_run[f"{day}_W{W}_R{R}_seed{seed}" + ("" if roll else "_noroll")] = lm
     # the curve: seed 0, ring 3, rolling, per day
     res = {"config": {k: cfg[k] for k in ("windows_s", "radius_rings", "batch_shards", "fleet_size", "abandon_after_s", "candidates_k", "ring_k")}, "runs": per_run, "curve": {}, "interaction": {}}
+    res["curve_by_band"] = {}
     for day in cfg["days"]:
-        pts = [dict(W=W, **per_run[f"{day}_W{W}_R3_seed0"]) for W in cfg["windows_s"] if f"{day}_W{W}_R3_seed0" in per_run]
+        Ws = sorted({int(m.group(1)) for k in per_run for m in [re.match(rf"^{day}_W(\d+)_R3_seed0$", k)] if m})   # every window replayed, the configured grid and any extension
+        pts = [dict(W=W, **per_run[f"{day}_W{W}_R3_seed0"]) for W in Ws]
         if len(pts) >= 2:
             res["curve"][day] = curve(pts)
+            res["curve_by_band"][day] = {}
+            for band in BANDS:
+                bpts = [dict(W=p["W"], **p["by_band"][band]) for p in pts if band in p["by_band"]]
+                if len(bpts) >= 2:
+                    rows = curve(bpts)
+                    res["curve_by_band"][day][band] = {"hours": BANDS[band], "rows": rows, "operating_point": operating_point(rows)}
             res["interaction"][day] = [{"W": p["W"], "finding1_slower_pick_rate": p["finding1"]["slower_pick_rate"], "finding1_conditional_median_s": p["finding1"]["conditional_extra_wait_s"]["median"],
                                         "finding1_extra_wait_h_net": p["finding1"]["extra_wait_h_net"], "finding1_extra_wait_h_gross": p["finding1"]["extra_wait_h_gross"],
                                         "finding1_served_by_both_share": p["finding1"]["served_by_both_rules_share"],
@@ -200,6 +248,21 @@ def main(config_path):
                                               "deadhead_m_mean": spread([r["deadhead_m_per_ride"]["mean"] for r in w0], 1), "deadhead_km_total": spread([r["deadhead_km_total"] for r in w0], 0)}
     res["sensitivity"] = {"no_roll": {k: {kk: per_run[k][kk] for kk in ("match_rate", "wait_s", "wait_all_riders_mean_s", "deadhead_m_per_ride", "deadhead_km_total", "finding1", "finding2")} for k in per_run if k.endswith("_noroll")},
                           "radius": {k: {kk: per_run[k][kk] for kk in ("match_rate", "wait_s", "wait_all_riders_mean_s", "deadhead_m_per_ride", "deadhead_km_total", "finding1")} for k in per_run if re.match(r"^2016-06-16_W\d+_R[25]_seed0$", k)}}
+    # what is batching and what is the retry: the same W without rolling, against W = 0 and against the rolled run
+    res["sensitivity"]["decomposition"] = {}
+    z = per_run.get("2016-06-16_W0_R3_seed0")
+    for k in list(res["sensitivity"]["no_roll"]):
+        rolled = per_run.get(k.replace("_noroll", "")); nr = per_run[k]
+        if z and rolled:
+            res["sensitivity"]["decomposition"][k] = {
+                "match_rate": {"w0": z["match_rate"], "batching_alone": nr["match_rate"], "batching_and_retry": rolled["match_rate"]},
+                "wait_mean_s": {"w0": z["wait_s"]["mean"], "batching_alone": nr["wait_s"]["mean"], "batching_and_retry": rolled["wait_s"]["mean"]},
+                "wait_median_s": {"w0": z["wait_s"]["median"], "batching_alone": nr["wait_s"]["median"], "batching_and_retry": rolled["wait_s"]["median"]},
+                "wait_all_riders_mean_s": {"w0": z["wait_all_riders_mean_s"], "batching_alone": nr["wait_all_riders_mean_s"], "batching_and_retry": rolled["wait_all_riders_mean_s"]},
+                "deadhead_m_mean": {"w0": z["deadhead_m_per_ride"]["mean"], "batching_alone": nr["deadhead_m_per_ride"]["mean"], "batching_and_retry": rolled["deadhead_m_per_ride"]["mean"]},
+                "deadhead_km_total": {"w0": z["deadhead_km_total"], "batching_alone": nr["deadhead_km_total"], "batching_and_retry": rolled["deadhead_km_total"]},
+                "finding1_slower_pick_rate": {"w0": z["finding1"]["slower_pick_rate"], "batching_alone": nr["finding1"]["slower_pick_rate"], "batching_and_retry": rolled["finding1"]["slower_pick_rate"]},
+                "finding1_extra_wait_h_net": {"w0": z["finding1"]["extra_wait_h_net"], "batching_alone": nr["finding1"]["extra_wait_h_net"], "batching_and_retry": rolled["finding1"]["extra_wait_h_net"]}}
     # the service with the window against the batched oracle (same W, seed 0) and against the Phase 3 service at W = 0
     res["service"] = []
     for s, df in service_runs(cfg):

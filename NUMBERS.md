@@ -384,3 +384,255 @@ only the two orphaned partitions (2 s). The survivors' longer pause is the event
 speed: they may run 30 s of event time ahead of the dead worker's last clock, which at this speed is about a
 second of wall clock, and then they wait for the successor. At ×1 the same 30 s of slack would cover the
 whole 7 s takeover and the survivors would not pause at all.
+
+## Phase 4 — batching
+
+All from `results/phase4/batching_cpu-apple-m5.json`, aggregated from `results/phase4/run_*.json` (one file per
+batched replay, ledgers in `data/phase4/assignments_*.parquet`), the Phase 3 reference ledgers as W = 0, and the
+service run `results/phase4/svc_*.json`; config `configs/phase4.yaml`. **Hardware** as in Phase 3: Apple M5, 16 GB,
+the router and the broker local, replays three at a time. **Supply is simulated** (`ASSUMPTIONS.md`). Weekday
+(Thu 16 June, 391,042 requests), 7,500 drivers, patience T = 600 s, ring 3, seed 0 unless stated. **Wait** is the
+rider's: the queue inside the window plus the chosen driver's road time; **leg** is the road time alone, the
+driver's empty time; **every-rider wait** charges an unserved rider the patience T.
+
+### The curve: what a window buys and costs (weekday, seed 0, rolling on)
+
+| W, s | Served | Wait, mean / median | Every-rider wait, mean | Queue, mean | Leg, mean | Empty m per ride, mean | Empty km, day | Step: leg removed, min per ride | Step price, s of wait per minute of leg removed (served riders / every rider) |
+|---|---|---|---|---|---|---|---|---|---|
+| 0 | 93.28% | 135.4 s / 102.9 s | 166.6 s | 0 | 135.4 s | 1,071 | 390,542 | — | — |
+| 2 | 96.32% | 124.5 / 93.3 | 142.0 | 8.4 s | 116.0 | 918 | 345,752 | 0.323 | −33.7 / −76.1 |
+| 5 | 96.62% | 123.7 / 91.5 | 139.8 | 13.3 | 110.4 | 874 | 330,196 | 0.093 | −8.6 / −23.6 |
+| 10 | 96.73% | 121.7 / 88.8 | 137.3 | 16.4 | 105.3 | 834 | 315,459 | 0.085 | −23.5 / −29.4 |
+| 20 | 96.76% | 121.6 / 87.8 | 137.1 | 21.9 | 99.7 | 790 | 299,065 | 0.093 | −1.1 / −2.1 |
+| 30 | 96.67% | 122.4 / 89.0 | 138.3 | 27.3 | 95.1 | 752 | 284,162 | 0.077 | 10.4 / 15.7 |
+| **60** | **96.02%** | **127.7 / 97.1** | **146.5** | **44.7** | **83.0** | **649** | **243,550** | **0.202** | **26.3 / 40.7** |
+| 120 | 94.40% | 149.0 / 124.5 | 174.3 | 78.1 | 70.9 | 549 | 202,678 | 0.202 | 105.6 / 137.9 |
+
+A negative price is a step that lowers wait and deadhead together. Abandoned / no idle driver in the ring: W = 0
+1.0% / 5.7%; W = 10 3.2% / 0.03%; W = 60 4.0% / 0.03%; W = 120 5.6% / 0.02% (a rider who rolls is decided with
+candidates eventually, so "no candidates" all but vanishes and the unserved become "abandoned"). Served after at
+least one roll: 19.4% of the served at W = 2, 13.4% at W = 10, 8.2% at W = 60, 7.9% at W = 120.
+
+**The operating point by the stated rule** (the largest W whose step still removes leg at under 60 s of the served
+riders' mean wait per minute removed): **W = 60 s.** The planned grid ended at 60 and the rule had not stopped
+there (26 s per minute), so W = 120 was replayed afterwards and the rule stops on it (106 s per minute). The
+every-rider variant of the rule gives the same answer (41 s per minute at 60, 138 at 120). P6 said 10 s.
+
+**The operating point over seeds** (W = 60, seeds 0–4; mean [min–max]): served **96.03% [96.01–96.05]**, wait
+mean 127.8 s [127.7–127.9], median 97.1 s [97.0–97.3], 649.3 m per ride [648.7–650.6], 243,816 km a day
+[243,550–244,287], Finding 1 rate 52.28% [52.20–52.35], Finding 1 net 2,484 rider-hours [2,475–2,495], Finding 2
+(res 6, 4 workers) slower pick 10.99% [10.96–11.04]. W = 0 over the same five seeds: 93.26% [93.21–93.28],
+135.5 s [135.3–135.7], 1,071 m [1,069–1,074], 390,705 km [390,105–391,493]. Seed noise is a tenth of a point.
+
+### The window by band of the day (weekday, seed 0; the rule applied inside each band)
+
+| Band | W = 0: served / wait mean / empty m | W = 30 | W = 60 | W = 120 | The rule says (served riders / every rider) |
+|---|---|---|---|---|---|
+| Night 01–05 | 98.1% / 99.1 s / 754 m | 98.7% / 110.5 s / 726 m | 98.7% / 121.1 s / 692 m | 98.7% / 145.9 s / 652 m | **0 / 0** (the step to 2 s adds leg; every later step costs 82–281 s per minute) |
+| Day 10–16 | 98.4% / 79.3 s / 606 m | 98.6% / 81.9 s / 491 m | 98.6% / 92.2 s / 454 m | 98.6% / 117.4 s / 413 m | **30 / 30** (the step to 60 costs 124 s per minute) |
+| Evening 18–19 | 82.5% / 223.4 s / 1,806 m | 92.1% / 157.1 s / 760 m | 91.2% / 161.1 s / 648 m | 88.1% / 177.4 s / 503 m | **120 / 60** (the step to 120 costs 57.5 s per minute on the served, 98.5 on every rider) |
+| Late 21–23 | 84.4% / 211.9 s / 1,707 m | 92.4% / 178.8 s / 1,082 m | 89.4% / 167.5 s / 744 m | 85.3% / 174.8 s / 495 m | **120 / 120** (the rule prices wait only; the served share falls 3–4 points per step from 30 s) |
+
+The gain is the supply-starved evening and nothing else. At 18:00 the single decision serves 79.0% of riders at a
+211.7 s median wait; W = 10 serves 89.8% at 111.6 s, W = 60 89.0% at 117.6 s. At night and in the middle of the
+day a window buys a shorter leg for the driver and charges the rider for all of it.
+
+### What is batching and what is the retry (weekday, seed 0; `--no-roll` makes an unserved rider final at once)
+
+| Figure | W = 0 | W = 2, batching alone | W = 2, with the retry | W = 60, batching alone | W = 60, with the retry |
+|---|---|---|---|---|---|
+| Served | 93.28% | 93.95% | 96.32% | 95.33% | 96.02% |
+| Wait, mean / median | 135.4 s / 102.9 s | 133.3 / 101.0 | 124.5 / 93.3 | **116.2 / 91.7** | 127.7 / 97.1 |
+| Every-rider wait, mean | 166.6 s | 161.6 | 142.0 | **138.8** | 146.5 |
+| Empty m per ride, mean / km a day | 1,071 / 390,542 | 1,042 / 382,852 | 918 / 345,752 | 669 / 249,271 | 649 / 243,550 |
+| Finding 1 rate / net rider-hours | 44.66% / 2,864 | 44.84% / 2,817 | 44.70% / 2,716 | 53.30% / 2,643 | 52.30% / 2,483 |
+
+At 2 s the window alone changes almost nothing (3% less deadhead, 2 s of wait); the retry does the rest. At 60 s
+the window alone removes 38% of the deadhead and 19 s of the served riders' wait, and the retry on top of it
+serves 0.7 points more riders at the price of 11.5 s of mean wait, because the riders it adds are the ones who
+waited through several windows. On the every-rider wait the retry is a net cost at W = 60 (138.8 s against 146.5).
+
+### The matching radius under batching (weekday, seed 0)
+
+| Ring (reach) | W = 0: served / wait mean, median / empty m / no driver in the ring | W = 60: served / wait mean, median / empty m |
+|---|---|---|
+| 2 (about 1.4 km) | 92.07% / 118.4 s, 95.1 s / 916 m / 7.42% | 95.86% / 125.8 s, 97.0 s / 620 m |
+| **3 (about 2 km, the model)** | 93.28% / 135.4 s, 102.9 s / 1,071 m / 5.73% | 96.02% / 127.7 s, 97.1 s / 649 m |
+| 5 (about 3.2 km) | 93.62% / 150.3 s, 108.7 s / 1,220 m / 3.21% | 96.13% / 130.0 s, 97.6 s / 677 m |
+
+Without a window, widening the ring from 2 to 5 serves 1.5 points more riders for 32 s of mean wait and 304 m
+per ride; with a 60 s window the same widening serves 0.3 points more for 4 s and 57 m. The window does most of
+the radius's job: a rider who finds no driver within two rings is served from the next window's supply instead.
+
+### The weekend (Sat 18 June, 362,824 requests, seed 0; grid 0, 5, 30, 60)
+
+| W, s | Served | Wait, mean / median | Every-rider wait | Queue | Leg | Empty m / km | Step price (served / every rider) |
+|---|---|---|---|---|---|---|---|
+| 0 | 97.74% | 106.4 s / 85.1 s | 117.6 s | 0 | 106.4 s | 817 / 289,877 | — |
+| 5 | 98.58% | 102.8 / 82.1 | 109.8 | 3.6 s | 99.2 | 761 / 272,024 | −30.0 / −65.0 |
+| **30** | **98.65%** | **101.8 / 81.2** | **108.5** | **16.4** | **85.4** | **654 / 233,925** | **−4.3 / −5.7** |
+| 60 | 98.56% | 111.8 / 90.6 | 118.8 | 32.1 | 79.7 | 609 / 217,610 | 105.3 / 108.4 |
+
+The rule gives **W = 30 s** on the weekend, in every band of the day. Supply is not starved on Saturday (97.7%
+served at W = 0), so there is no evening to rescue and the window is priced on the leg alone.
+
+### Batching and the two approximations (weekday, seed 0; Mode A inside every batch)
+
+Finding 1: the same batch solved with straight-line cost and promise over the same candidates, rider by rider
+against the road solve. A batch solve gives and takes, so the gross (the slower picks' extra wait) and the net
+(every rider's difference summed) are both shown; at W = 0 they coincide. Finding 2: the same batch solved as 4
+workers at key resolution 6 (`s6n4`) and resolution 8 (`s8n4`) would, each over its own regions.
+
+| W, s | F1: slower pick | F1: faster pick | F1: conditional median | F1: gross / net rider-hours | Served by both solves | F2 res 6: slower pick / no visible driver / unserved by the shard | F2 res 6: conditional median | F2 res 6: rider-hours (gross) | F2 res 8: slower pick / gross rider-hours |
+|---|---|---|---|---|---|---|---|---|---|
+| 0 | 44.66% | — | 40.2 s | 2,864 / 2,864 | 100% | 8.80% / 3.79% / — | 64.1 s | 923 | 33.64% / 3,328 |
+| 2 | 44.70% | 4.48% | 44.2 | 3,017 / 2,716 | 89.6% | 6.28% / 1.70% / 4.14% | 53.0 | 527 | 25.45% / 2,211 |
+| 5 | 46.18% | | 46.8 | 3,223 / 2,673 | 90.1% | 7.14% / 0.90% / 4.65% | 52.6 | 604 | 26.12% / 2,347 |
+| 10 | 48.20% | 11.68% | 48.9 | 3,450 / 2,657 | 91.3% | 8.11% / 0.58% / 4.81% | 50.0 | 673 | 26.75% / 2,460 |
+| 20 | 50.15% | | 51.2 | 3,737 / 2,688 | 92.7% | 9.24% / 0.40% / 4.90% | 45.6 | 723 | 27.03% / 2,437 |
+| 30 | 51.06% | | 51.9 | 3,756 / 2,657 | 93.4% | 9.87% / 0.32% / 4.85% | 42.3 | 713 | 26.27% / 2,240 |
+| **60** | **52.30%** | **20.52%** | **51.7** | **3,544 / 2,483** | **93.6%** | **10.97% / 0.19% / 4.52%** | **35.3** | **656** | **23.38% / 1,677** |
+| 120 | 53.17% | 22.78% | 51.8 | 3,362 / 2,414 | 93.4% | 12.71% / 0.13% / 3.90% | 29.4 | 611 | 20.89% / 1,200 |
+
+Finding 1 does not shrink: the straight-line solve disagrees with the road solve on **more** riders as the batch
+grows (44.7% at W = 0, 52.3% at 60), because an assignment couples its pairs and one wrong cost moves several of
+them; it also hands 20.5% of the riders a faster driver at W = 60. The day's net loss falls 13% (2,864 to 2,483
+rider-hours) while the gross rises 24%. Finding 2's slower-pick rate rises the same way (8.8% to 11.0%) while its
+blind spot nearly vanishes (3.8% to 0.2% of riders with no visible driver), and its rider-hours fall from 923 to
+656; the shard's net is negative from W = 10 because it leaves 4–5% of the riders unserved and the net counts only
+the riders it serves. Saturday: Finding 1 50.4% at W = 0 and 53.1% at W = 30; Finding 2 (res 6) 7.9% and 12.6%.
+
+### The service with the window (weekday, seed 0, 4 workers, resolution 6, W = 60 s; `svc_*_w60`)
+
+| Figure | Service, W = 60 | Batched oracle, W = 60 | Service, W = 0 (Phase 3) |
+|---|---|---|---|
+| Requests decided / decided twice / drivers claimed twice / records redelivered | 391,042 / **0** / **0** / 0 | 391,042 | 391,042 / 0 / 0 / 0 |
+| Served | **91.64%** | 96.02% | 89.25% |
+| Wait, median / p90 / mean | 93.4 s / 274.3 s / 128.2 s | 97.1 / 259.3 / 127.7 | 93.2 / 287.8 / 125.2 |
+| Queue inside the window, mean | 58.4 s | 44.7 s | 0 |
+| Empty m per ride, mean / km a day | 540 / 193,669 | 649 / 243,550 | 980 / 342,151 |
+| No idle driver visible | 0.05% | 0.03% | 9.79% |
+| Decisions per second of wall clock, whole day | 316 | 187 (three replays sharing the machine) | 523 |
+
+The window lifts the sharded service from 89.3% to 91.6% served and cuts its empty distance by 43%; it stays 4.4
+points under the batched oracle, the same shard gap as at W = 0, and its survivors' shorter legs are again
+selection. The worker's queue is longer than the oracle's because a window closes only when every partition the
+worker owns is known to be past it, and unserved riders roll more often behind a shard. Throughput falls from 523
+to 316 decisions/s: the window makes the worker wait for the slowest partition before each solve, and the Midtown
+worker's batches take 850 ms at the median (673 ms of it the table call).
+
+### Cost of the batched oracle (seed 0, three replays sharing the machine)
+
+| W, s | Decisions/s | Batches | Batch size, median / max | Table calls | Batch, median / p99 ms |
+|---|---|---|---|---|---|
+| 0 | 216 | — | 1 | 391,042 | 4 ms (the decision) |
+| 2 | 77 | 42,807 | 20 / 510 | 42,060 | 110 / 268 |
+| 5 | 106 | 17,343 | 35 / 728 | 17,288 | 197 / 456 |
+| 10 | 138 | 8,674 | 62 / 795 | 8,694 | 300 / 672 |
+| 20 | 177 | 4,331 | 116 / 911 | 4,387 | 474 / 954 |
+| 30 | 191 | 2,897 | 171 / 990 | 3,074 | 652 / 1,415 |
+| 60 | 187 | 1,446 | 331 / 1,307 | 2,136 | 1,352 / 2,824 |
+| 120 | 102 (four replays sharing) | 724 | 658 / 1,771 | 1,488 | 3,930 / 16,474 |
+
+The table call grows with the square of the batch; past the router's 1,000-location limit (from W = 60 in the
+evening) a batch takes several calls. The assignment solve itself is under a millisecond to a few milliseconds.
+
+## Phase 5 — time-of-day speeds
+
+All from `results/phase5/calibration_cpu-apple-m5.json`, aggregated from `results/phase5/speeds_cpu-apple-m5.json`
+(the calibration, `deadhead/phase5_speeds.py`) and `results/phase5/run_*.json` (the replays, ledgers in
+`data/phase5/assignments_*.parquet`); config `configs/phase5.yaml`. **Hardware** as in Phase 3, replays three at a
+time. **Supply is simulated** (`ASSUMPTIONS.md`). Everything in this phase is measured on the oracle at W = 0; the
+Java worker does not take the multiplier. **The caveat that goes with every number:** recorded taxi time includes
+stops, lights and the pickup itself. This is a calibration of free-flow routing to recorded taxi time, not a
+traffic model.
+
+### The calibration (the week's trips; the Phase 1 routed trips for the multiplier)
+
+| Figure | Value | Where |
+|---|---|---|
+| Rows used for the odometer speed, of the clean week | 2,498,802 of 2,522,854 (distance ≥ 0.3 mi, 60 s ≤ duration ≤ 3 h, speed < 35 m/s) | `odometer_speed` |
+| Observed speed, median m/s, by hour | **3.8–4.1 from 08:00 to 18:00**; 8.22 at 05:00; 5.7 at midnight; free-flow constant 8.243 (Phase 1) | `odometer_speed.by_hour` |
+| Routed real trips used for the multiplier | 78,918 (both days, 30 s < free-flow time, 60 s ≤ recorded ≤ 3 h, ratio < 10) | `multiplier.trips_used` |
+| **Multiplier**, median recorded ÷ free-flow duration, by pickup hour | **2.0–2.24 from 10:00 to 18:00** (peak **2.241 at 15:00**), 1.93–1.95 at 08:00–09:00, 2.13 at 17:00, 2.04 at 18:00, 1.91 at 19:00, 1.63–1.67 from 20:00 to midnight, 1.47 at 01:00, 1.24–1.32 at 02:00–04:00, trough **1.123 at 05:00** | `multiplier.by_hour` |
+| Its spread within an hour (interquartile) | 1.02–1.52 at 04:00 (1,019 trips); 1.71–3.00 at 15:00 (3,562 trips) | same |
+| Zone-hours with at least 30 trips (pickup resolution-6 cell × hour) | 156, over 8 zones | `zones` |
+| Zone factor relative to the hour's city factor: p10 / median / p90 | 0.845 / 0.985 / 1.094; 13.5% of zone-hours outside ±15%, 2.6% outside ±30%; the busiest zone (Midtown) 1.02–1.08 | `zones.relative_to_hour` |
+| **A zone factor changes the road-best driver** (Phase 1 candidate legs, the driver's own zone-hour against the city's hour) | **0.79% of decisions on Thursday** (gain when it does: 3.6 s median, 45.7 s p90), 0.35% on Saturday | `zones.pick_changes` |
+
+The per-segment update (`osrm-customize`) was therefore not built; the hourly multiplier is the calibration.
+
+### What the calibration does to the day (weekday, seed 0; the free-flow replay is the same oracle with the multiplier off)
+
+| Figure | Free flow | Calibrated | Calibrated, Saturday |
+|---|---|---|---|
+| Served | 93.26% | **86.90%** | 93.50% (free flow 97.74%, Phase 3) |
+| Abandoned (promise over T = 600 s) / no idle driver in the ring | 1.01% / 5.74% | **11.30% / 1.80%** | 5.62% / 0.88% |
+| Served riders' wait, median / p90 / mean | 103.3 s / 305.5 s / 135.5 s | **210.3 / 468.0 / 234.3** | 169.2 / 404.8 / 194.5 |
+| Empty metres per ride, median / mean | 763 / 1,071 | 841 / 996 | 666 / 806 |
+| **Finding 1** wrong-driver rate | 44.28% | **43.41%** | 48.59% |
+| Finding 1 conditional extra wait, median / p90 / mean | 40.3 s / 129.7 s / 63.3 s | **83.2 / 365.3 / 145.5** | 72.6 / 260.5 / 119.9 |
+| Finding 1, rider-hours over the day | 2,870 | **6,735** | 5,822 |
+| **Finding 2** (res 6, 4 workers) slower pick / no visible driver | 8.73% / 4.01% | **11.33% / 2.85%** | 8.97% / 1.99% |
+| Finding 2 conditional extra wait, median / p90 | 63.5 s / 247.7 s | **141.9 / 468.8** | 97.0 / 351.4 |
+| Finding 2, rider-hours over the day | 904 | **2,440** | 1,327 |
+| Decisions per second | 216 (Phase 3) | 166 | 149 |
+
+**Over seeds 0–4 (calibrated, weekday; mean [min–max]):** served 86.88% [86.82–86.96], abandoned 11.30%
+[11.27–11.36], wait median 210.1 s [209.9–210.3], Finding 1 rate 43.42% [43.32–43.58], conditional median 82.5 s
+[81.8–83.2], total 6,764 rider-hours [6,722–6,818]; Finding 2 rate 11.34% [11.29–11.39], no visible driver 2.92%
+[2.85–3.02], conditional median 141.2 s [140.2–142.4], total 2,436 rider-hours [2,420–2,460]. Seed noise is a
+tenth of a point.
+
+**The fleet was sized at free flow.** The 7,500 drivers of Phase 2 were chosen to serve about 93% of the weekday
+with free-flow legs. With legs twice as long by day the same fleet serves 87%, and 11% of riders are promised more
+than the ten-minute patience and abandon. The calibration does not move the pick within a decision (it scales every
+candidate alike); it moves the supply, and every rate below moves through the supply.
+
+### By hour and by band (weekday, seed 0)
+
+| Band | Served: free flow / calibrated | Abandoned: free flow / calibrated | Finding 1 rate: free flow / calibrated | Finding 1 rider-hours | Finding 2 rate | Finding 2 rider-hours |
+|---|---|---|---|---|---|---|
+| Night 01–05 | 98.0% / 97.8% | 0.2% / 0.6% | 50.6% / 50.0% | 140 / 182 | 6.7% / 6.8% | 26 / 36 |
+| Midday 11–15 | 98.6% / 92.6% | 0.2% / 7.2% | 54.8% / 46.3% | 757 / 1,647 | 5.7% / 8.6% | 79 / 413 |
+| Peak 17–19 | 86.2% / **76.8%** | 1.8% / **21.7%** | 27.3% / 35.0% | 310 / **1,269** | 10.6% / **14.5%** | 201 / **629** |
+
+| Hour | Multiplier | Served: free flow / calibrated | Abandoned, calibrated | Wait median: free flow / calibrated | Finding 1 rate: free flow / calibrated | Finding 1 conditional median | Finding 2 rate | Finding 2 conditional median |
+|---|---|---|---|---|---|---|---|---|
+| 03 | 1.27 | 98.7% / 98.5% | 1.1% | 71 s / 90 s | 52.6% / 52.9% | 30 s / 39 s | 5.4% / 5.4% | 35 s / 43 s |
+| 08 | 1.93 | 97.3% / 89.9% | 8.9% | 128 / 240 | 44.2% / 45.2% | 42 / 90 | 9.6% / 10.0% | 79 / 152 |
+| 12 | 2.14 | 98.8% / 96.5% | 3.5% | 61 / 143 | 57.9% / 55.4% | 42 / 89 | 5.4% / 6.5% | 31 / 88 |
+| 14 | 2.21 | 98.8% / 83.8% | 15.8% | 69 / 298 | 52.2% / 32.4% | 38 / 83 | 6.0% / 12.2% | 32 / 177 |
+| 16 | 2.13 | 97.1% / 97.0% | 3.0% | 46 / 96 | 58.0% / 59.9% | 45 / 96 | 4.9% / 5.0% | 30 / 71 |
+| **18** | 2.04 | 78.5% / **69.0%** | **28.9%** | 215 / **335** | 18.3% / 33.5% | 37 / **151** | 10.8% / **15.7%** | 95 / **196** |
+| 20 | 1.67 | 96.0% / 89.6% | 8.9% | 85 / 243 | 47.2% / 35.8% | 39 / 70 | 7.9% / 14.5% | 44 / 133 |
+| 22 | 1.67 | 80.6% / 71.7% | 24.3% | 216 / 310 | 24.3% / 35.4% | 41 / 122 | 13.5% / 17.6% | 101 / 180 |
+
+Finding 1's conditional cost is the multiplier times the free-flow cost, as it must be (42 s × 2.14 = 90 s at
+noon); its rate moves only where the supply moves (14:00, the evening). Finding 2 grows in rate as well as cost
+when supply is short: with fewer idle drivers in a cell, the one across the edge is more often the only one.
+
+### The matching radius by hour (calibrated, weekday, seed 0; scored beside every decision)
+
+For each ring r ∈ {1, …, 5}, the share of decisions on which the model's choice within r rings is at least 30 s
+slower than the best within 5 rings, or has no driver at all; the recommended ring is the smallest with under 1%.
+
+| Hour | Loss, ring 1 / 2 / 3 / 4 | Of which no driver in the ring, 2 / 3 | Visible candidates, median, ring 3 / 5 | Ring 3 against ring 5: a faster driver beyond ring 3 / its median gain | **Recommended ring** |
+|---|---|---|---|---|---|
+| 00 | 22.7% / 11.4% / 7.0% / 1.7% | 7.8% / 3.7% | 50 / 100 | 6.1% / 34 s | 5 |
+| 03 | 4.2% / 0.9% / 0.7% / 0.1% | 0.3% / 0.1% | 50 / 100 | 6.2% / 2.6 s | **2** |
+| 06 | 36.8% / 18.7% / 9.6% / 1.7% | 12.2% / 4.3% | 50 / 100 | 14.8% / 14 s | 5 |
+| 09 | 14.0% / 4.5% / 1.6% / 0.2% | 2.4% / 0.5% | 50 / 100 | 2.1% / 38 s | 4 |
+| 12 | 6.1% / 1.7% / 0.8% / 0.1% | 0.4% / 0.1% | 50 / 100 | 1.4% / 32 s | 3 |
+| 13 | 9.6% / 3.5% / 2.0% / 0.1% | 0.9% / 0.1% | 50 / 100 | 3.7% / 32 s | 4 |
+| 14 | 26.3% / 7.3% / 2.6% / 0.3% | 3.0% / 0.4% | 10 / 22 | 3.0% / 106 s | 4 |
+| 17 | 20.5% / 7.0% / 2.9% / 0.3% | 2.7% / 0.3% | 28 / 100 | 6.2% / 24 s | 4 |
+| **18** | 44.7% / 19.6% / **7.7%** / 1.9% | 10.4% / 2.1% | 6 / 17 | **6.4% / 122 s** | **5** |
+| 20 | 29.2% / 11.0% / 3.9% / 0.9% | 6.5% / 1.4% | 15 / 48 | 3.3% / 81 s | 4 |
+| 22 | 52.1% / 28.0% / 12.5% / 3.0% | 16.5% / 3.6% | 8 / 34 | 11.1% / 90 s | 5 |
+
+Recommended ring by hour, calibrated weekday: **5** at 00, 06, 18, 19, 21, 22, 23; **4** at 01, 05, 07–11, 13–17,
+20; **3** at 04 and 12; **2** at 02 and 03. Free flow gives the same picture (5 at 00, 05–07, 18, 19, 21–23; 4 by
+day; 2 at 02–04). Saturday: 4 at most hours, 2–3 from 02:00 to 05:00, 5 at 00, 09 and 23. By day the
+fifty-candidate cap binds (50 visible at ring 3, 100 at ring 5) and the ring costs little; in the evening the ring
+is the constraint (6 visible at ring 3 at 18:00) and the driver beyond it is two minutes faster.

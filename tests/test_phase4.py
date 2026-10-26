@@ -6,7 +6,7 @@ import numpy as np, polars as pl, pytest
 from deadhead.batch import solve, BIG
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-LEDGERS = sorted(glob.glob(str(ROOT / "data/phase4/assignments_*_batch_W*.parquet")))
+LEDGERS = [p for p in sorted(glob.glob(str(ROOT / "data/phase4/assignments_*_batch_W*.parquet"))) if "_batch_W0_" not in p]   # W = 0 at another ring is the plain oracle: no batch columns
 
 def osrm_up():
     try:

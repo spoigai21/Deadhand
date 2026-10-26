@@ -5,9 +5,9 @@ road network, sharded by map cell across a Java consumer group, and measured und
 **Deadhead** is the industry term for a vehicle driving empty between rides; it is the cost the
 two findings here are measured in.
 
-**Status: Phase 3 complete — the matcher runs as a Java consumer group sharded by map cell, is
-measured against the single-process oracle, and the geographic shard is priced at the level of the
-decision; a worker is killed mid-day ten times and no rider or driver is ever matched twice.**
+**Status: Phase 5 complete — the plan's five phases are run. The map's speeds are calibrated by hour from the
+trips themselves and the two findings, the fleet and the matching radius are re-measured under them; the
+calibration moves the supply before it moves any decision.**
 `SPEC.md` is the plan; `PREDICTION.md` holds the guesses written before each
 measurement, with the outcome beside them; `NUMBERS.md` holds every figure with the file behind it;
 `ASSUMPTIONS.md` is the supply model.
@@ -20,7 +20,8 @@ measurement, with the outcome beside them; `NUMBERS.md` holds every figure with 
 2. **This is a public taxi log**, not any company's dispatch system. Nothing here is a claim about
    how anyone's marketplace performs.
 3. **Riders in the data never cancel.** Abandonment is a modelled parameter.
-4. **Free-flow routing is not live traffic** until Phase 5, and a calibration after it.
+4. **Free-flow routing is not live traffic.** Phase 5 calibrates it by hour from the trips' own odometer and
+   timestamps; recorded taxi time includes stops, lights and the pickup, so that is a calibration, not traffic.
 5. **Every number names its hardware and seed.** The lane so far is one laptop: Apple M5, 16 GB.
 6. **One city.** New York's rivers make straight-line error unusually visible: the best case for
    that finding, not the typical one.
@@ -182,6 +183,92 @@ things (`BUGS.md` #5–#7), and the claim-before-decide order held on the first 
 ![throughput](figures/phase3_throughput.png)
 ![kill test](figures/phase3_kill_test.png)
 
+## Phase 4 — batching, and what a window is for
+
+**What runs.** The oracle and the Java workers both take a window W: requests are collected for W seconds of
+event time, then every request in the window is decided at once against the union of its candidates, with one
+road-time table call and a minimum-cost assignment (serve the most riders that can be served, then the least total
+road time; a pair is on offer only if the rider's promise, time already waited plus the road time, is within the
+patience T). A rider not served when the window closes waits for the next one, as long as that window still closes
+within T (`--no-roll` turns this off, to separate the batch from the retry). In a worker a window closes only when
+every partition it owns is known to be past it, and the committed offset never passes a request still pending.
+Finding 1 and Finding 2 are measured inside every batch: the same batch solved on straight-line costs, and solved
+as each sharded worker would see it.
+
+**What a window buys.** On the weekday the single decision serves **93.3%** of riders; a 10 s window serves
+**96.7%**, and the served riders' mean wait *falls* (135 s to 122 s) while the empty distance falls with it
+(1,071 m to 834 m per ride). That is not what a window is supposed to do, and the reason is the retry: supply runs
+out at 18:00, the single decision abandons the rider whose nearest idle driver is over T, and the window gives that
+rider the next window's drivers. At 18:00 the single decision serves 79% of riders at a 212 s median wait; a 10 s
+window serves 90% at 112 s. Without the retry a 2 s window changes almost nothing; a 60 s window alone removes
+38% of the deadhead and 19 s of wait.
+
+**The operating point.** The rule, stated before the sweep: the largest W whose step still removes leg time at
+under 60 s of rider wait per minute removed (parity between a rider's second and a driver's second). It gives
+**W = 60 s**: the step from 30 to 60 buys a minute of leg for 26 s of wait, the step to 120 for 106 s. The planned
+grid ended at 60 and the rule had not stopped, so 120 was replayed afterwards; the config says so. Over five seeds
+at W = 60: **96.0% served, 127.8 s mean wait, 649 m per ride, 243,816 empty km a day** against 93.3%, 135.5 s,
+1,071 m and 390,705 km without a window. P6 said 10 s. The rule's one number hides three: at night a window
+only costs (the rule says none), by day 30 s, in the evening 60 s or more; on the weekend, where supply is not
+starved, 30 s in every band of the day.
+
+**The two approximations do not shrink.** The straight-line solve disagrees with the road solve on *more* riders
+as the batch grows, **44.7% at W = 0 and 52.3% at W = 60**: an assignment couples its pairs, so one wrong cost
+moves several riders. Its net cost falls 13% only because it hands a fifth of the riders a faster driver by
+accident; its gross rises 24%. The shard's slower-pick rate rises the same way (8.8% to 11.0%) while its blind
+spot nearly vanishes (3.8% to 0.2% of riders with no visible driver) and its rider-hours fall from 923 to 656:
+the window moves the boundary's cost from "no driver" to "a slower driver". The matching radius matters less with
+a window: widening from ring 2 to ring 5 serves 1.5 points more riders at W = 0 and 0.3 points at W = 60.
+
+**The service with the window.** Four workers at resolution 6 with a 60 s window decide every request once and
+claim no driver twice, serve **91.6% against the batched oracle's 96.0%** (the same 4.4-point shard gap as without
+a window) and cut the Phase 3 service's empty distance by 43%. Throughput falls from 523 to 316 decisions/s: the
+window makes the worker wait for its slowest partition before each solve, and the Midtown worker's table call is
+673 ms at the median.
+
+![tradeoff](figures/phase4_tradeoff.png)
+![by hour](figures/phase4_by_hour.png)
+![interaction](figures/phase4_interaction.png)
+
+## Phase 5 — when the map changes under you
+
+**What runs.** The trip records carry an odometer distance and two timestamps, so the day's speed profile falls
+out of the demand file; the Phase 1 routed trips (recorded duration against OSRM's free-flow duration for the same
+pickup and dropoff) give the factor the matcher applies to every free-flow duration, by hour. Zone factors (pickup
+cell × hour) are computed too, and a per-segment map update would have been built only if they changed decisions.
+The oracle is replayed with the factor (weekday, five seeds; Saturday) and once more at free flow with the same
+extra columns; beside every decision it scores what rings 1 to 5 would have cost or gained. **Recorded taxi time
+includes stops, lights and the pickup itself: this is a calibration of free-flow routing to recorded taxi time, not
+a traffic model.** Everything here is the oracle at W = 0; the Java worker does not take the factor.
+
+**The profile.** A taxi averages **3.8–4.1 m/s from 08:00 to 18:00** against the free-flow constant of 8.2. As a
+factor on OSRM durations: a plateau of **2.0–2.24 from 10:00 to 18:00** (not a commute peak), 1.6–1.7 in the
+evening, 1.12 at 05:00. Zone factors spread 0.85–1.09 around the city's hour, and the busiest zone *is* the city's
+hour, because Midtown has half the trips; a zone factor changes the road-best driver in **0.79% of decisions**, so
+the per-segment update was not built.
+
+**The map changes the supply before it changes any decision.** A uniform factor scales every candidate alike, so
+no pick within a decision moves. What moves is the fleet: the 7,500 drivers of Phase 2 were sized at free flow,
+and with the trips' own speeds the same fleet serves **86.9% of the weekday against 93.3%**, **11% of riders
+abandon against 1%**, and the served riders' median wait is **210 s against 103 s**. At 18:00, 69% are served and
+29% abandon. The fleet calibration was a free-flow calibration; that is the result the phase was for.
+
+**The two approximations under the calibration.** Finding 1's whole-day rate is unchanged, as it must be (43.4%
+against 44.3%); its cost is the factor times the free-flow cost, **83 s against 40 s** at the median and 151 s at
+18:00, and the day's total is **2.3× the free-flow figure** (6,735 against 2,870 rider-hours), not the third P7
+guessed. Finding 2's rate **rises** (8.7% to 11.3% over the day, 10.6% to 14.5% at the peak), against P7: with
+fewer idle drivers per cell, the one across the edge is more often the only one; its median cost goes from 64 s to
+142 s. By hour both rates move only through the supply.
+
+**The matching radius by hour.** At 18:00 ring 3 leaves **6.4% of riders a driver two minutes faster beyond it**
+and 2.1% with none within it; at 13:00 ring 2 loses 3.5% and ring 3 2.0%. The smallest ring with under 1% loss is
+**5 in the evening and at midnight, 4 by day, 2 only from 02:00 to 04:00**; by day the fifty-candidate cap binds and
+a wider ring is free, in the evening the ring is the constraint. Free flow and Saturday give the same picture.
+
+![speeds](figures/phase5_speeds.png)
+![by hour](figures/phase5_by_hour.png)
+![radius](figures/phase5_radius.png)
+
 ## Prior art, by name
 
 Road-network ride-sharing simulators exist and are good: **AMoD2**, a deep-RL taxi dispatcher,
@@ -235,10 +322,10 @@ scripts/phase3_runs.sh                                        # every measuremen
 ## Reproduce Phase 4
 
 ```bash
-scripts/phase4_runs.sh sweep                                  # the batched oracle over W, weekday, seed 0: six replays three at a time, ~2.5 h
-OP=10 scripts/phase4_runs.sh operating radius weekend service # the operating point over seeds and without rolling, the radius, the weekend, the service with the window
-.venv/bin/python -m deadhead.batch configs/phase4.yaml --day 2016-06-16 --window 10              # one batched replay, ~1 h
-.venv/bin/python -m deadhead.phase3_service configs/phase4.yaml --day 2016-06-16 --workers 4 --window 10   # the service with a 10 s window
+scripts/phase4_runs.sh sweep                                  # the batched oracle over W, weekday, seed 0: six replays three at a time, ~3 h
+.venv/bin/python -m deadhead.batch configs/phase4.yaml --day 2016-06-16 --window 120             # the point beyond the planned grid, ~1 h
+OP=60 scripts/phase4_runs.sh operating radius weekend service # the operating point over seeds and without rolling, the radius, the weekend, the service with the window, ~8 h
+.venv/bin/python -m deadhead.phase3_service configs/phase4.yaml --day 2016-06-16 --workers 4 --window 60   # the service with a 60 s window alone, ~20 min
 .venv/bin/python -m deadhead.phase4_metrics configs/phase4.yaml
 .venv/bin/python -m pytest -q
 ```

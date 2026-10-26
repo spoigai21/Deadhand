@@ -24,7 +24,7 @@ replay_speed: max
 phase_dir: phase4
 cruise_point: hash
 # batching
-windows_s: [0, 2, 5, 10, 20, 30, 60]    # W: the tumbling event-time window; 0 is the Phase 3 reference oracle (data/phase3/assignments_ref_*)
+windows_s: [0, 2, 5, 10, 20, 30, 60, 120]   # W: the tumbling event-time window; 0 is the Phase 3 reference oracle (data/phase3/assignments_ref_*); 120 was added after the rule reached the edge of the planned grid at 60
 radius_rings: [2, 3, 5]                 # the matching radius sensitivity, at W = 0 and at the operating point
 operating_point_seeds: [0, 1, 2, 3, 4]  # the operating point is replayed with every seed; the sweep with seed 0
 batch_shards: ["s6n4", "s8n4"]          # Mode A under batching: the shard solve for (key resolution 6, 4 workers) and (8, 4)

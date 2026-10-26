@@ -222,3 +222,36 @@ number was known when it was written. Appended, as the rule says; it is not edit
 - The right matching radius changes by hour. At 18:00, when the nearest driver is a kilometre away, ring 3 leaves
   **over 5% of riders** a better driver in rings 4–5; at 13:00 ring 2 loses under 1% and the fifty-candidate cap, not
   the ring, is what binds. Recommended: **ring 2 by day in the core, ring 5 at night and in the evening peak**.
+
+## Phase 4 result, 2026-10-24 — against P6
+
+*Appended after the runs. P6 above is unchanged.* Numbers in `NUMBERS.md`, Phase 4 section. Weekday, 7,500
+simulated drivers, five seeds at the operating point, seed 0 elsewhere; the window W was replayed at 2, 5, 10, 20,
+30 and 60 s as planned, then at 120 s because the operating rule had not stopped inside the planned grid.
+
+| P6 said | Phase 4 found | Verdict |
+|---|---|---|
+| The operating point will be W = 10 s on the weekday | **W = 60 s** by the rule stated before the sweep (the largest W whose step still removes leg time at under 60 s of rider wait per minute removed). Up to W = 20 the served riders' wait and the empty distance fall *together* (135 s and 1,071 m at W = 0; 122 s and 790 m at 20); the step to 60 costs 26 s per minute removed, the step to 120 costs 106. | **Wrong by six times.** The guess imagined a window as a pure cost to the rider; on a day where supply runs out at 18:00 a window is first a *retry*: the rider the single decision abandons gets the next window's drivers. The rule's answer is one number for a day that wants three: no window at night, 30 s by day, 60 s or more in the evening. |
+| Past the operating point, deadhead stops falling and wait rises roughly linearly | Deadhead keeps falling through 120 s (649 m at 60, 549 at 120); wait rises faster than linearly (+5 s from 30 to 60, +21 s from 60 to 120) | Wrong on the deadhead, right on the direction of the wait. |
+| Batching shrinks Finding 1 by about a third, because the assignment on road costs corrects pairings the greedy straight-line rule got wrong | The straight-line solve disagrees with the road solve on **more** riders as the batch grows: **44.7% at W = 0, 52.3% at 60**; its net cost falls 13% (2,864 to 2,483 rider-hours) and its gross rises 24% | **Wrong.** An assignment couples its pairs: one wrong cost moves several riders, so the rate rises; the net falls only because the straight-line solve hands a fifth of the riders a faster driver by accident. |
+| (from the Phase 3 note) Batching inherits the shard's boundary; the W = 10 guess stays | The shard's slower-pick rate rises with the window (8.8% to 11.0%) while its blind spot nearly vanishes (3.8% to 0.2% with no visible driver) and its rider-hours fall from 923 to 656. The service with a 60 s window serves 91.6% against the batched oracle's 96.0%: the same 4.4-point shard gap as at W = 0. | Right that the boundary survives the window; the window moves the cost from "no driver" to "a slower driver". |
+| (not predicted) | On the every-rider wait the retry across windows is a net cost at W = 60: batching alone gives 138.8 s, batching with the retry 146.5 s, against 166.6 s at W = 0. The weekend wants W = 30 s in every band of the day. | The decomposition the plan did not ask for and the write-up needed. |
+
+**What this changes for P7.** Nothing in the prediction. Phase 5 is measured on the single decision (W = 0), so the
+window does not enter it; the calibration scales every candidate alike, which is the premise P7 already rests on.
+
+## Phase 5 result, 2026-10-25 — against P7
+
+*Appended after the runs. P7 above is unchanged.* Numbers in `NUMBERS.md`, Phase 5 section. The calibration is from
+the week's trip records and the Phase 1 routed trips; the replays are the oracle at W = 0, weekday seeds 0–4 and
+Saturday seed 0 with the hourly multiplier, and one weekday replay at free flow with the same radius columns.
+
+| P7 said | Phase 5 found | Verdict |
+|---|---|---|
+| Observed speed about 5 m/s at the evening peak and about 9 m/s at 04:00, against a free-flow median of about 8 | **3.8–4.1 m/s from 08:00 to 18:00**, 8.2 at 05:00, 5.7 at midnight; free flow 8.24 | Too fast by day (the taxi averages under 4 m/s for ten hours), about right at the trough. |
+| Multiplier about 1.8× at 17:00–19:00, under 1.2× between 02:00 and 05:00 | **2.13 / 2.04 / 1.91 at 17, 18, 19**; **1.32 / 1.27 / 1.24 / 1.12 at 02–05**; the peak is 2.24 at 15:00, not in the evening | Right within a fifth at the evening hours; wrong at night, where only 05:00 gets under 1.2. The day's shape was guessed as a commute peak; it is a plateau from 10:00 to 18:00. |
+| Midtown about 1.3× slower than the hourly city figure at midday; a zone factor changes the road-best driver in under 3% of decisions, so `osrm-customize` is not built | The busiest zone (Midtown) is 1.02–1.08× the city's hour; zone-hours spread 0.85–1.09 (p10–p90); a zone factor changes the pick in **0.79%** of decisions (3.6 s median gain) | **Right on the decision**, wrong on Midtown: the city factor already *is* Midtown, which has half the trips. The per-segment update was not built. |
+| Finding 1's rate does not move with a uniform multiplier; its conditional median goes from 40 s to about 60 s at the peak; the day's total extra wait rises by about a third | Whole-day rate **43.4% against 44.3%**; conditional median **83 s** (151 s at 18:00); the day's total **2.3×** (6,735 against 2,870 rider-hours). By hour the rate moves a lot through the supply: 32% against 52% at 14:00, 34% against 18% at 18:00 | Right on the whole-day rate and on the direction; **wrong by a factor of three on the size** of the cost, because the multiplier is 2, not 1.5, and because the fleet sized at free flow runs short under it: 11% of riders abandon, so the long legs that remain are the costly ones. |
+| Finding 2's cost rises the same way; its rates fall a little in the evening because slower legs mean fewer idle drivers | Finding 2's rate **rises**: 8.7% to 11.3% over the day, 10.6% to 14.5% at the peak; its conditional median 64 s to 142 s; its rider-hours 904 to 2,440 | Wrong on the direction of the rate. Fewer idle drivers per cell make the one across the edge more often the only one. |
+| At 18:00 ring 3 leaves over 5% of riders a better driver in rings 4–5; at 13:00 ring 2 loses under 1% and the fifty-candidate cap binds; recommended ring 2 by day in the core, ring 5 at night and in the evening peak | At 18:00 **6.4%** of decisions have a driver beyond ring 3 at least 30 s faster (two minutes faster at the median) and 2.1% have none within it; at 13:00 ring 2 loses **3.5%**, ring 3 2.0%, and the cap binds (50 visible). Recommended: **ring 5 in the evening and at midnight, ring 4 by day, ring 2 only from 02:00 to 04:00** | Right at 18:00 and on the cap; wrong by one ring by day (the cap makes a wider ring free, so the rule takes it) and wrong on the night, which is not one thing: the small hours want ring 2, midnight wants ring 5. |
+| (not predicted) | The fleet calibration of Phase 2 was a free-flow calibration. The same 7,500 drivers serve 93.3% of the weekday at free flow and **86.9%** with the trips' own speeds, with 11% abandoning against 1%. | The result the phase was for: the map changing under you changes the supply before it changes any decision. |
