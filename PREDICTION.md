@@ -255,3 +255,46 @@ Saturday seed 0 with the hourly multiplier, and one weekday replay at free flow 
 | Finding 2's cost rises the same way; its rates fall a little in the evening because slower legs mean fewer idle drivers | Finding 2's rate **rises**: 8.7% to 11.3% over the day, 10.6% to 14.5% at the peak; its conditional median 64 s to 142 s; its rider-hours 904 to 2,440 | Wrong on the direction of the rate. Fewer idle drivers per cell make the one across the edge more often the only one. |
 | At 18:00 ring 3 leaves over 5% of riders a better driver in rings 4–5; at 13:00 ring 2 loses under 1% and the fifty-candidate cap binds; recommended ring 2 by day in the core, ring 5 at night and in the evening peak | At 18:00 **6.4%** of decisions have a driver beyond ring 3 at least 30 s faster (two minutes faster at the median) and 2.1% have none within it; at 13:00 ring 2 loses **3.5%**, ring 3 2.0%, and the cap binds (50 visible). Recommended: **ring 5 in the evening and at midnight, ring 4 by day, ring 2 only from 02:00 to 04:00** | Right at 18:00 and on the cap; wrong by one ring by day (the cap makes a wider ring free, so the rule takes it) and wrong on the night, which is not one thing: the small hours want ring 2, midnight wants ring 5. |
 | (not predicted) | The fleet calibration of Phase 2 was a free-flow calibration. The same 7,500 drivers serve 93.3% of the weekday at free flow and **86.9%** with the trips' own speeds, with 11% abandoning against 1%. | The result the phase was for: the map changing under you changes the supply before it changes any decision. |
+
+## Prediction P8, 2026-10-26 — committed before the Phase 6 runs
+
+*Written before any Phase 6 measurement. What is already known is the Phase 3 table (one worker 332 decisions/s, four
+workers 523, a weekday in 748 s at four workers; the one-worker profile with the table calls at 56% of processing) and
+the Phase 2 oracle's throughput by fleet size. The price used for the prediction is a list price read on 2026-10-26, not a
+measurement: an 8-vCPU, 16 GB ARM instance at $0.319 per hour on demand. Appended, as the rule says; not edited afterwards.*
+
+### P8. What it costs to run (Phase 6)
+
+- **Cost per city-day at maximum speed, four workers: under ten cents** at that list price (748 s of wall is 0.21 machine-hours,
+  about $0.07), and the laptop is not that machine, so the figure is an estimate of the machine time, not a bill.
+- **At ×1 the day costs the day**: 24 machine-hours whatever the load, about $7.70 at the list price, and the machine is
+  **under 10% busy at the peak hour (21:00) and under 2% at 04:00**. The honest cost figure is the maximum-speed one; the ×1
+  one is a statement about idle time.
+- **The bottleneck is routing, and it is the OSRM process, not the workers.** At four workers the OSRM container uses more
+  CPU than the four JVMs together (about 2 cores against about 0.5 core each); the broker stays under 0.3 core. Memory is
+  not the constraint: each JVM under 1 GB resident, the whole stack under 8 GB, so the 16 GB of the instance is not what
+  the day needs and a 4-vCPU instance would replay it at about 1.5× the wall.
+- **Fleet size moves the cost through the candidate count**: with 3,000 drivers the service runs about 1.8× faster than
+  with 7,500 (the oracle ran 4.6× faster, but the service's balance ceiling caps the gain); with 9,750 about 15% slower,
+  flattening because the fifty-candidate cap binds.
+- **The radius moves it the same way**: ring 2 about 20% faster than ring 3, ring 5 about 25% slower.
+- **Worker count is already measured** (four is the useful number; eight adds nothing at resolution 6) and is not
+  predicted again.
+
+## Phase 6 result, 2026-10-26 — against P8
+
+*Appended after the runs. P8 above is unchanged.* Numbers in `NUMBERS.md`, Phase 6 section. The service of Phase 3
+replayed under a resource monitor on the laptop (Apple M5, 10 cores, 16 GB, containers under Docker Desktop); the price
+is the list price P8 named, $0.319 per hour for an 8-vCPU ARM instance, read 2026-10-26.
+
+| P8 said | Phase 6 found | Verdict |
+|---|---|---|
+| Under ten cents per city-day at maximum speed, four workers: 748 s is 0.21 machine-hours, about $0.07 | **752.5 s, 0.209 machine-hours, $0.067**; $0.17 per million decisions | Right. It was arithmetic on a Phase 3 number and the number held (752 against 748 s). |
+| At ×1 the day costs the day, about $7.70; the machine under 10% busy at 21:00 and under 2% at 04:00 | $7.66. In the paced quarter-hours the run's own processes use **0.38 cores at 21:00 (3.8% of ten) and 0.48 at 04:00 (4.8%)**: the workers' polling of empty queues costs more than the quiet hour's decisions, and OSRM is 0.03 of a core at the peak. Match latency 20 ms median at 21:00, 19 ms at 04:00 | Right on the cost and at the peak; **wrong at 04:00**, where the floor is the workers' idle loop, not the load. The machine as a whole was 17 to 27% busy, but that was the laptop's other applications (0.6 to 1.3 cores), reported as such. |
+| The bottleneck is routing and it is the OSRM process: about 2 cores against about 0.5 core per JVM; the broker under 0.3 core | Routing is the bottleneck: the table call is **57% of a decision's processing**, table plus route two thirds. But OSRM uses **0.54 cores**, the four JVMs **0.79 together** (0.2 each), Kafka 0.19. The run's own work is 1.5 cores on ten; the wall is the serial chain of the largest partition's worker, and the three other workers wait at the gate for 60% of the day | Right on the stage, **wrong on the process and on the shape**. The routing call is where a decision's time goes, but it is the worker waiting on a 3 ms call one decision at a time, not OSRM running hot. The broker guess was right. |
+| Memory is not the constraint: each JVM under 1 GB, the stack under 8 GB; a 4-vCPU instance would replay the day at about 1.5× the wall | JVMs 710 / 657 / 375 / 369 MB, the stack **4.25 GB** at its peak; the run's work plus the whole kernel bucket is 2.4 mean cores, so a 4-vCPU instance holds it | Right on memory. The 1.5× was a guess about cores the run does not use; with 1.5 cores of work the wall should be about the same on four, but that is not measured and is stated as such. |
+| (not predicted) | The machine was **45% busy** during the run, but two thirds of that was not the run: the virtual machine Docker Desktop runs the containers in cost **1.17 cores, more than the containers' own 0.73**, other applications 0.94, the kernel 0.87 | Unpredicted and the largest single bucket. On a Linux host the VM and the port proxy do not exist. Reported as the laptop's, not the run's. |
+| Fleet: 3,000 drivers about 1.8× faster than 7,500; 9,750 about 15% slower, flattening because the cap binds | **3,000: 2.06× faster** (364.5 s); 5,000: 1.66×; **9,750: 24% slower** (933.9 s). The work stays at 1.4 to 1.5 cores at every fleet; the wall follows the routing calls (204,832 at 3,000 against 442,172 at 7,500) | Direction right, both sizes understated. The service's gain is less than half the oracle's (2.06× against 4.57×), so something does cap it, but it is not the balance ceiling P8 named: a smaller fleet removes table work and leaves the per-decision fixed cost, the broker round trip, which at 3,000 costs as much as the table. |
+| Radius: ring 2 about 20% faster than ring 3, ring 5 about 25% slower | **Ring 2: 9% faster** (681.8 s); **ring 5: the same wall** (751.3 against 752.5 s), 1.3% more OSRM calls | Direction right for ring 2, size halved; **wrong on ring 5**: the fifty-candidate cap already binds at ring 3 by day, so ring 5 adds candidates only in the evening, and the tables are the same size. |
+| Worker count not re-predicted | One worker 1,191 s ($0.106), four 752 s; the OSRM core-seconds are the same at one and four workers (the same calls) | — |
+| (not predicted) | The ×1 window at 04:00 found that each worker paced from its own origin, and the group stalled 138 s at a time on the worker whose first request came 205 s after the hour (`BUGS.md` #8). Fixed; both windows re-run. | A bug the peak hour could not show, because every partition has a request within seconds of 21:00. |

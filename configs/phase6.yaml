@@ -1,0 +1,25 @@
+# Phase 6 — what it costs to run. Inherits configs/phase3.yaml (the service) and adds the sweeps and the price.
+base: configs/phase3.yaml
+hardware_lane: cpu-apple-m5
+phase_dir: phase6
+day: "2016-06-16"
+seed: 0
+workers: 4                              # the operating worker count from Phase 3
+workers_sweep: [1, 4]                   # re-run under the resource monitor; 2 and 8 are in the Phase 3 table
+fleets: [3000, 5000, 7500, 9750]        # fleet sizes replayed through the service at 4 workers (seed 0; 7,500 is the baseline)
+rings: [2, 3, 5]                        # matching radius at 4 workers (3 is the baseline)
+x1_windows: [["04:00", "04:15"], ["21:00", "21:15"]]   # paced at x1: the quiet hour and the peak hour, machine utilisation
+sample_s: 2                             # resource monitor sampling period
+price:                                  # a list price with its date; the laptop is not this machine (NUMBERS.md says so)
+  instance: c8g.2xlarge
+  vcpu: 8
+  memory_gb: 16
+  usd_per_hour: 0.319
+  region: us-east-1
+  tenancy: on-demand
+  read_on: "2026-10-26"
+  source: "instances.vantage.sh/aws/ec2/c8g.2xlarge"
+  alternatives:
+    - {instance: c8g.xlarge, vcpu: 4, memory_gb: 8, usd_per_hour: 0.160}
+    - {instance: mac-m4.metal, note: "dedicated host, 24 h minimum", usd_per_hour: 1.23}
+run_prefix: cost

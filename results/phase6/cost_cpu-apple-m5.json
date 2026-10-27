@@ -1,0 +1,1875 @@
+{
+ "lane": "cpu-apple-m5",
+ "hardware": {
+  "cpu": "Apple M5",
+  "os": "macOS-26.6.2-arm64-arm-64bit",
+  "python": "3.12.14",
+  "memory_gb": 16.0,
+  "ncpu": 10
+ },
+ "price": {
+  "instance": "c8g.2xlarge",
+  "vcpu": 8,
+  "memory_gb": 16,
+  "usd_per_hour": 0.319,
+  "region": "us-east-1",
+  "tenancy": "on-demand",
+  "read_on": "2026-10-26",
+  "source": "instances.vantage.sh/aws/ec2/c8g.2xlarge",
+  "alternatives": [
+   {
+    "instance": "c8g.xlarge",
+    "vcpu": 4,
+    "memory_gb": 8,
+    "usd_per_hour": 0.16
+   },
+   {
+    "instance": "mac-m4.metal",
+    "note": "dedicated host, 24 h minimum",
+    "usd_per_hour": 1.23
+   }
+  ]
+ },
+ "operating_point": {
+  "workers": 4,
+  "fleet": 7500,
+  "ring": 3,
+  "window_s": 0,
+  "key_resolution": 6
+ },
+ "cost_per_city_day": {
+  "machine_hours": 0.209,
+  "usd": 0.0667,
+  "usd_per_hour": 0.319,
+  "instance": "c8g.2xlarge",
+  "wall_s": 752.5,
+  "decisions": 391042,
+  "decisions_per_s": 519.7,
+  "cores_busy_mean": 4.5,
+  "machine_busy_mean_pct": 44.95,
+  "usd_per_million_decisions": 0.171,
+  "fits_4_vcpu": true,
+  "fits_4_vcpu_basis": "the run's own processes (OSRM, JVMs, Kafka) plus all kernel and unattributed time, mean cores; the laptop's VM plumbing and other applications excluded",
+  "usd_on_4_vcpu_if_same_wall": 0.0334,
+  "memory_needed_gb": 4.25
+ },
+ "bottleneck": {
+  "machine": {
+   "wall_s": 752.5,
+   "samples": 376,
+   "ncpu": 10,
+   "machine_busy_mean_pct": 44.95,
+   "machine_busy_p95_pct": 62.0,
+   "machine_core_seconds": 3382.4,
+   "cores_busy_mean": 4.5,
+   "core_seconds": {
+    "osrm": 406.4,
+    "kafka": 140.8,
+    "jvm_workers": 591.4,
+    "launcher": 1.8,
+    "vm_and_docker_overhead": 881.9,
+    "other_host_processes": 704.4,
+    "kernel_and_unattributed": 655.7
+   },
+   "accounted_core_seconds": 3382.4,
+   "shares_of_accounted": {
+    "osrm": 0.12,
+    "kafka": 0.042,
+    "jvm_workers": 0.175,
+    "launcher": 0.001,
+    "vm_and_docker_overhead": 0.261,
+    "other_host_processes": 0.208,
+    "kernel_and_unattributed": 0.194
+   },
+   "work_core_seconds": 1138.6,
+   "work_cores_mean": 1.51,
+   "work_shares": {
+    "osrm": 0.357,
+    "jvm_workers": 0.519,
+    "kafka": 0.124
+   },
+   "unaccounted_core_seconds": 0.0,
+   "jvm_rss_mb_max": {
+    "w0": 710.1,
+    "w1": 656.6,
+    "w2": 374.5,
+    "w3": 368.9
+   },
+   "jvm_rss_mb_max_sum": 2110.0,
+   "osrm_mb_max": 304.5,
+   "kafka_mb_max": 1932.6,
+   "osrm_cores_mean": 0.54,
+   "kafka_cores_mean": 0.19,
+   "jvm_cores_mean": 0.79
+  },
+  "worker_profile": {
+   "process_s": 1198.9,
+   "waiting_s": 1756.1,
+   "stage_s": {
+    "await_ack": 257.9,
+    "commit": 5.4,
+    "cruise": 143.0,
+    "osrm_route": 104.1,
+    "osrm_table": 683.8,
+    "poll_clocks": 36.5,
+    "poll_fleetlog": 51.4,
+    "poll_requests": 1668.2,
+    "process": 1198.9
+   },
+   "shares": {
+    "osrm_table": 0.5704,
+    "osrm_route": 0.0868,
+    "cruise": 0.1193,
+    "await_ack": 0.2151,
+    "commit": 0.0045,
+    "other": 0.0039
+   }
+  }
+ },
+ "by_workers": [
+  {
+   "source": "phase3",
+   "workers": 1,
+   "key_resolution": 6,
+   "wall_s": 1176.9,
+   "decisions_per_s": 332.3,
+   "cost_per_city_day": {
+    "machine_hours": 0.3269,
+    "usd": 0.1043,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "machine": null
+  },
+  {
+   "source": "phase6",
+   "workers": 1,
+   "key_resolution": 6,
+   "wall_s": 1191.4,
+   "decisions_per_s": 328.2,
+   "cost_per_city_day": {
+    "machine_hours": 0.3309,
+    "usd": 0.1056,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "machine": {
+    "cores_busy_mean": 2.81,
+    "core_seconds": {
+     "osrm": 410.6,
+     "kafka": 96.7,
+     "jvm_workers": 521.9,
+     "launcher": 0.9,
+     "vm_and_docker_overhead": 937.4,
+     "other_host_processes": 808.2,
+     "kernel_and_unattributed": 566.2
+    },
+    "machine_core_seconds": 3341.9
+   }
+  },
+  {
+   "source": "phase3",
+   "workers": 2,
+   "key_resolution": 6,
+   "wall_s": 1137.7,
+   "decisions_per_s": 343.7,
+   "cost_per_city_day": {
+    "machine_hours": 0.316,
+    "usd": 0.1008,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "machine": null
+  },
+  {
+   "source": "phase3",
+   "workers": 4,
+   "key_resolution": 6,
+   "wall_s": 747.8,
+   "decisions_per_s": 522.9,
+   "cost_per_city_day": {
+    "machine_hours": 0.2077,
+    "usd": 0.0663,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "machine": null
+  },
+  {
+   "source": "phase6",
+   "workers": 4,
+   "key_resolution": 6,
+   "wall_s": 752.5,
+   "decisions_per_s": 519.7,
+   "cost_per_city_day": {
+    "machine_hours": 0.209,
+    "usd": 0.0667,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "machine": {
+    "cores_busy_mean": 4.5,
+    "core_seconds": {
+     "osrm": 406.4,
+     "kafka": 140.8,
+     "jvm_workers": 591.4,
+     "launcher": 1.8,
+     "vm_and_docker_overhead": 881.9,
+     "other_host_processes": 704.4,
+     "kernel_and_unattributed": 655.7
+    },
+    "machine_core_seconds": 3382.4
+   }
+  },
+  {
+   "source": "phase3",
+   "workers": 8,
+   "key_resolution": 6,
+   "wall_s": 724.7,
+   "decisions_per_s": 539.6,
+   "cost_per_city_day": {
+    "machine_hours": 0.2013,
+    "usd": 0.0642,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "machine": null
+  },
+  {
+   "source": "phase3",
+   "workers": 4,
+   "key_resolution": 7,
+   "wall_s": 598.5,
+   "decisions_per_s": 653.3,
+   "cost_per_city_day": {
+    "machine_hours": 0.1663,
+    "usd": 0.053,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "machine": null
+  },
+  {
+   "source": "phase3",
+   "workers": 8,
+   "key_resolution": 7,
+   "wall_s": 607.7,
+   "decisions_per_s": 643.5,
+   "cost_per_city_day": {
+    "machine_hours": 0.1688,
+    "usd": 0.0538,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "machine": null
+  }
+ ],
+ "by_fleet": [
+  {
+   "fleet": 3000,
+   "wall_s": 364.5,
+   "decisions": 391042,
+   "decisions_per_s": 1072.8,
+   "osrm_calls": 204832,
+   "table_ms_median": {
+    "w0": 1.033916,
+    "w1": 1.048416,
+    "w2": 1.393666,
+    "w3": 1.4445
+   },
+   "cost_per_city_day": {
+    "machine_hours": 0.1013,
+    "usd": 0.0323,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "cores_busy_mean": 4.81,
+   "osrm_core_seconds": 106.1,
+   "jvm_core_seconds": 305.7
+  },
+  {
+   "fleet": 5000,
+   "wall_s": 452.2,
+   "decisions": 391042,
+   "decisions_per_s": 864.8,
+   "osrm_calls": 323249,
+   "table_ms_median": {
+    "w0": 1.086042,
+    "w1": 1.164541,
+    "w2": 1.286583,
+    "w3": 1.373541
+   },
+   "cost_per_city_day": {
+    "machine_hours": 0.1256,
+    "usd": 0.0401,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "cores_busy_mean": 4.39,
+   "osrm_core_seconds": 184.2,
+   "jvm_core_seconds": 391.8
+  },
+  {
+   "fleet": 7500,
+   "wall_s": 752.5,
+   "decisions": 391042,
+   "decisions_per_s": 519.7,
+   "osrm_calls": 442172,
+   "table_ms_median": {
+    "w0": 1.768875,
+    "w1": 1.876958,
+    "w2": 1.510792,
+    "w3": 1.645166
+   },
+   "cost_per_city_day": {
+    "machine_hours": 0.209,
+    "usd": 0.0667,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "cores_busy_mean": 4.5,
+   "osrm_core_seconds": 406.4,
+   "jvm_core_seconds": 591.4
+  },
+  {
+   "fleet": 9750,
+   "wall_s": 933.9,
+   "decisions": 391042,
+   "decisions_per_s": 418.7,
+   "osrm_calls": 480487,
+   "table_ms_median": {
+    "w0": 1.866916,
+    "w1": 1.869958,
+    "w2": 1.359167,
+    "w3": 1.500708
+   },
+   "cost_per_city_day": {
+    "machine_hours": 0.2594,
+    "usd": 0.0828,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "cores_busy_mean": 3.45,
+   "osrm_core_seconds": 450.6,
+   "jvm_core_seconds": 791.8
+  }
+ ],
+ "by_ring": [
+  {
+   "ring": 2,
+   "wall_s": 681.8,
+   "decisions": 391042,
+   "decisions_per_s": 573.5,
+   "osrm_calls": 441334,
+   "table_ms_median": {
+    "w0": 1.652208,
+    "w1": 1.628041,
+    "w2": 1.299917,
+    "w3": 1.468208
+   },
+   "cost_per_city_day": {
+    "machine_hours": 0.1894,
+    "usd": 0.0604,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "cores_busy_mean": 3.68,
+   "osrm_core_seconds": 337.9,
+   "jvm_core_seconds": 547.3
+  },
+  {
+   "ring": 3,
+   "wall_s": 752.5,
+   "decisions": 391042,
+   "decisions_per_s": 519.7,
+   "osrm_calls": 442172,
+   "table_ms_median": {
+    "w0": 1.768875,
+    "w1": 1.876958,
+    "w2": 1.510792,
+    "w3": 1.645166
+   },
+   "cost_per_city_day": {
+    "machine_hours": 0.209,
+    "usd": 0.0667,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "cores_busy_mean": 4.5,
+   "osrm_core_seconds": 406.4,
+   "jvm_core_seconds": 591.4
+  },
+  {
+   "ring": 5,
+   "wall_s": 751.3,
+   "decisions": 391042,
+   "decisions_per_s": 520.5,
+   "osrm_calls": 448064,
+   "table_ms_median": {
+    "w0": 1.771708,
+    "w1": 1.955833,
+    "w2": 1.512667,
+    "w3": 1.609542
+   },
+   "cost_per_city_day": {
+    "machine_hours": 0.2087,
+    "usd": 0.0666,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   },
+   "cores_busy_mean": 3.49,
+   "osrm_core_seconds": 414.6,
+   "jvm_core_seconds": 604.4
+  }
+ ],
+ "with_window_60s": {
+  "wall_s": 1237.4,
+  "decisions_per_s": 316.0,
+  "cost_per_city_day": {
+   "machine_hours": 0.3437,
+   "usd": 0.1096,
+   "usd_per_hour": 0.319,
+   "instance": "c8g.2xlarge"
+  }
+ },
+ "at_x1": {
+  "windows": [
+   {
+    "window": [
+     "04:00",
+     "04:15"
+    ],
+    "decisions_in_run": 28396,
+    "match_latency_ms": {
+     "median": 19.0,
+     "p99": 71.0,
+     "max": 116.0,
+     "n": 775
+    },
+    "paced_window": {
+     "window_s": 900,
+     "samples": 449,
+     "pace_origin_spread_s_across_workers": 0.0,
+     "machine_busy_mean_pct": 26.51,
+     "machine_busy_p95_pct": 40.0,
+     "cores_busy_mean": 2.65,
+     "osrm_cores_mean": 0.008,
+     "kafka_cores_mean": 0.13,
+     "jvm_cores_mean": 0.338,
+     "work_cores_mean": 0.476,
+     "vm_and_docker_cores_mean": 0.36,
+     "other_host_cores_mean": 1.327,
+     "decisions_in_window": 775
+    },
+    "machine_busy_mean_pct": 28.77,
+    "cores_busy_mean": 2.88,
+    "osrm_cores_mean": 0.05,
+    "kafka_cores_mean": 0.14,
+    "jvm_cores_mean": 0.42,
+    "note": "the run replays from midnight at maximum speed and paces from the window's start; the machine figures are over the whole run, the paced window dominates it"
+   },
+   {
+    "window": [
+     "21:00",
+     "21:15"
+    ],
+    "decisions_in_run": 326335,
+    "match_latency_ms": {
+     "median": 20.0,
+     "p99": 84.0,
+     "max": 339.0,
+     "n": 6213
+    },
+    "paced_window": {
+     "window_s": 900,
+     "samples": 448,
+     "pace_origin_spread_s_across_workers": 0.0,
+     "machine_busy_mean_pct": 17.19,
+     "machine_busy_p95_pct": 30.0,
+     "cores_busy_mean": 1.72,
+     "osrm_cores_mean": 0.029,
+     "kafka_cores_mean": 0.106,
+     "jvm_cores_mean": 0.242,
+     "work_cores_mean": 0.378,
+     "vm_and_docker_cores_mean": 0.349,
+     "other_host_cores_mean": 0.635,
+     "decisions_in_window": 6213
+    },
+    "machine_busy_mean_pct": 25.15,
+    "cores_busy_mean": 2.52,
+    "osrm_cores_mean": 0.23,
+    "kafka_cores_mean": 0.12,
+    "jvm_cores_mean": 0.48,
+    "note": "the run replays from midnight at maximum speed and paces from the window's start; the machine figures are over the whole run, the paced window dominates it"
+   }
+  ],
+  "cost_per_city_day": {
+   "machine_hours": 24,
+   "usd": 7.66,
+   "usd_per_hour": 0.319,
+   "instance": "c8g.2xlarge"
+  }
+ },
+ "runs": [
+  {
+   "run_id": "cost_2016-06-16_W1_k6_range_seed0",
+   "source": "phase6",
+   "workers": 1,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 1191.4,
+   "decisions": 391042,
+   "decisions_per_s": 328.2,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 10.0
+   },
+   "table_ms_median": {
+    "w0": 1.750458
+   },
+   "osrm_calls": 451894,
+   "worker_profile": {
+    "process_s": 1161.4,
+    "waiting_s": 19.8,
+    "stage_s": {
+     "await_ack": 211.9,
+     "commit": 1.9,
+     "cruise": 97.6,
+     "osrm_route": 75.4,
+     "osrm_table": 656.7,
+     "poll_clocks": 1.5,
+     "poll_fleetlog": 11.0,
+     "poll_requests": 7.3,
+     "process": 1161.4
+    },
+    "shares": {
+     "osrm_table": 0.5654,
+     "osrm_route": 0.0649,
+     "cruise": 0.084,
+     "await_ack": 0.1825,
+     "commit": 0.0016,
+     "other": 0.1015
+    }
+   },
+   "machine": {
+    "wall_s": 1191.4,
+    "samples": 595,
+    "ncpu": 10,
+    "machine_busy_mean_pct": 28.05,
+    "machine_busy_p95_pct": 41.0,
+    "machine_core_seconds": 3341.9,
+    "cores_busy_mean": 2.81,
+    "core_seconds": {
+     "osrm": 410.6,
+     "kafka": 96.7,
+     "jvm_workers": 521.9,
+     "launcher": 0.9,
+     "vm_and_docker_overhead": 937.4,
+     "other_host_processes": 808.2,
+     "kernel_and_unattributed": 566.2
+    },
+    "accounted_core_seconds": 3341.9,
+    "shares_of_accounted": {
+     "osrm": 0.123,
+     "kafka": 0.029,
+     "jvm_workers": 0.156,
+     "launcher": 0.0,
+     "vm_and_docker_overhead": 0.28,
+     "other_host_processes": 0.242,
+     "kernel_and_unattributed": 0.169
+    },
+    "work_core_seconds": 1029.2,
+    "work_cores_mean": 0.86,
+    "work_shares": {
+     "osrm": 0.399,
+     "jvm_workers": 0.507,
+     "kafka": 0.094
+    },
+    "unaccounted_core_seconds": 0.0,
+    "jvm_rss_mb_max": {
+     "w0": 968.7
+    },
+    "jvm_rss_mb_max_sum": 969.0,
+    "osrm_mb_max": 305.2,
+    "kafka_mb_max": 1932.1,
+    "osrm_cores_mean": 0.35,
+    "kafka_cores_mean": 0.08,
+    "jvm_cores_mean": 0.44
+   },
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.3309,
+    "usd": 0.1056,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "cost_2016-06-16_W4_k6_range_seed0_N3000",
+   "source": "phase6",
+   "workers": 4,
+   "fleet": 3000,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 364.5,
+   "decisions": 391042,
+   "decisions_per_s": 1072.8,
+   "decision_ms": {
+    "median": 1.0,
+    "p99": 8.0
+   },
+   "table_ms_median": {
+    "w0": 1.033916,
+    "w1": 1.048416,
+    "w2": 1.393666,
+    "w3": 1.4445
+   },
+   "osrm_calls": 204832,
+   "worker_profile": {
+    "process_s": 555.3,
+    "waiting_s": 858.9,
+    "stage_s": {
+     "await_ack": 235.8,
+     "commit": 3.5,
+     "cruise": 58.8,
+     "osrm_route": 41.8,
+     "osrm_table": 232.7,
+     "poll_clocks": 18.8,
+     "poll_fleetlog": 27.6,
+     "poll_requests": 812.5,
+     "process": 555.3
+    },
+    "shares": {
+     "osrm_table": 0.4191,
+     "osrm_route": 0.0753,
+     "cruise": 0.1059,
+     "await_ack": 0.4246,
+     "commit": 0.0063,
+     "other": 0.0
+    }
+   },
+   "machine": {
+    "wall_s": 364.5,
+    "samples": 182,
+    "ncpu": 10,
+    "machine_busy_mean_pct": 48.09,
+    "machine_busy_p95_pct": 67.0,
+    "machine_core_seconds": 1753.0,
+    "cores_busy_mean": 4.81,
+    "core_seconds": {
+     "osrm": 106.1,
+     "kafka": 109.9,
+     "jvm_workers": 305.7,
+     "launcher": 0.8,
+     "vm_and_docker_overhead": 512.6,
+     "other_host_processes": 406.3,
+     "kernel_and_unattributed": 311.6
+    },
+    "accounted_core_seconds": 1753.0,
+    "shares_of_accounted": {
+     "osrm": 0.061,
+     "kafka": 0.063,
+     "jvm_workers": 0.174,
+     "launcher": 0.0,
+     "vm_and_docker_overhead": 0.292,
+     "other_host_processes": 0.232,
+     "kernel_and_unattributed": 0.178
+    },
+    "work_core_seconds": 521.7,
+    "work_cores_mean": 1.43,
+    "work_shares": {
+     "osrm": 0.203,
+     "jvm_workers": 0.586,
+     "kafka": 0.211
+    },
+    "unaccounted_core_seconds": 0.0,
+    "jvm_rss_mb_max": {
+     "w0": 884.8,
+     "w1": 605.1,
+     "w2": 359.0,
+     "w3": 328.3
+    },
+    "jvm_rss_mb_max_sum": 2177.0,
+    "osrm_mb_max": 304.2,
+    "kafka_mb_max": 1961.1,
+    "osrm_cores_mean": 0.29,
+    "kafka_cores_mean": 0.3,
+    "jvm_cores_mean": 0.84
+   },
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.1013,
+    "usd": 0.0323,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "cost_2016-06-16_W4_k6_range_seed0_N5000",
+   "source": "phase6",
+   "workers": 4,
+   "fleet": 5000,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 452.2,
+   "decisions": 391042,
+   "decisions_per_s": 864.8,
+   "decision_ms": {
+    "median": 1.0,
+    "p99": 9.0
+   },
+   "table_ms_median": {
+    "w0": 1.086042,
+    "w1": 1.164541,
+    "w2": 1.286583,
+    "w3": 1.373541
+   },
+   "osrm_calls": 323249,
+   "worker_profile": {
+    "process_s": 729.2,
+    "waiting_s": 1033.3,
+    "stage_s": {
+     "await_ack": 229.7,
+     "commit": 4.4,
+     "cruise": 86.7,
+     "osrm_route": 63.8,
+     "osrm_table": 374.4,
+     "poll_clocks": 21.9,
+     "poll_fleetlog": 31.7,
+     "poll_requests": 979.7,
+     "process": 729.2
+    },
+    "shares": {
+     "osrm_table": 0.5134,
+     "osrm_route": 0.0875,
+     "cruise": 0.1189,
+     "await_ack": 0.315,
+     "commit": 0.006,
+     "other": 0.0
+    }
+   },
+   "machine": {
+    "wall_s": 452.2,
+    "samples": 226,
+    "ncpu": 10,
+    "machine_busy_mean_pct": 43.9,
+    "machine_busy_p95_pct": 63.0,
+    "machine_core_seconds": 1985.1,
+    "cores_busy_mean": 4.39,
+    "core_seconds": {
+     "osrm": 184.2,
+     "kafka": 103.2,
+     "jvm_workers": 391.8,
+     "launcher": 1.1,
+     "vm_and_docker_overhead": 642.3,
+     "other_host_processes": 329.3,
+     "kernel_and_unattributed": 333.2
+    },
+    "accounted_core_seconds": 1985.1,
+    "shares_of_accounted": {
+     "osrm": 0.093,
+     "kafka": 0.052,
+     "jvm_workers": 0.197,
+     "launcher": 0.001,
+     "vm_and_docker_overhead": 0.324,
+     "other_host_processes": 0.166,
+     "kernel_and_unattributed": 0.168
+    },
+    "work_core_seconds": 679.2,
+    "work_cores_mean": 1.5,
+    "work_shares": {
+     "osrm": 0.271,
+     "jvm_workers": 0.577,
+     "kafka": 0.152
+    },
+    "unaccounted_core_seconds": 0.0,
+    "jvm_rss_mb_max": {
+     "w0": 748.1,
+     "w1": 745.7,
+     "w2": 358.5,
+     "w3": 309.8
+    },
+    "jvm_rss_mb_max_sum": 2162.0,
+    "osrm_mb_max": 304.7,
+    "kafka_mb_max": 2003.7,
+    "osrm_cores_mean": 0.41,
+    "kafka_cores_mean": 0.23,
+    "jvm_cores_mean": 0.87
+   },
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.1256,
+    "usd": 0.0401,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "cost_2016-06-16_W4_k6_range_seed0_N9750",
+   "source": "phase6",
+   "workers": 4,
+   "fleet": 9750,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 933.9,
+   "decisions": 391042,
+   "decisions_per_s": 418.7,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 11.0
+   },
+   "table_ms_median": {
+    "w0": 1.866916,
+    "w1": 1.869958,
+    "w2": 1.359167,
+    "w3": 1.500708
+   },
+   "osrm_calls": 480487,
+   "worker_profile": {
+    "process_s": 1379.6,
+    "waiting_s": 2302.4,
+    "stage_s": {
+     "await_ack": 234.2,
+     "commit": 5.9,
+     "cruise": 164.1,
+     "osrm_route": 121.1,
+     "osrm_table": 718.8,
+     "poll_clocks": 40.1,
+     "poll_fleetlog": 54.2,
+     "poll_requests": 2208.1,
+     "process": 1379.6
+    },
+    "shares": {
+     "osrm_table": 0.521,
+     "osrm_route": 0.0878,
+     "cruise": 0.1189,
+     "await_ack": 0.1698,
+     "commit": 0.0043,
+     "other": 0.0982
+    }
+   },
+   "machine": {
+    "wall_s": 933.9,
+    "samples": 466,
+    "ncpu": 10,
+    "machine_busy_mean_pct": 34.5,
+    "machine_busy_p95_pct": 45.0,
+    "machine_core_seconds": 3222.0,
+    "cores_busy_mean": 3.45,
+    "core_seconds": {
+     "osrm": 450.6,
+     "kafka": 123.3,
+     "jvm_workers": 791.8,
+     "launcher": 2.1,
+     "vm_and_docker_overhead": 940.4,
+     "other_host_processes": 374.7,
+     "kernel_and_unattributed": 539.1
+    },
+    "accounted_core_seconds": 3222.0,
+    "shares_of_accounted": {
+     "osrm": 0.14,
+     "kafka": 0.038,
+     "jvm_workers": 0.246,
+     "launcher": 0.001,
+     "vm_and_docker_overhead": 0.292,
+     "other_host_processes": 0.116,
+     "kernel_and_unattributed": 0.167
+    },
+    "work_core_seconds": 1365.7,
+    "work_cores_mean": 1.46,
+    "work_shares": {
+     "osrm": 0.33,
+     "jvm_workers": 0.58,
+     "kafka": 0.09
+    },
+    "unaccounted_core_seconds": 0.0,
+    "jvm_rss_mb_max": {
+     "w0": 705.7,
+     "w1": 558.9,
+     "w2": 388.5,
+     "w3": 385.8
+    },
+    "jvm_rss_mb_max_sum": 2039.0,
+    "osrm_mb_max": 304.6,
+    "kafka_mb_max": 2114.5,
+    "osrm_cores_mean": 0.48,
+    "kafka_cores_mean": 0.13,
+    "jvm_cores_mean": 0.85
+   },
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.2594,
+    "usd": 0.0828,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "cost_2016-06-16_W4_k6_range_seed0_R2",
+   "source": "phase6",
+   "workers": 4,
+   "fleet": 7500,
+   "ring": 2,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 681.8,
+   "decisions": 391042,
+   "decisions_per_s": 573.5,
+   "decision_ms": {
+    "median": 2.0,
+    "p99": 10.0
+   },
+   "table_ms_median": {
+    "w0": 1.652208,
+    "w1": 1.628041,
+    "w2": 1.299917,
+    "w3": 1.468208
+   },
+   "osrm_calls": 441334,
+   "worker_profile": {
+    "process_s": 1071.6,
+    "waiting_s": 1607.8,
+    "stage_s": {
+     "await_ack": 240.3,
+     "commit": 4.0,
+     "cruise": 139.4,
+     "osrm_route": 102.4,
+     "osrm_table": 597.1,
+     "poll_clocks": 28.6,
+     "poll_fleetlog": 42.1,
+     "poll_requests": 1537.1,
+     "process": 1071.6
+    },
+    "shares": {
+     "osrm_table": 0.5572,
+     "osrm_route": 0.0956,
+     "cruise": 0.1301,
+     "await_ack": 0.2242,
+     "commit": 0.0037,
+     "other": 0.0
+    }
+   },
+   "machine": {
+    "wall_s": 681.8,
+    "samples": 340,
+    "ncpu": 10,
+    "machine_busy_mean_pct": 36.76,
+    "machine_busy_p95_pct": 52.0,
+    "machine_core_seconds": 2506.4,
+    "cores_busy_mean": 3.68,
+    "core_seconds": {
+     "osrm": 337.9,
+     "kafka": 109.1,
+     "jvm_workers": 547.3,
+     "launcher": 1.6,
+     "vm_and_docker_overhead": 829.2,
+     "other_host_processes": 266.4,
+     "kernel_and_unattributed": 414.9
+    },
+    "accounted_core_seconds": 2506.4,
+    "shares_of_accounted": {
+     "osrm": 0.135,
+     "kafka": 0.044,
+     "jvm_workers": 0.218,
+     "launcher": 0.001,
+     "vm_and_docker_overhead": 0.331,
+     "other_host_processes": 0.106,
+     "kernel_and_unattributed": 0.166
+    },
+    "work_core_seconds": 994.3,
+    "work_cores_mean": 1.46,
+    "work_shares": {
+     "osrm": 0.34,
+     "jvm_workers": 0.55,
+     "kafka": 0.11
+    },
+    "unaccounted_core_seconds": 0.0,
+    "jvm_rss_mb_max": {
+     "w0": 721.1,
+     "w1": 679.3,
+     "w2": 441.6,
+     "w3": 437.8
+    },
+    "jvm_rss_mb_max_sum": 2280.0,
+    "osrm_mb_max": 305.5,
+    "kafka_mb_max": 2185.2,
+    "osrm_cores_mean": 0.5,
+    "kafka_cores_mean": 0.16,
+    "jvm_cores_mean": 0.8
+   },
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.1894,
+    "usd": 0.0604,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "cost_2016-06-16_W4_k6_range_seed0_R5",
+   "source": "phase6",
+   "workers": 4,
+   "fleet": 7500,
+   "ring": 5,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 751.3,
+   "decisions": 391042,
+   "decisions_per_s": 520.5,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 10.0
+   },
+   "table_ms_median": {
+    "w0": 1.771708,
+    "w1": 1.955833,
+    "w2": 1.512667,
+    "w3": 1.609542
+   },
+   "osrm_calls": 448064,
+   "worker_profile": {
+    "process_s": 1189.6,
+    "waiting_s": 1766.8,
+    "stage_s": {
+     "await_ack": 238.4,
+     "commit": 4.2,
+     "cruise": 129.0,
+     "osrm_route": 94.4,
+     "osrm_table": 689.2,
+     "poll_clocks": 31.8,
+     "poll_fleetlog": 43.8,
+     "poll_requests": 1691.2,
+     "process": 1189.6
+    },
+    "shares": {
+     "osrm_table": 0.5794,
+     "osrm_route": 0.0794,
+     "cruise": 0.1084,
+     "await_ack": 0.2004,
+     "commit": 0.0035,
+     "other": 0.0289
+    }
+   },
+   "machine": {
+    "wall_s": 751.3,
+    "samples": 375,
+    "ncpu": 10,
+    "machine_busy_mean_pct": 34.86,
+    "machine_busy_p95_pct": 44.0,
+    "machine_core_seconds": 2619.3,
+    "cores_busy_mean": 3.49,
+    "core_seconds": {
+     "osrm": 414.6,
+     "kafka": 110.5,
+     "jvm_workers": 604.4,
+     "launcher": 1.7,
+     "vm_and_docker_overhead": 876.5,
+     "other_host_processes": 235.3,
+     "kernel_and_unattributed": 376.3
+    },
+    "accounted_core_seconds": 2619.3,
+    "shares_of_accounted": {
+     "osrm": 0.158,
+     "kafka": 0.042,
+     "jvm_workers": 0.231,
+     "launcher": 0.001,
+     "vm_and_docker_overhead": 0.335,
+     "other_host_processes": 0.09,
+     "kernel_and_unattributed": 0.144
+    },
+    "work_core_seconds": 1129.5,
+    "work_cores_mean": 1.5,
+    "work_shares": {
+     "osrm": 0.367,
+     "jvm_workers": 0.535,
+     "kafka": 0.098
+    },
+    "unaccounted_core_seconds": 0.0,
+    "jvm_rss_mb_max": {
+     "w0": 699.2,
+     "w1": 634.5,
+     "w2": 442.3,
+     "w3": 428.3
+    },
+    "jvm_rss_mb_max_sum": 2204.0,
+    "osrm_mb_max": 304.8,
+    "kafka_mb_max": 2271.2,
+    "osrm_cores_mean": 0.55,
+    "kafka_cores_mean": 0.15,
+    "jvm_cores_mean": 0.8
+   },
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.2087,
+    "usd": 0.0666,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "cost_2016-06-16_W4_k6_range_seed0",
+   "source": "phase6",
+   "workers": 4,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 752.5,
+   "decisions": 391042,
+   "decisions_per_s": 519.7,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 12.0
+   },
+   "table_ms_median": {
+    "w0": 1.768875,
+    "w1": 1.876958,
+    "w2": 1.510792,
+    "w3": 1.645166
+   },
+   "osrm_calls": 442172,
+   "worker_profile": {
+    "process_s": 1198.9,
+    "waiting_s": 1756.1,
+    "stage_s": {
+     "await_ack": 257.9,
+     "commit": 5.4,
+     "cruise": 143.0,
+     "osrm_route": 104.1,
+     "osrm_table": 683.8,
+     "poll_clocks": 36.5,
+     "poll_fleetlog": 51.4,
+     "poll_requests": 1668.2,
+     "process": 1198.9
+    },
+    "shares": {
+     "osrm_table": 0.5704,
+     "osrm_route": 0.0868,
+     "cruise": 0.1193,
+     "await_ack": 0.2151,
+     "commit": 0.0045,
+     "other": 0.0039
+    }
+   },
+   "machine": {
+    "wall_s": 752.5,
+    "samples": 376,
+    "ncpu": 10,
+    "machine_busy_mean_pct": 44.95,
+    "machine_busy_p95_pct": 62.0,
+    "machine_core_seconds": 3382.4,
+    "cores_busy_mean": 4.5,
+    "core_seconds": {
+     "osrm": 406.4,
+     "kafka": 140.8,
+     "jvm_workers": 591.4,
+     "launcher": 1.8,
+     "vm_and_docker_overhead": 881.9,
+     "other_host_processes": 704.4,
+     "kernel_and_unattributed": 655.7
+    },
+    "accounted_core_seconds": 3382.4,
+    "shares_of_accounted": {
+     "osrm": 0.12,
+     "kafka": 0.042,
+     "jvm_workers": 0.175,
+     "launcher": 0.001,
+     "vm_and_docker_overhead": 0.261,
+     "other_host_processes": 0.208,
+     "kernel_and_unattributed": 0.194
+    },
+    "work_core_seconds": 1138.6,
+    "work_cores_mean": 1.51,
+    "work_shares": {
+     "osrm": 0.357,
+     "jvm_workers": 0.519,
+     "kafka": 0.124
+    },
+    "unaccounted_core_seconds": 0.0,
+    "jvm_rss_mb_max": {
+     "w0": 710.1,
+     "w1": 656.6,
+     "w2": 374.5,
+     "w3": 368.9
+    },
+    "jvm_rss_mb_max_sum": 2110.0,
+    "osrm_mb_max": 304.5,
+    "kafka_mb_max": 1932.6,
+    "osrm_cores_mean": 0.54,
+    "kafka_cores_mean": 0.19,
+    "jvm_cores_mean": 0.79
+   },
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.209,
+    "usd": 0.0667,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "cost_2016-06-16_W4_k6_range_seed0_x1_until0415",
+   "source": "phase6",
+   "workers": 4,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": 1.0,
+   "pace_from": "04:00",
+   "until": "04:15",
+   "wall_s": 997.1,
+   "decisions": 28396,
+   "decisions_per_s": 28.5,
+   "decision_ms": {
+    "median": 4.0,
+    "p99": 23.0
+   },
+   "table_ms_median": {
+    "w0": 2.047791,
+    "w1": 2.359833,
+    "w2": 2.5475,
+    "w3": 2.816959
+   },
+   "osrm_calls": 62751,
+   "worker_profile": {
+    "process_s": 155.4,
+    "waiting_s": 3756.4,
+    "stage_s": {
+     "await_ack": 29.8,
+     "commit": 2.7,
+     "cruise": 60.9,
+     "osrm_route": 46.1,
+     "osrm_table": 70.7,
+     "poll_clocks": 134.0,
+     "poll_fleetlog": 106.2,
+     "poll_requests": 3516.2,
+     "process": 155.4
+    },
+    "shares": {
+     "osrm_table": 0.455,
+     "osrm_route": 0.2967,
+     "cruise": 0.3919,
+     "await_ack": 0.1918,
+     "commit": 0.0174,
+     "other": 0.0
+    }
+   },
+   "machine": {
+    "wall_s": 997.1,
+    "samples": 496,
+    "ncpu": 10,
+    "machine_busy_mean_pct": 28.77,
+    "machine_busy_p95_pct": 50.0,
+    "machine_core_seconds": 2868.3,
+    "cores_busy_mean": 2.88,
+    "core_seconds": {
+     "osrm": 52.7,
+     "kafka": 136.9,
+     "jvm_workers": 422.7,
+     "launcher": 8.2,
+     "vm_and_docker_overhead": 443.0,
+     "other_host_processes": 1280.6,
+     "kernel_and_unattributed": 524.2
+    },
+    "accounted_core_seconds": 2868.3,
+    "shares_of_accounted": {
+     "osrm": 0.018,
+     "kafka": 0.048,
+     "jvm_workers": 0.147,
+     "launcher": 0.003,
+     "vm_and_docker_overhead": 0.154,
+     "other_host_processes": 0.446,
+     "kernel_and_unattributed": 0.183
+    },
+    "work_core_seconds": 612.3,
+    "work_cores_mean": 0.61,
+    "work_shares": {
+     "osrm": 0.086,
+     "jvm_workers": 0.69,
+     "kafka": 0.224
+    },
+    "unaccounted_core_seconds": 0.0,
+    "jvm_rss_mb_max": {
+     "w0": 627.2,
+     "w1": 516.7,
+     "w2": 307.4,
+     "w3": 318.3
+    },
+    "jvm_rss_mb_max_sum": 1770.0,
+    "osrm_mb_max": 304.4,
+    "kafka_mb_max": 2370.8,
+    "osrm_cores_mean": 0.05,
+    "kafka_cores_mean": 0.14,
+    "jvm_cores_mean": 0.42
+   },
+   "paced_window": {
+    "window_s": 900,
+    "samples": 449,
+    "pace_origin_spread_s_across_workers": 0.0,
+    "machine_busy_mean_pct": 26.51,
+    "machine_busy_p95_pct": 40.0,
+    "cores_busy_mean": 2.65,
+    "osrm_cores_mean": 0.008,
+    "kafka_cores_mean": 0.13,
+    "jvm_cores_mean": 0.338,
+    "work_cores_mean": 0.476,
+    "vm_and_docker_cores_mean": 0.36,
+    "other_host_cores_mean": 1.327,
+    "decisions_in_window": 775
+   },
+   "match_latency_ms": {
+    "median": 19.0,
+    "p99": 71.0,
+    "max": 116.0,
+    "n": 775
+   }
+  },
+  {
+   "run_id": "cost_2016-06-16_W4_k6_range_seed0_x1_until2115",
+   "source": "phase6",
+   "workers": 4,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": 1.0,
+   "pace_from": "21:00",
+   "until": "21:15",
+   "wall_s": 1531.6,
+   "decisions": 326335,
+   "decisions_per_s": 213.1,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 11.0
+   },
+   "table_ms_median": {
+    "w0": 1.805458,
+    "w1": 1.8165,
+    "w2": 1.31675,
+    "w3": 1.5555
+   },
+   "osrm_calls": 376479,
+   "worker_profile": {
+    "process_s": 1009.7,
+    "waiting_s": 5039.5,
+    "stage_s": {
+     "await_ack": 197.5,
+     "commit": 7.1,
+     "cruise": 118.2,
+     "osrm_route": 88.3,
+     "osrm_table": 578.8,
+     "poll_clocks": 116.8,
+     "poll_fleetlog": 100.2,
+     "poll_requests": 4822.5,
+     "process": 1009.7
+    },
+    "shares": {
+     "osrm_table": 0.5732,
+     "osrm_route": 0.0875,
+     "cruise": 0.1171,
+     "await_ack": 0.1956,
+     "commit": 0.007,
+     "other": 0.0196
+    }
+   },
+   "machine": {
+    "wall_s": 1531.6,
+    "samples": 764,
+    "ncpu": 10,
+    "machine_busy_mean_pct": 25.15,
+    "machine_busy_p95_pct": 45.0,
+    "machine_core_seconds": 3852.1,
+    "cores_busy_mean": 2.52,
+    "core_seconds": {
+     "osrm": 351.7,
+     "kafka": 189.4,
+     "jvm_workers": 741.3,
+     "launcher": 8.3,
+     "vm_and_docker_overhead": 1041.7,
+     "other_host_processes": 839.1,
+     "kernel_and_unattributed": 680.6
+    },
+    "accounted_core_seconds": 3852.1,
+    "shares_of_accounted": {
+     "osrm": 0.091,
+     "kafka": 0.049,
+     "jvm_workers": 0.192,
+     "launcher": 0.002,
+     "vm_and_docker_overhead": 0.27,
+     "other_host_processes": 0.218,
+     "kernel_and_unattributed": 0.177
+    },
+    "work_core_seconds": 1282.4,
+    "work_cores_mean": 0.84,
+    "work_shares": {
+     "osrm": 0.274,
+     "jvm_workers": 0.578,
+     "kafka": 0.148
+    },
+    "unaccounted_core_seconds": 0.0,
+    "jvm_rss_mb_max": {
+     "w0": 665.3,
+     "w1": 618.9,
+     "w2": 405.5,
+     "w3": 425.9
+    },
+    "jvm_rss_mb_max_sum": 2116.0,
+    "osrm_mb_max": 304.5,
+    "kafka_mb_max": 2370.9,
+    "osrm_cores_mean": 0.23,
+    "kafka_cores_mean": 0.12,
+    "jvm_cores_mean": 0.48
+   },
+   "paced_window": {
+    "window_s": 900,
+    "samples": 448,
+    "pace_origin_spread_s_across_workers": 0.0,
+    "machine_busy_mean_pct": 17.19,
+    "machine_busy_p95_pct": 30.0,
+    "cores_busy_mean": 1.72,
+    "osrm_cores_mean": 0.029,
+    "kafka_cores_mean": 0.106,
+    "jvm_cores_mean": 0.242,
+    "work_cores_mean": 0.378,
+    "vm_and_docker_cores_mean": 0.349,
+    "other_host_cores_mean": 0.635,
+    "decisions_in_window": 6213
+   },
+   "match_latency_ms": {
+    "median": 20.0,
+    "p99": 84.0,
+    "max": 339.0,
+    "n": 6213
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W1_k6_range_seed0",
+   "source": "phase3",
+   "workers": 1,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 1176.9,
+   "decisions": 391042,
+   "decisions_per_s": 332.3,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 10.0
+   },
+   "table_ms_median": {
+    "w0": 1.750833
+   },
+   "osrm_calls": 451894,
+   "worker_profile": {
+    "process_s": 1146.6,
+    "waiting_s": 20.0,
+    "stage_s": {
+     "await_ack": 203.1,
+     "commit": 2.5,
+     "cruise": 91.9,
+     "osrm_route": 70.3,
+     "osrm_table": 640.2,
+     "poll_clocks": 1.5,
+     "poll_fleetlog": 11.8,
+     "poll_requests": 6.7,
+     "process": 1146.6
+    },
+    "shares": {
+     "osrm_table": 0.5583,
+     "osrm_route": 0.0613,
+     "cruise": 0.0802,
+     "await_ack": 0.1771,
+     "commit": 0.0022,
+     "other": 0.1209
+    }
+   },
+   "machine": null,
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.3269,
+    "usd": 0.1043,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W2_k6_range_seed0",
+   "source": "phase3",
+   "workers": 2,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 1137.7,
+   "decisions": 391042,
+   "decisions_per_s": 343.7,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 10.0
+   },
+   "table_ms_median": {
+    "w0": 1.757291,
+    "w1": 1.2765
+   },
+   "osrm_calls": 451735,
+   "worker_profile": {
+    "process_s": 1152.1,
+    "waiting_s": 1092.4,
+    "stage_s": {
+     "await_ack": 211.6,
+     "commit": 2.7,
+     "cruise": 102.4,
+     "osrm_route": 76.6,
+     "osrm_table": 646.7,
+     "poll_clocks": 18.5,
+     "poll_fleetlog": 35.6,
+     "poll_requests": 1038.3,
+     "process": 1152.1
+    },
+    "shares": {
+     "osrm_table": 0.5613,
+     "osrm_route": 0.0665,
+     "cruise": 0.0889,
+     "await_ack": 0.1837,
+     "commit": 0.0023,
+     "other": 0.0973
+    }
+   },
+   "machine": null,
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.316,
+    "usd": 0.1008,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_range_seed0",
+   "source": "phase3",
+   "workers": 4,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 747.8,
+   "decisions": 391042,
+   "decisions_per_s": 522.9,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 10.0
+   },
+   "table_ms_median": {
+    "w0": 1.752416,
+    "w1": 1.788833,
+    "w2": 1.387125,
+    "w3": 1.500125
+   },
+   "osrm_calls": 442028,
+   "worker_profile": {
+    "process_s": 1158.0,
+    "waiting_s": 1779.6,
+    "stage_s": {
+     "await_ack": 240.6,
+     "commit": 4.9,
+     "cruise": 134.3,
+     "osrm_route": 96.9,
+     "osrm_table": 642.6,
+     "poll_clocks": 36.3,
+     "poll_fleetlog": 52.5,
+     "poll_requests": 1690.8,
+     "process": 1158.0
+    },
+    "shares": {
+     "osrm_table": 0.5549,
+     "osrm_route": 0.0837,
+     "cruise": 0.116,
+     "await_ack": 0.2078,
+     "commit": 0.0042,
+     "other": 0.0334
+    }
+   },
+   "machine": null,
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.2077,
+    "usd": 0.0663,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W8_k6_range_seed0",
+   "source": "phase3",
+   "workers": 8,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 724.7,
+   "decisions": 391042,
+   "decisions_per_s": 539.6,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 12.0
+   },
+   "table_ms_median": {
+    "w0": 1.754834,
+    "w1": 2.227833,
+    "w2": 1.976125,
+    "w3": 2.048708,
+    "w4": 2.4085,
+    "w5": 1.634791,
+    "w6": 1.860541,
+    "w7": 2.116084
+   },
+   "osrm_calls": 442351,
+   "worker_profile": {
+    "process_s": 1238.7,
+    "waiting_s": 4426.8,
+    "stage_s": {
+     "await_ack": 283.3,
+     "commit": 8.4,
+     "cruise": 180.9,
+     "osrm_route": 126.3,
+     "osrm_table": 692.7,
+     "poll_clocks": 113.3,
+     "poll_fleetlog": 103.7,
+     "poll_requests": 4209.8,
+     "process": 1238.7
+    },
+    "shares": {
+     "osrm_table": 0.5592,
+     "osrm_route": 0.102,
+     "cruise": 0.146,
+     "await_ack": 0.2287,
+     "commit": 0.0068,
+     "other": 0.0
+    }
+   },
+   "machine": null,
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.2013,
+    "usd": 0.0642,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k7_range_seed0",
+   "source": "phase3",
+   "workers": 4,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 7,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 598.5,
+   "decisions": 391042,
+   "decisions_per_s": 653.3,
+   "decision_ms": {
+    "median": 2.0,
+    "p99": 10.0
+   },
+   "table_ms_median": {
+    "w0": 1.561042,
+    "w1": 1.652583,
+    "w2": 1.72925,
+    "w3": 1.515291
+   },
+   "osrm_calls": 434703,
+   "worker_profile": {
+    "process_s": 1129.0,
+    "waiting_s": 1231.4,
+    "stage_s": {
+     "await_ack": 297.4,
+     "commit": 3.5,
+     "cruise": 156.6,
+     "osrm_route": 100.2,
+     "osrm_table": 595.1,
+     "poll_clocks": 23.2,
+     "poll_fleetlog": 47.6,
+     "poll_requests": 1160.6,
+     "process": 1129.0
+    },
+    "shares": {
+     "osrm_table": 0.5271,
+     "osrm_route": 0.0888,
+     "cruise": 0.1387,
+     "await_ack": 0.2634,
+     "commit": 0.0031,
+     "other": 0.0
+    }
+   },
+   "machine": null,
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.1663,
+    "usd": 0.053,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W8_k7_range_seed0",
+   "source": "phase3",
+   "workers": 8,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 7,
+   "window_s": 0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 607.7,
+   "decisions": 391042,
+   "decisions_per_s": 643.5,
+   "decision_ms": {
+    "median": 3.0,
+    "p99": 15.0
+   },
+   "table_ms_median": {
+    "w0": 2.255042,
+    "w1": 1.729,
+    "w2": 1.727,
+    "w3": 1.918917,
+    "w4": 2.014583,
+    "w5": 2.33175,
+    "w6": 2.311291,
+    "w7": 1.693334
+   },
+   "osrm_calls": 430843,
+   "worker_profile": {
+    "process_s": 1335.5,
+    "waiting_s": 3385.0,
+    "stage_s": {
+     "await_ack": 388.1,
+     "commit": 9.7,
+     "cruise": 258.1,
+     "osrm_route": 157.9,
+     "osrm_table": 688.3,
+     "poll_clocks": 86.7,
+     "poll_fleetlog": 95.6,
+     "poll_requests": 3202.7,
+     "process": 1335.5
+    },
+    "shares": {
+     "osrm_table": 0.5154,
+     "osrm_route": 0.1182,
+     "cruise": 0.1933,
+     "await_ack": 0.2906,
+     "commit": 0.0073,
+     "other": 0.0
+    }
+   },
+   "machine": null,
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.1688,
+    "usd": 0.0538,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  },
+  {
+   "run_id": "svc_2016-06-16_W4_k6_range_seed0_w60",
+   "source": "phase4",
+   "workers": 4,
+   "fleet": 7500,
+   "ring": 3,
+   "key_resolution": 6,
+   "window_s": 60.0,
+   "speed": "max",
+   "pace_from": null,
+   "until": null,
+   "wall_s": 1237.4,
+   "decisions": 391042,
+   "decisions_per_s": 316.0,
+   "decision_ms": {
+    "median": 671.0,
+    "p99": 1628.0
+   },
+   "table_ms_median": {
+    "w0": 672.904334,
+    "w1": 317.032875,
+    "w2": 17.492125,
+    "w3": 17.406708
+   },
+   "osrm_calls": 98412,
+   "worker_profile": {
+    "process_s": 1929.8,
+    "waiting_s": 2937.9,
+    "stage_s": {
+     "await_ack": 215.9,
+     "cruise": 156.6,
+     "osrm_route": 117.7,
+     "osrm_table": 1505.6,
+     "poll_clocks": 51.3,
+     "poll_fleetlog": 57.9,
+     "poll_requests": 2828.7,
+     "process": 1929.8,
+     "solve": 12.3
+    },
+    "shares": {
+     "osrm_table": 0.7802,
+     "osrm_route": 0.061,
+     "cruise": 0.0811,
+     "await_ack": 0.1119,
+     "commit": 0.0,
+     "other": 0.0
+    }
+   },
+   "machine": null,
+   "paced_window": null,
+   "cost_per_city_day": {
+    "machine_hours": 0.3437,
+    "usd": 0.1096,
+    "usd_per_hour": 0.319,
+    "instance": "c8g.2xlarge"
+   }
+  }
+ ]
+}

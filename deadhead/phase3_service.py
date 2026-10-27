@@ -17,8 +17,17 @@ from confluent_kafka.admin import AdminClient
 from .stream import ensure_topic, requests_topic, read_topic
 from .phase3_data import partition_of
 from .phase0_data import hardware
+from .resources import ResourceMonitor
 
 JAR = "consumer/build/libs/deadhead-consumer.jar"
+
+def load_config(path):
+    """A config may name a `base` it inherits from (Phase 6 inherits the service's)."""
+    cfg = yaml.safe_load(open(path))
+    return {**yaml.safe_load(open(cfg["base"])), **cfg} if "base" in cfg else cfg
+
+def cells_path(day, ring=None):
+    return f"data/phase3/cells_{day}.json" if ring is None else f"data/phase3/cells_{day}_R{ring}.json"
 
 def hhmm_to_t(day_start, s):
     h, m = s.split(":"); return day_start + int(h) * 3600 + int(m) * 60
@@ -42,7 +51,7 @@ def members(cfg, run_id):
     g = list(admin.describe_consumer_groups([f"svc-{run_id}"]).values())[0].result()
     return {m.client_id: sorted(tp.partition for tp in (m.assignment.topic_partitions if m.assignment else [])) for m in g.members}
 
-def run(cfg, day, n_workers, seed, key_res, assignor, speed, pace_from, until, kill_at, run_id, slack=None, window=0):
+def run(cfg, day, n_workers, seed, key_res, assignor, speed, pace_from, until, kill_at, run_id, slack=None, window=0, ring=None, monitor=False):
     rid = run_id
     admin = AdminClient({"bootstrap.servers": cfg["kafka"]})
     for g in (f"svc-{rid}",):            # a run id reused must not inherit committed offsets from an earlier run
@@ -54,7 +63,7 @@ def run(cfg, day, n_workers, seed, key_res, assignor, speed, pace_from, until, k
     topic = requests_topic(day, key_res)
     out_dir = cfg.get("phase_dir", "phase3")                 # Phase 4 reuses the launcher and writes under its own directory
     logs = Path(f"results/{out_dir}/logs"); logs.mkdir(parents=True, exist_ok=True)
-    args = [f"--run={rid}", f"--requests={topic}", f"--cells=data/phase3/cells_{day}.json", f"--demand=data/phase3/demand_{day}.json", f"--key-res={key_res}",
+    args = [f"--run={rid}", f"--requests={topic}", f"--cells={cells_path(day, ring)}", f"--demand=data/phase3/demand_{day}.json", f"--key-res={key_res}",
             f"--partitions={cfg['partitions']}", f"--candidates={cfg['candidates_k']}", f"--abandon={cfg['abandon_after_s']}", f"--cruise-after={cfg['cruise_after_s']}",
             f"--slack={cfg['watermark_slack_s'] if slack is None else slack}", f"--assignor={assignor}", f"--session-timeout={cfg['session_timeout_ms']}", f"--heartbeat={cfg['heartbeat_interval_ms']}",
             f"--kafka={cfg['kafka']}", f"--osrm={cfg['osrm']}", "--exit-when-done"]
@@ -70,6 +79,8 @@ def run(cfg, day, n_workers, seed, key_res, assignor, speed, pace_from, until, k
         w = f"w{i}"
         files[w] = open(logs / f"{rid}_{w}.log", "w")
         procs[w] = subprocess.Popen(["java", "-Xmx2g", "-XX:+UseParallelGC", "-Dorg.slf4j.simpleLogger.defaultLogLevel=warn", "-jar", JAR, f"--worker={w}"] + args, stdout=files[w], stderr=subprocess.STDOUT)
+    mon = ResourceMonitor({w: pr.pid for w, pr in procs.items()}, cfg.get("sample_s", 2)) if monitor else None
+    if mon: mon.start()
     c = Consumer({"bootstrap.servers": cfg["kafka"], "group.id": f"launcher-{rid}", "auto.offset.reset": "earliest", "enable.auto.commit": False})
     c.assign([TopicPartition(f"clock-{rid}", 0, 0)])
     state, kill = {}, None
@@ -101,6 +112,7 @@ def run(cfg, day, n_workers, seed, key_res, assignor, speed, pace_from, until, k
             if time.time() - last_print > 30:
                 last_print = time.time(); print(f"{rid}: " + ", ".join(f"{w}@{(j.get('clock', 0) - t0) / 3600:.2f}h/{j.get('decisions', 0)}" for w, j in sorted(state.items())), flush=True)
     finally:
+        if mon: mon.stop()                         # the JVMs' CPU time is read while they are alive
         for w, pr in procs.items():
             if pr.poll() is None:
                 pr.send_signal(signal.SIGTERM)
@@ -123,12 +135,14 @@ def run(cfg, day, n_workers, seed, key_res, assignor, speed, pace_from, until, k
     df.write_parquet(f"data/{out_dir}/svc_{rid}.parquet")
     first = df.filter(~pl.col("redelivered")) if df.height else df
     s = {"run_id": rid, "day": day, "workers": n_workers, "seed": seed, "key_resolution": key_res, "assignor": assignor, "speed": speed or "max", "pace_from": pace_from, "until": until, "window_s": window,
-         "watermark_slack_s": cfg["watermark_slack_s"] if slack is None else slack, "session_timeout_ms": cfg["session_timeout_ms"], "fleet_size": cfg["fleet_size"], "fleet_by_partition": fleet_by_part,
+         "watermark_slack_s": cfg["watermark_slack_s"] if slack is None else slack, "session_timeout_ms": cfg["session_timeout_ms"], "fleet_size": cfg["fleet_size"], "ring_k": ring or cfg["ring_k"], "fleet_by_partition": fleet_by_part,
          "hardware": hardware(), "jvm": subprocess.run(["java", "-version"], capture_output=True, text=True).stderr.splitlines()[0],
          "wall_s": round(wall, 1), "records": df.height, "requests_decided": int(first["request_id"].n_unique()) if df.height else 0,
          "redelivered_records": int(df["redelivered"].sum()) if df.height else 0,
          "decisions_per_s_wall": round(first["request_id"].n_unique() / wall, 1) if df.height else 0,
          "kill": kill, "events": sorted(events, key=lambda e: e["wall_ms"]), "workers_summary": summaries}
+    if mon:
+        s["resources"] = mon.summary(wall)
     if df.height:
         span = (first["done_wall_ms"].max() - first["start_wall_ms"].min()) / 1000
         s["decisions_per_s_active"] = round(first.height / span, 1) if span > 0 else None
@@ -148,11 +162,16 @@ def main():
     ap.add_argument("--seed", type=int, default=0); ap.add_argument("--key-res", type=int); ap.add_argument("--assignor", default="range", choices=("range", "cooperative"))
     ap.add_argument("--speed", type=float); ap.add_argument("--pace-from"); ap.add_argument("--until"); ap.add_argument("--kill-at"); ap.add_argument("--run-id"); ap.add_argument("--slack", type=float)
     ap.add_argument("--window", type=float, default=0, help="Phase 4: the worker's batching window in seconds (0 = one decision per request)")
+    ap.add_argument("--fleet", type=int, help="Phase 6: a fleet size other than the config's (its file exported by deadhead.phase6_data)")
+    ap.add_argument("--ring", type=int, help="Phase 6: a search ring other than the config's (its table exported by deadhead.phase6_data)")
+    ap.add_argument("--monitor", action="store_true", help="Phase 6: sample the JVMs, the containers and the machine while the run runs")
     a = ap.parse_args()
-    cfg = yaml.safe_load(open(a.config))
+    cfg = load_config(a.config)
+    if a.fleet: cfg["fleet_size"] = a.fleet
+    ring = a.ring if a.ring and a.ring != cfg["ring_k"] else None
     key_res = a.key_res or cfg["key_resolution"]
-    rid = a.run_id or f"svc_{a.day}_W{a.workers}_k{key_res}_{a.assignor}_seed{a.seed}" + (f"_x{a.speed:g}" if a.speed else "") + (f"_until{a.until.replace(':', '')}" if a.until else "") + (f"_kill{a.kill_at.replace(':', '')}" if a.kill_at else "") + (f"_w{a.window:g}" if a.window else "")
-    s = run(cfg, a.day, a.workers, a.seed, key_res, a.assignor, a.speed, a.pace_from, a.until, a.kill_at, rid, a.slack, a.window)
+    rid = a.run_id or f"{cfg.get('run_prefix', 'svc')}_{a.day}_W{a.workers}_k{key_res}_{a.assignor}_seed{a.seed}" + (f"_N{a.fleet}" if a.fleet else "") + (f"_R{ring}" if ring else "") + (f"_x{a.speed:g}" if a.speed else "") + (f"_until{a.until.replace(':', '')}" if a.until else "") + (f"_kill{a.kill_at.replace(':', '')}" if a.kill_at else "") + (f"_w{a.window:g}" if a.window else "")
+    s = run(cfg, a.day, a.workers, a.seed, key_res, a.assignor, a.speed, a.pace_from, a.until, a.kill_at, rid, a.slack, a.window, ring, a.monitor)
     print(json.dumps({k: s[k] for k in s if k not in ("events", "workers_summary")}, indent=1))
     for w, ws in sorted(s["workers_summary"].items()):
         print(w, {k: ws[k] for k in ("decisions", "matched", "redelivered", "cruises", "folds", "fold_ms_total", "decision_ms_median", "table_ms_median", "wall_s")})

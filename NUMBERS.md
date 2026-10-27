@@ -636,3 +636,161 @@ Recommended ring by hour, calibrated weekday: **5** at 00, 06, 18, 19, 21, 22, 2
 day; 2 at 02–04). Saturday: 4 at most hours, 2–3 from 02:00 to 05:00, 5 at 00, 09 and 23. By day the
 fifty-candidate cap binds (50 visible at ring 3, 100 at ring 5) and the ring costs little; in the evening the ring
 is the constraint (6 visible at ring 3 at 18:00) and the driver beyond it is two minutes faster.
+
+## Phase 6 — what it costs to run
+
+All from `results/phase6/cost_cpu-apple-m5.json` (`deadhead/phase6_metrics.py`), aggregated from the service runs
+`results/phase6/svc_cost_*.json` (one per run, each carrying the resource monitor's samples under `resources`; ledgers in
+`data/phase6/`), the Phase 3 service runs for the worker counts not re-run, and the Phase 4 run with the window; config
+`configs/phase6.yaml`. Every run is the Java service of Phase 3 replaying the weekday (391,042 requests, seed 0) at
+maximum speed unless marked ×1: resolution 6, range assignor, W = 0, free-flow speeds. **Supply is simulated**
+(`ASSUMPTIONS.md`).
+
+**The machine measured** is an Apple M5 laptop: 10 cores (4 performance, 6 efficiency), 16 GB, macOS 26.6.2, Python
+3.12, Java 21. OSRM v6.0.0 and Kafka 3.9.1 run as containers under Docker Desktop (Docker Engine 28.3.2), which runs them inside a Linux
+virtual machine and forwards their ports through a user-space proxy. The laptop was in use during the runs; the monitor
+attributes that time to other applications and it is reported, not hidden. **The machine priced is not the one measured:**
+the price is a list price for an 8-vCPU, 16 GB ARM instance (`c8g.2xlarge`, us-east-1, on demand, **$0.319 per hour**),
+read on 2026-10-26 from a third-party listing (`instances.vantage.sh`), with a 4-vCPU, 8 GB sibling at $0.160 per hour
+(`price`). The cost figures are the laptop's wall clock priced at that rate; whether that instance replays the day in the
+same wall is not measured.
+
+**How the machine's time is attributed** (`deadhead/resources.py`, a sample every 2 s). Each worker JVM by `ps` (its CPU
+time is exact, from the process's own counter at exit); the two containers through the Docker socket (cumulative CPU
+nanoseconds, exact); every host process by `ps` into four buckets (the virtual machine, Docker's own processes, Java,
+everything else); the machine as a whole by `iostat` (user plus system over all cores). "The laptop's VM and Docker
+plumbing" is the VM and Docker processes less the two containers' own CPU; "kernel and unattributed" is the machine's
+total less every process `ps` can see. The run's own work is OSRM plus the JVMs plus Kafka.
+
+### Cost per city-day (weekday, seed 0, 4 workers, fleet 7,500, ring 3, maximum speed)
+
+| Figure | Value | Key |
+|---|---|---|
+| Wall clock for the day | **752.5 s** (Phase 3 measured 747.8 s for the same run) | `cost_per_city_day.wall_s` |
+| Decisions per second of wall | 519.7 | `decisions_per_s` |
+| Machine-hours | **0.209** | `machine_hours` |
+| **Cost per city-day at $0.319/h** | **$0.067** | `usd` |
+| Cost per million decisions | $0.171 | `usd_per_million_decisions` |
+| On the 4-vCPU sibling at $0.160/h, if the wall were the same (not measured) | $0.033 | `usd_on_4_vcpu_if_same_wall` |
+| Memory the run's processes hold at their peak (JVMs 2,110 MB, OSRM 305 MB, Kafka 1,933 MB) | **4.25 GB** | `memory_needed_gb` |
+| At ×1 the day costs the day | 24 machine-hours, **$7.66** | `at_x1.cost_per_city_day` |
+
+### Where the machine's time goes (the same run; core-seconds over the 752.5 s)
+
+| Bucket | Core-seconds | Mean cores | Share of the machine's busy time | Key (`bottleneck.machine`) |
+|---|---|---|---|---|
+| OSRM (the routing container) | 406.4 | 0.54 | 12.0% | `core_seconds.osrm` |
+| The four worker JVMs | 591.4 | 0.79 | 17.5% | `core_seconds.jvm_workers` |
+| Kafka (the broker container) | 140.8 | 0.19 | 4.2% | `core_seconds.kafka` |
+| The launcher (Python) | 1.8 | 0.00 | 0.1% | `core_seconds.launcher` |
+| **The run's own work: the three processes above** | **1,138.6** | **1.51** | **33.7%** | `work_core_seconds`, `work_cores_mean` |
+| The laptop's VM and Docker plumbing, less the containers | 881.9 | 1.17 | 26.1% | `core_seconds.vm_and_docker_overhead` |
+| Other applications on the laptop | 704.4 | 0.94 | 20.8% | `core_seconds.other_host_processes` |
+| Kernel and unattributed | 655.7 | 0.87 | 19.4% | `core_seconds.kernel_and_unattributed` |
+| **The machine, all ten cores** | 3,382.4 | **4.50** (45.0% busy, p95 62%) | 100% | `machine_core_seconds`, `cores_busy_mean` |
+
+Within the work: OSRM 35.7%, the JVMs 51.9%, Kafka 12.4% (`work_shares`). The machine is 45% busy, but two thirds of that
+is not the run: the virtual machine that Docker Desktop runs the containers in costs more than the containers themselves
+(1.17 cores against 0.73), and the laptop was in use. On a Linux host the containers run without the VM and the proxy,
+and that bucket would not exist. The kernel bucket is partly the run's (the network stack carrying every routing call and
+every broker record through the proxy) and this monitor cannot split it further; it is counted against the run below.
+Other applications varied from 235 to 808 core-seconds between runs (`runs[].machine.core_seconds.other_host_processes`),
+so the machine-busy figures are the laptop's; the work figures are the run's.
+
+Memory at the peak: JVM resident set 710 / 657 / 375 / 369 MB for w0 to w3 (the two large partitions, then the two
+small), OSRM 305 MB (the Manhattan graph), Kafka 1,933 MB (`jvm_rss_mb_max`, `osrm_mb_max`, `kafka_mb_max`).
+
+### Which stage dominates (the same run; the workers' own wall-clock profile, summed over the four)
+
+| Figure | Value | Key (`bottleneck.worker_profile`) |
+|---|---|---|
+| Processing time, four workers summed | 1,198.9 s | `process_s` |
+| Of it: the OSRM `table` call (the candidates' road times) | **57.0%** | `shares.osrm_table` |
+| The OSRM `route` call (the cruise leg) | 8.7% | `shares.osrm_route` |
+| Cruise bookkeeping | 11.9% | `shares.cruise` |
+| Waiting for the fleet log's acknowledgement | **21.5%** | `shares.await_ack` |
+| Offset commit | 0.5% | `shares.commit` |
+| Time not processing: polling an empty queue, the watermark gate | 1,756.1 s | `waiting_s` |
+
+**The bottleneck is the routing call, inside one worker.** Two thirds of a decision's processing is OSRM (table plus
+route) and the table call alone is 57%; the other large stage is the round trip to the broker for the acknowledgement.
+But the OSRM process uses 0.54 cores, not the two P8 guessed: a fifty-candidate table takes about 3 ms of one OSRM thread
+(Phase 0) and the worker waits for it. The run is not short of cores. Its own work is 1.5 cores on a ten-core machine, and
+the small workers spend 60% of the day waiting at the gate for the largest partition (58% of the day, Phase 3). The wall
+is the serial chain of that partition's worker: poll, table, acknowledgement, commit, one decision at a time. More cores do
+not shorten it (Phase 3: eight workers add nothing at resolution 6); a faster single thread, a faster routing call, or a
+finer key (resolution 7 reaches 653/s) do.
+
+**On a 4-vCPU instance:** the run's own work plus the whole kernel bucket is 2.4 mean cores, so it fits (`fits_4_vcpu`,
+with the basis stated in `fits_4_vcpu_basis`); its 8 GB holds the 4.25 GB. The $0.033 assumes the same wall; not measured.
+
+### By worker count (resolution 6 unless marked; the Phase 3 and Phase 4 runs were not under the monitor)
+
+| Workers | Wall | Decisions/s | Cost at $0.319/h | Work cores; OSRM / JVMs / Kafka core-s | Source |
+|---|---|---|---|---|---|
+| 1 | 1,191.4 s | 328.2 | $0.106 | 0.86; 411 / 522 / 97 | Phase 6 (Phase 3: 1,176.9 s, 332.3/s) |
+| 2 | 1,137.7 s | 343.7 | $0.101 | — | Phase 3 |
+| **4** | **752.5 s** | **519.7** | **$0.067** | 1.51; 406 / 591 / 141 | Phase 6 (Phase 3: 747.8 s, 522.9/s) |
+| 8 | 724.7 s | 539.6 | $0.064 | — | Phase 3 |
+| 4, resolution 7 | 598.5 s | 653.3 | $0.053 | — | Phase 3 |
+| 8, resolution 7 | 607.7 s | 643.5 | $0.054 | — | Phase 3 |
+| 4, window W = 60 s | 1,237.4 s | 316.0 | $0.110 | — | Phase 4 |
+
+`by_workers`, `with_window_60s`. Four workers against one: the OSRM core-seconds are the same (406 against 411: the
+same calls), the JVMs' 13% more (four heaps, three of them mostly waiting), Kafka's 45% more; the wall 37% less. The
+one-worker profile has the same shape (table 56.5%, acknowledgement 18.3%) with 10% in the poll of a full queue.
+
+### By fleet size (4 workers, ring 3)
+
+| Fleet | Wall | Decisions/s | Cost | OSRM calls | Work cores; OSRM / JVMs / Kafka core-s | Table / acknowledgement share of processing | Oracle, Phase 2 (Python, one process), decisions/s |
+|---|---|---|---|---|---|---|---|
+| 3,000 | **364.5 s** | 1,072.8 | **$0.032** | 204,832 | 1.43; 106 / 306 / 110 | 42% / 42% | 1,073.0 |
+| 5,000 | 452.2 s | 864.8 | $0.040 | 323,249 | 1.50; 184 / 392 / 103 | 51% / 32% | 682.1 |
+| **7,500** | **752.5 s** | 519.7 | **$0.067** | 442,172 | 1.51; 406 / 591 / 141 | 57% / 22% | 235.1 |
+| 9,750 | 933.9 s | 418.7 | $0.083 | 480,487 | 1.46; 451 / 792 / 123 | 52% / 17% | 200.9 |
+
+`by_fleet`; the oracle column is `decisions_per_s` in the Phase 2 run files, one per fleet, e.g. `results/phase2/run_2016-06-16_road_N3000_T600_seed0_cruise_cpu-apple-m5.json`
+(the Phase 2 runs at 7,500 and above shared the machine with other replays). With 3,000 drivers the service runs **2.06×
+faster** than with 7,500 (P8 said 1.8×); with 9,750, **24% slower** (P8 said 15%). The work stays at 1.4 to 1.5 cores
+whatever the fleet; the wall follows the routing: a small fleet leaves more requests with no idle driver in the ring (no
+call: 204,832 calls against 442,172) and smaller tables, and at 3,000 the broker round trip costs as much as the table.
+
+### By matching radius (4 workers, fleet 7,500)
+
+| Ring | Wall | Decisions/s | Cost | OSRM calls | Work cores; OSRM / JVMs / Kafka core-s |
+|---|---|---|---|---|---|
+| 2 | **681.8 s** | 573.5 | **$0.060** | 441,334 | 1.46; 338 / 547 / 109 |
+| **3** | **752.5 s** | 519.7 | $0.067 | 442,172 | 1.51; 406 / 591 / 141 |
+| 5 | 751.3 s | 520.5 | $0.067 | 448,064 | 1.50; 415 / 604 / 110 |
+
+`by_ring`. Ring 2 is **9% faster** than ring 3 (P8 said 20%); ring 5 costs **nothing more** (P8 said 25%). The
+fifty-candidate cap is why: by day ring 3 already fills the fifty (Phase 5), so ring 5 adds candidates only in the evening,
+when there are few, and the tables are the same size; ring 2 finds fewer than fifty more often and its tables are smaller.
+The cost of the radius is in the decisions it changes (Phase 5), not on the machine.
+
+### At ×1 replay speed (4 workers, fleet 7,500, ring 3; the day replayed at maximum speed to the window's start and paced from there)
+
+Measured over the paced fifteen minutes only, from the group's pace origin (`at_x1.windows[].paced_window`); the run
+files also cover the replay to the window's start. Match latency is from the moment the request is due (its event time
+mapped to the wall clock from the group's shared origin, `BUGS.md` #8) to the moment its decision record is sent.
+
+| Window | Decisions in it | Match latency, median / p99 / max | Machine busy, mean (p95) | The run's own processes, mean cores: JVMs / OSRM / Kafka / **all** | The laptop's: VM and Docker plumbing / other applications | Key |
+|---|---|---|---|---|---|---|
+| 04:00–04:15 | 775 | **19 / 71 / 116 ms** | 26.5% (40%) | 0.34 / 0.01 / 0.13 / **0.48** | 0.36 / 1.33 | `at_x1.windows[0]` |
+| 21:00–21:15 | 6,213 | **20 / 84 / 339 ms** | 17.2% (30%) | 0.24 / 0.03 / 0.11 / **0.38** | 0.35 / 0.64 | `at_x1.windows[1]` |
+
+At ×1 the run's own processes use **4 to 5% of the ten cores at both hours**, and the quiet hour costs more than the
+peak: the workers' polling of empty queues (a 5 ms poll loop over three consumers) costs more than the quiet hour's
+decisions, and OSRM is 0.03 of a core at the peak. P8 said under 10% at the peak (right, 3.8%) and under 2% at 04:00
+(wrong, 4.8%: the floor is the idle loop, not the load). The machine as a whole was 17 to 27% busy, but that was the
+laptop's other applications (0.6 to 1.3 cores). The Phase 3 figure at 21:00 (18 ms median, 63 ms p99, 134 ms max) was
+measured against each worker's own origin; against the group's origin the same ledger gives 184 / 230 / 289 ms, and the
+figure above replaces it. The day at ×1 is 24 machine-hours whatever the load, **$7.66**.
+
+### What happened during the runs
+
+Three things, none in the figures. The run script's first chain ran only the worker-count group (its group list had been
+collapsed into one word); the loop was fixed and the other groups run. One run was lost when the laptop went to sleep on
+battery and the broker evicted the worker from the group; every chain since runs under `caffeinate`. And the ×1 window at
+04:00 found a bug in the paced replay, `BUGS.md` #8: each worker paced from its own origin, and the group stalled on the
+worker whose first request came latest. Both windows were re-run after the fix.

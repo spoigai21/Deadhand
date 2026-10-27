@@ -5,9 +5,10 @@ road network, sharded by map cell across a Java consumer group, and measured und
 **Deadhead** is the industry term for a vehicle driving empty between rides; it is the cost the
 two findings here are measured in.
 
-**Status: Phase 5 complete — the plan's five phases are run. The map's speeds are calibrated by hour from the
-trips themselves and the two findings, the fleet and the matching radius are re-measured under them; the
-calibration moves the supply before it moves any decision.**
+**Status: Phase 6 complete — every numbered phase of the plan is run. A city-day replays through the service in
+752 s at four workers, about seven cents of machine time at a stated list price; the bottleneck is the routing call
+inside the worker that holds the largest partition, not the machine's cores. The map's speeds (Phase 5) are
+calibrated by hour from the trips themselves; the calibration moves the supply before it moves any decision.**
 `SPEC.md` is the plan; `PREDICTION.md` holds the guesses written before each
 measurement, with the outcome beside them; `NUMBERS.md` holds every figure with the file behind it;
 `ASSUMPTIONS.md` is the supply model.
@@ -269,6 +270,45 @@ a wider ring is free, in the evening the ring is the constraint. Free flow and S
 ![by hour](figures/phase5_by_hour.png)
 ![radius](figures/phase5_radius.png)
 
+## Phase 6 — what it costs to run
+
+**What runs.** The Phase 3 service replays the weekday at maximum speed under a resource monitor (`deadhead/resources.py`):
+each worker JVM, the two containers through the Docker socket, every other host process, and the machine as a whole,
+sampled every 2 s. One and four workers; four workers with fleets of 3,000, 5,000, 7,500 and 9,750; rings 2, 3 and 5; and
+two windows paced at ×1, the quiet hour (04:00) and the peak (21:00). The hardware is named, an Apple M5 laptop (10 cores,
+16 GB) with the containers under Docker Desktop, and the laptop was in use during the runs; the monitor attributes that
+time and reports it. The price is a list price with its date for an 8-vCPU ARM instance, read from a third-party listing
+on 2026-10-26: **the laptop is not that machine**, and the cost is its wall clock priced at that rate.
+
+**The cost.** A weekday of 391,042 requests replays in **752 s at four workers: 0.21 machine-hours, about $0.067 per
+city-day, $0.17 per million decisions**, at $0.319 per hour. At ×1 the day costs the day, $7.66, and the run's own
+processes use about 4% of the ten cores in the peak quarter-hour (0.38 cores, match latency 20 ms median) and
+more in the quiet one (0.48), where the workers' polling of empty queues costs more than the decisions. The run holds 4.25 GB at its peak (the four JVMs 2.1 GB, Kafka
+1.9 GB, OSRM 0.3 GB), so the 16 GB of the priced instance is not what the day needs.
+
+**Where the time goes, and where it does not.** The machine was 45% busy during the run, 4.5 of 10 cores, but the run's
+own work was **1.5 cores**: the four JVMs 0.8, OSRM 0.5, Kafka 0.2. The rest was the laptop's: the virtual machine Docker
+Desktop runs the containers in (1.2 cores, more than the containers themselves), other applications (0.9), the kernel
+(0.9). The figure below shows the plumbing hatched so it cannot be mistaken for the work. Inside the worker, the OSRM
+table call is **57% of a decision's processing**, the broker round trip for the fleet-log acknowledgement 22%; the OSRM
+process itself uses half a core. **The bottleneck is the routing call inside one worker**: the largest partition holds
+58% of the day, its worker runs one decision at a time through poll, table, acknowledgement and commit, and the other
+three workers wait at the watermark gate for 60% of the day. More cores do not help (Phase 3 showed eight workers add
+nothing at resolution 6); a faster single thread, a faster routing call or a finer key would.
+
+**The sweeps.** Fleet moves the cost through the routing calls: 3,000 drivers replay in 364 s, **2.06× faster** than 7,500,
+and 9,750 in 934 s, 24% slower; the work stays at 1.4 to 1.5 cores whatever the fleet. The radius barely moves it: ring 2 is
+**9% faster**, ring 5 costs **nothing more** than ring 3, because the fifty-candidate cap already binds at ring 3 by day. P8
+had the directions and was wrong on every size: fleet understated, radius overstated, and OSRM guessed at two cores
+against the JVMs' two when it is the other way around.
+
+**One bug.** The ×1 window at 04:00 came out with a 22 s median match latency against 22 ms at 21:00: each worker had
+paced from its own origin, and the group stalled at the gate on the worker whose first request came latest (`BUGS.md` #8).
+The group now paces from one origin shared through the clock topic; both windows were re-run. The Phase 3 latency figure at
+21:00 was measured against each worker's own origin and is restated beside the new one.
+
+![cost](figures/phase6_cost.png)
+
 ## Prior art, by name
 
 Road-network ride-sharing simulators exist and are good: **AMoD2**, a deep-RL taxi dispatcher,
@@ -336,6 +376,15 @@ OP=60 scripts/phase4_runs.sh operating radius weekend service # the operating po
 .venv/bin/python -m deadhead.phase5_speeds configs/phase5.yaml    # the calibration from the trip data and the Phase 1 routed trips, ~2 s
 scripts/phase5_runs.sh                                            # the calibrated replays (weekday seeds 0-4, weekend) and one free-flow replay, ~1.5 h
 .venv/bin/python -m deadhead.phase5_metrics configs/phase5.yaml
+.venv/bin/python -m pytest -q
+```
+
+## Reproduce Phase 6
+
+```bash
+.venv/bin/python -m deadhead.phase6_data configs/phase6.yaml       # fleets of 3,000, 5,000 and 9,750 and the ring-2 and ring-5 cell files, ~10 s
+caffeinate -dims scripts/phase6_runs.sh                            # workers, fleet, ring and x1 groups under the monitor, ~2.5 h; one group: scripts/phase6_runs.sh fleet
+.venv/bin/python -m deadhead.phase6_metrics configs/phase6.yaml    # results/phase6/cost_*.json and figures/phase6_cost.png
 .venv/bin/python -m pytest -q
 ```
 

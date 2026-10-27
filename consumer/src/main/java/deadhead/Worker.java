@@ -24,7 +24,9 @@ import java.util.concurrent.Future;
  * (one partition per request partition): a claim is written there and acknowledged before the assignment goes out,
  * and offsets are committed only after that, so a killed worker's successor rebuilds the same state and finds the
  * request already decided. At maximum replay speed the workers keep each other within a watermark slack of event
- * time through the clock-<run> topic; at a paced speed the wall clock does that.
+ * time through the clock-<run> topic; at a paced speed the wall clock does that, from one origin the group shares
+ * through the same topic (the first member to reach a paced request sets it; a member whose first paced request
+ * comes later must not start its clock later, or the others stall on it at the watermark gate).
  */
 public final class Worker {
     // ---- configuration (every value is passed by the launcher from configs/phase3.yaml) ----
@@ -263,12 +265,17 @@ public final class Worker {
         if (!force && now - lastClockPub < 100) return;
         lastClockPub = now;
         double wm = ownWatermark();
-        producer.send(new ProducerRecord<>(clockTopic, 0, me, String.format(Locale.ROOT, "{\"w\":\"%s\",\"wm\":%.1f,\"wall\":%d,\"done\":%s,\"clock\":%.0f,\"decisions\":%d}", me, wm, now, done, clock, nDecisions)));
+        producer.send(new ProducerRecord<>(clockTopic, 0, me, String.format(Locale.ROOT, "{\"w\":\"%s\",\"wm\":%.1f,\"wall\":%d,\"done\":%s,\"clock\":%.0f,\"decisions\":%d,\"pace\":%d}", me, wm, now, done, clock, nDecisions, paceStartWall)));
     }
 
     void pollClocks() {
         for (ConsumerRecord<String, String> rec : clocks.poll(Duration.ZERO)) {
-            try { JsonNode j = om.readTree(rec.value()); String w = j.get("w").asText(); if (!w.equals(me)) peers.put(w, new double[]{j.get("wm").asDouble(), System.currentTimeMillis()}); }
+            try {
+                JsonNode j = om.readTree(rec.value()); String w = j.get("w").asText();
+                if (!w.equals(me)) peers.put(w, new double[]{j.get("wm").asDouble(), System.currentTimeMillis()});
+                long pace = j.path("pace").asLong(0);              // the group paces from one wall-clock origin: the earliest any member set
+                if (pace > 0 && (paceStartWall == 0 || pace < paceStartWall)) paceStartWall = pace;
+            }
             catch (Exception e) { throw new RuntimeException(e); }
         }
     }
@@ -453,7 +460,7 @@ public final class Worker {
                 if (head.t >= untilT) { ended.add(hp); queues.get(hp).clear(); continue; }
                 if (head.t > gmin + slackS) { nGated++; break; }
                 if (speed > 0 && head.t >= paceFromT) {
-                    if (paceStartWall == 0) paceStartWall = System.currentTimeMillis();
+                    if (paceStartWall == 0) { paceStartWall = System.currentTimeMillis(); publishClock(true); }
                     long due = (long) (paceStartWall + (head.t - paceFromT) / speed * 1000), nowMs = System.currentTimeMillis();
                     if (due > nowMs) { if (due - nowMs > 5) break; Thread.sleep(due - nowMs); }
                 }
@@ -515,7 +522,7 @@ public final class Worker {
             if (drained && pending.isEmpty()) break;
             if (!drained && nextClose > gmin + slackS) { nGated++; break; }
             if (speed > 0 && nextClose >= paceFromT) {
-                if (paceStartWall == 0) paceStartWall = System.currentTimeMillis();
+                if (paceStartWall == 0) { paceStartWall = System.currentTimeMillis(); publishClock(true); }
                 long due = (long) (paceStartWall + (nextClose - paceFromT) / speed * 1000), nowMs = System.currentTimeMillis();
                 if (due > nowMs) { if (due - nowMs > 5) break; Thread.sleep(due - nowMs); }
             }
